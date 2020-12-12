@@ -2,6 +2,7 @@ from collections import deque
 node_count , line_count , root_node = map(int, input().split())
 graph = [[0 for _ in range(node_count)] for _ in range(node_count)]
 vertex_list =[]
+
 for i in range(line_count):
     start , des = map(int, input().split())
     graph[start-1][des - 1] = 1
