@@ -2,7 +2,4 @@ INDEX VERSION 1.131+/Users/jaeyeonkim/Desktop/code_test_java/.metadata/.plugins/
 1707539587.index
 1945687261.index
 2703103201.index
-622674319.index
 1147807358.index
-2802506354.index
-2912218328.index
