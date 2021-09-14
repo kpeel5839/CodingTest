@@ -1,6 +1,5 @@
 INDEX VERSION 1.131+/Users/jaeyeonkim/Desktop/code_test_java/.metadata/.plugins/org.eclipse.jdt.core
 1707539587.index
 1945687261.index
-2703103201.index
-622674319.index
 1147807358.index
+622674319.index
