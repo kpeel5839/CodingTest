@@ -4,10 +4,12 @@ public class Main {
 		private int value;
 		private Node left_Node;
 		private Node right_Node;
+		private Node parent_Node;
 		public Node(int value) {
 			this.value = value;
 			this.left_Node = null;
 			this.right_Node = null;
+			this.parent_Node = null;
 		}
 		public void setLeft_Node(Node node) {
 			this.left_Node = node;
@@ -27,39 +29,70 @@ public class Main {
 		public void setValue(int value) {
 			this.value = value;
 		}
+		public void setParent_Node(Node node) {
+			this.parent_Node = node;
+		}
+		public Node getParent_Node() {
+			return parent_Node;
+		}
 	}
 	public static class Tree{
 		Node root_Node;
+		Node max_Node;
 		public Tree() {
 			this.root_Node = null;
+			this.max_Node = null;
 		}
 		public int max_Heap() { // 값을 출력하고 가장 큰 값을 remove 해야 
 			if (root_Node == null) {
 				return 0;
 			}
-			if (root_Node.getRight_Node() == null) {
-				int value = root_Node.getValue();
-				root_Node = root_Node.getLeft_Node();
-				return value;
-			}
-			Node current_Node = root_Node;
-			while (true) {
-				if (current_Node.getRight_Node().getRight_Node() == null){
-					int value = current_Node.getRight_Node().getValue();
-					if (current_Node.getRight_Node().getLeft_Node() != null) {
-						current_Node.setRight_Node(current_Node.getRight_Node().getLeft_Node());
+			else {
+				if (max_Node == root_Node) {
+					int value = root_Node.getValue();
+					if (root_Node.getLeft_Node() != null) {
+						root_Node = root_Node.getLeft_Node();
+						root_Node.setParent_Node(null);
+						System.out.print("fucking error number : " + max_Node.getValue() + "\n");
+						Node current_Node = root_Node;
+						while(true) {
+							if (current_Node.getRight_Node() == null) {
+								max_Node = current_Node.getRight_Node();
+								break;
+							}
+							current_Node = current_Node.getRight_Node();
+						}
 					}
 					else {
-						current_Node.setRight_Node(null);;
+						root_Node = null;
+						max_Node =null;
 					}
 					return value;
 				}
-				current_Node = current_Node.getRight_Node();
+				else {
+					int value = max_Node.getValue();
+					if (max_Node.getLeft_Node() != null) {
+						max_Node.getParent_Node().setRight_Node(max_Node.getLeft_Node());
+						Node current_Node = max_Node.getLeft_Node();
+						while(true) {
+							if (current_Node.getRight_Node() == null) {
+								max_Node = current_Node.getRight_Node();
+								break;
+							}
+							current_Node = current_Node.getRight_Node();
+						}
+					}
+					else {
+						max_Node = max_Node.getParent_Node();
+					}
+					return value;
+				}
 			}
 		}
 		public void insertValue(int number) {
 			if (root_Node == null) {
 				root_Node = new Node(number);
+				max_Node = root_Node;
 			}
 			else {
 				Node current_Node = root_Node; //value 가 같은 경우에는 오른쪽으로 가도록 하
@@ -67,6 +100,8 @@ public class Main {
 					if (number >= current_Node.getValue()) {
 						if (current_Node.getRight_Node() == null) {
 							current_Node.setRight_Node(new Node(number));
+							max_Node = current_Node.getRight_Node();
+							max_Node.setParent_Node(current_Node);
 							break;
 						}
 						else {
@@ -77,6 +112,7 @@ public class Main {
 					else {
 						if (current_Node.getLeft_Node() == null) {
 							current_Node.setLeft_Node(new Node(number));
+							current_Node.getLeft_Node().setParent_Node(current_Node);
 							break;
 						}
 						else {
