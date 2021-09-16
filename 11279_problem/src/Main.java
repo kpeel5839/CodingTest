@@ -53,7 +53,6 @@ public class Main {
 					if (root_Node.getLeft_Node() != null) {
 						root_Node = root_Node.getLeft_Node();
 						root_Node.setParent_Node(null);
-						System.out.print("fucking error number : " + max_Node.getValue() + "\n");
 						Node current_Node = root_Node;
 						while(true) {
 							if (current_Node.getRight_Node() == null) {
