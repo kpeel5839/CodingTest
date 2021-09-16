@@ -6,9 +6,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-<<<<<<< HEAD
-	<classpathentry excluding="src/" kind="src" path=""/>
-=======
->>>>>>> master
 	<classpathentry kind="output" path="bin"/>
 </classpath>
