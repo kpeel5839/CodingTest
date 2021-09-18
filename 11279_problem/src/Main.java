@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import java.util.Collections;
 import java.util.PriorityQueue;
 import java.io.*;
@@ -165,7 +164,6 @@ public class Main {
 			tree.insertValue(number);
 		}
 		output.flush();
->>>>>>> master
 		output.close();
 	}
 }
