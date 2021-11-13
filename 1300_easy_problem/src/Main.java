@@ -19,9 +19,10 @@ public class Main {
 		return swap_Index;
 	}
 	public static int select(int[] number_List, int f_Idx, int l_Idx, int find_Number) {
-        if (f_Idx == l_Idx){
-            return number_List[f_Idx];
-        }
+		System.out.println("f_Idx : " +f_Idx+" l_Idx:"+ l_Idx + " find_Number:" + find_Number);
+		if (f_Idx == l_Idx) {
+			return number_List[f_Idx];
+		}
 		int q = partition(number_List, f_Idx, l_Idx);
 		int k = q - f_Idx + 1;
 		if (k == find_Number) {
@@ -42,7 +43,7 @@ public class Main {
 		int[] number_List = new int[size * size];
 		for (int i = 1; i < size + 1; i++) {
 			for (int j = 1; j < size + 1; j++) {
-				number_List[number_List_Index] = input.nextInt();
+				number_List[number_List_Index] = i * j;
 				number_List_Index++;
 			}
 		}
