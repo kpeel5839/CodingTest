@@ -2,34 +2,40 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static List<String> stringList = new ArrayList<>();
+    public static Queue<Point> moveLog = new LinkedList<>();
+    public static int length = 2;
 
-    public static boolean inArray(String string) {
-        for (String compare : stringList) {
-            if(compare.equals(string)){return true;}
-        }
-        return false;
-    }
+    public static class Point{
+        public int y;
+        public int x;
 
-    public static void bfs(String string, int count) {
-        if (count == 5) {
-            if(inArray(string)){ //중복 했던 게 존재했음
-                return;
-            }
-            else{
-                stringList.add(string);
-                return;
-            }
+        public Point(int y, int x){
+            this.y = y;
+            this.x = x;
         }
-        for (int i = 0; i < 4; i++) {
-            string += Integer.toString(i);
-            bfs(string, count + 1);
-            string = string.substring(0, string.length() - 1);
+        @Override
+        public String toString(){
+            return "y : " + y + " x : " +x;
         }
     }
 
+    public static int n = 5;
+    public static int[][] map = new int[n][n];
+
+    public static void move(){
+        for(int i = 0; i < 5; i++){
+            moveLog.add(new Point(0, i));
+        }
+    }
     public static void main(String[] args) {
-        bfs("", 0);
-        System.out.println(stringList.size());
+        move();
+        int count = 0;
+        System.out.println(moveLog.size() - length);
+        for(Point point : moveLog){ //현 length 가 만일 2라면? 마지막 움직인게 0 ,4 라면? 그러면
+            if(count == 3){
+                System.out.println(point);
+            }
+            count++;
+        }
     }
 }
