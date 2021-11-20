@@ -15,7 +15,6 @@ public class Main {
     public static int sequence = 0;
     public static int instructCount = 0;
 
-
     public static void main(String[] args) throws IOException{
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
@@ -63,24 +62,30 @@ public class Main {
         } //이건 사과를 먹은 특별한 경우
         map[head.y][head.x] = '*'; return 1;
     }
-
     public static void getTail(){
         Point point = moveLog.poll();
         tail.y = point.y;
         tail.x = point.x;
         }
     public static int instructMove(){ //방향 지시 처리
-        int success = 0;
+        int gameOver = 0;
         int direction = 1;
         while(true){
+            System.out.println("next");
+            for(int i = 0; i < n; i++){
+                for(int j =0; j < n; j++){
+                    System.out.print(map[i][j] + " ");
+                }
+                System.out.println();
+            }
             if(sequence != instructCount && time == changeTime[sequence]) {
                 direction += changeDirection[sequence];
                 if(direction == -1){direction = 3;}
                 if(direction == 4){direction = 0;}
                 sequence++;
             }
-            success = move(direction);
-            if(success == -1){
+            gameOver = move(direction);
+            if(gameOver == -1){
                 break;
             }
             time++;
