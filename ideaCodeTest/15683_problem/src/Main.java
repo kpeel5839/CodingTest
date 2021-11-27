@@ -6,6 +6,7 @@ public class Main {
     public static int[] rollY = {-1 , 0 , 1 , 0};
     public static char[][] useMap;
     public static char[][] originMap;
+    public static char[][] resultMap;
     public static int r, c;
     public static int cctvCount;
     public static Point[] cctvPoint;
@@ -22,6 +23,7 @@ public class Main {
 
         useMap = new char[r][c];
         originMap = new char[r][c];
+        resultMap = new char[r][c];
 
         for(int i = 0; i < r; i++){
             st = new StringTokenizer(input.readLine());
@@ -61,10 +63,8 @@ public class Main {
         }
         else if(cctvNum == 4){
             watch(dir , y , x);
-            dir = ++dir > 3 ? 0 : dir;
-            watch(dir , y , x);
-            dir = ++dir > 3 ? 0 : dir;
-            watch(dir , y , x);
+            watch(dir % 4 , y , x);
+            watch(dir % 4 , y , x);
         }
         else if(cctvNum == 5){
             watch(0, y , x);
