@@ -2,13 +2,11 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    public static char[][] map ,  ladder;
+    public static char[][] ladder;
     public static int r, c, ladderCount;
     public static Point[] ladderList;
     public static int ans = - 1;
     public static boolean decide = false;
-    public static int[] dx = {};
-    public static int[] dy = {}; //아래  , 왼쪽 , 오른쪽 밖에없음
     public static void main(String[] args)throws IOException{
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
@@ -18,7 +16,6 @@ public class Main {
         ladderCount = Integer.parseInt(st.nextToken());
         r = Integer.parseInt(st.nextToken());
 
-        map = new char[r][c];
         ladder = new char[r][c - 1];
         ladderList = new Point[r * (c - 1)];
 
