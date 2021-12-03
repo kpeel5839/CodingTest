@@ -2,41 +2,47 @@ import java.util.*;
 import java.io.*;
 
 public class Main{
-    public static HashSet<String> sequence = new HashSet<>();
-    public static int count;
-    public static int length = 13;
-    public static void makeSequence(String string , int lengthCount){
-        if(string.length() > count){
-            if(countLetter(string) > count){
-                return;
-            }
-        }
-        if(lengthCount == length){
-            sequence.add(string);
-            return;
-        }
-        for(int i = 0; i < 2; i++){
-            string += i;
-            makeSequence(string , lengthCount + 1);
-            string = string.substring(0 , string.length() - 1);
-        }
-    }
-    public static int countLetter(String str){
-        int letterCount = 0;
-        for(int i = 0; i < str.length(); i++){
-            if(str.charAt(i) == '1'){
-                letterCount++;
-            }
-        }
-        return letterCount;
-    }
     public static void main(String[] args) throws IOException{
         Scanner input = new Scanner(System.in);
-        count = input.nextInt();
-        makeSequence("", 0);
-        for(String string : sequence){
-            System.out.println(string);
+        List[][] map = new ArrayList[3][3];
+        for(int i =0; i < 2; i++){
+            for(int j =0 ; j < 2; j++){
+                map[i][j] = new ArrayList<Integer>();
+                for(int c = 0; c < 8; c++){
+                    map[i][j].add(input.nextInt());
+                }
+            }
         }
-        System.out.println(Math.abs(2 - 1) + Math.abs(1 - 2));
+
+        for(int i =0; i < 2; i++){
+            for(int j = 0; j < 2; j++){
+                Collections.sort(map[i][j]);
+                boolean die = false;
+                int index = 0;
+                for(Integer number : new ArrayList<Integer>(map[i][j])){
+                    System.out.print(number + " ");
+                    if(number == 2){
+                        die = true;
+                    }
+                    if(die == true) {
+                        map[i][j].remove(index);
+                    }
+                    if(die == false){
+                        index++; //삭제는 이런식으로 가면 될 듯 죽기 시작하면 index는 고정하고 그냥 다 죽여버리는 것 근데 이제 죽이면서 양분을 남기는 거지 자신의 나이만큼
+                    }
+                }
+                System.out.println();
+            }
+        }
+
+        System.out.println("remove 이후");
+        for(int i =0; i < 2; i++){
+            for(int j = 0; j < 2; j++){
+                for(Integer number : new ArrayList<Integer>(map[i][j])){
+                    System.out.print(number + " ");
+                }
+                System.out.println();
+            }
+        }
     }
 }
