@@ -77,14 +77,14 @@ public class Main {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 for (Integer age : new ArrayList<Integer>(tree[i][j])) { //여기서 이제 5의 배수인지 판단하고 , 순차적으로 돌면서 5의 배수이면 다 추가해준다.
-                    if (age % 5 == 0) { //age가 5의 배수일 때
-                        for (int c = 0; c < 8; c++) {
-                            int nx = j + dx[c];
-                            int ny = i + dy[c];
-                            if(!((0 <= nx && nx < n) && (0 <= ny && ny < n))){
-                                continue;
+                    if(age % 5 == 0) {
+                        for (int c = i - 1; c <= i + 1; c++) {
+                            for (int v = j - 1; v <= j + 1; v++) {
+                                if ((c < 0 || c >= n) || (v < 0 || v >= n) || (c == i && v == j)) {
+                                    continue;
+                                }
+                                tree[c][v].add(1);
                             }
-                            tree[ny][nx].add(1);
                         }
                     }
                 }
