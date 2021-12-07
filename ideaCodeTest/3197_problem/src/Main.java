@@ -8,7 +8,7 @@ public class Main {
     public static Point selfS, otherS;
     public static int[] dx = {0, 1, 0, -1};
     public static int[] dy = {-1, 0, 1, 0}; // 위 , 오른쪽 ,아래 , 왼쪽
-    public static Deque<Point> nextMelt = new LinkedList<>(), nowMelt = new LinkedList<>();
+    public static Deque<Point> water = new LinkedList<>();
     public static Deque<Point> nowQueue = new LinkedList<>(), nextQueue = new LinkedList<>();
 
     public static void main(String[] args) throws IOException {
@@ -31,7 +31,7 @@ public class Main {
             for (int j = 0; j < c; j++) {
                 map[i][j] = string.charAt(j);
                 if (map[i][j] == 'L') {
-                    nextMelt.add(new Point(i, j));
+                    water.add(new Point(i, j));
                     if (selfS == null) {
                         selfS = new Point(i, j);
                     } else {
@@ -39,7 +39,7 @@ public class Main {
                     }
                 }
                 if (map[i][j] == '.') {
-                    nextMelt.add(new Point(i, j));
+                    water.add(new Point(i, j));
                 }
             }
         } //전처리 완료
@@ -48,85 +48,55 @@ public class Main {
             day++;
             melt(); //해준다음
             bfs(); //해서 visited[otherS.y][otherS.x]에 찍혀있으면 끄타는 것
-//            for (int q = 0; q < 2; q++) {
-//                if (q == 0) {
-//                    System.out.println("lake");
-//                }
-//                if (q == 1) {
-//                    System.out.println("visited");
-//                }
-//                for (int i = 0; i < r; i++) {
-//                    for (int j = 0; j < c; j++) {
-//                        if (q == 0) {
-//                            System.out.print(map[i][j] + " ");
-//                        }
-//                        if (q == 1) {
-//                            System.out.print(visited[i][j] + " ");
-//                        }
-//                    }
-//                    System.out.println();
-//                }
-//            }
         }
         System.out.println(day);
-
     }
-
+    //일단 얼음을 녹이고 한다는 가정하에 , 백조의 다음 탐색 위치를 얼음이 현재 위치하는 곳으로 지정하는 것
     public static void melt() { //이거는 얼음을 녹이기 before에서 after를 녹여야함 , 그니까 before 를 진행하면서 after를 녹이는 것
-        for (Point point : nextMelt) { //deep copy
-            nowMelt.add(point);
-        }
-        nextMelt.clear(); //자 일단 비우고
-        while (!nowMelt.isEmpty()) {
-            Point curP = nowMelt.poll(); //nowMelt에서는 계속 뽑으면서
-            int curX = curP.x;
-            int curY = curP.y;
-            for (int i = 0; i < 4; i++) { //4방향으로 순환함
-                int newY = curY + dy[i];
-                int newX = curX + dx[i];
-                if ((newY < 0 || newY >= r) || (newX < 0 || newX >= c) || map[newY][newX] != 'X') { //그러면서 X가 아닌 것들만 넘기고
+        int size = water.size();
+        for(int i = 0; i < size; i++){
+            Point point = water.poll();
+            for(int j = 0; j < 4; j++){
+                int nx = point.x + dx[j];
+                int ny = point.y + dy[j];
+                if(ny < 0 || ny >= r || nx < 0 || nx >= c || map[ny][nx] != 'X'){
                     continue;
                 }
-                nextMelt.add(new Point(newY, newX));
-                map[newY][newX] = '.';
+                water.add(new Point(ny , nx));
+                map[ny][nx] = '.'; //이러면서 녹이면서 이제 다음 녹을 지점을 정함
             }
         }
-
     }
 
     public static void bfs() { //무조건 스타트는 selfS 에서 이건 백조가 서로 만날 수 있냐 판단.
-        if (day == 0) {
-            nowQueue.add(selfS); //시작 백조를 집어넣고
-            visited[selfS.y][selfS.x] = 1; //현재 시작 백조의 위치에다가 방문 표시를함
-        } else {
-            for (Point point : nextQueue) { //deep copy
-                nowQueue.add(point); //일단 여기까지 왔으면 이전에 queue가 다 비워져있는 상태임
-            }
-            nextQueue.clear(); //자 일단 비우고
+        if(day == 0){
+            nowQueue.add(selfS);
+            visited[selfS.y][selfS.x] = 1;
         }
+        else{
+            nowQueue = nextQueue;
+        }
+        nextQueue = new LinkedList<>();
         Loop1:
-        while (!nowQueue.isEmpty()) { //queue가 비지 않았을 때 true , 진행이라는 것
-            Point curP = nowQueue.poll();
-            int curX = curP.x;
-            int curY = curP.y;
-            for (int i = 0; i < 4; i++) {
-                int newY = curY + dy[i];
-                int newX = curX + dx[i]; //사전에 이미 방문하였음..
-                if ((newY < 0 || newY >= r) || (newX < 0 || newX >= c) || visited[newY][newX] == 1 || map[newY][newX] == 'X') {
-                    continue;
-                } //범위를 넘었거나 , 아니면 이미 방문한 곳이면 그냥 넘어감
-                //이제 다 처리했으니까 그냥 넣음
-                for(int j = 0; j < 4; j++) { //미리 간거에서 예측을 해서 주변을 다 탐색해서 찾아봄 이게 끝에 다다른 놈인지
-                    if (!(newY + dy[j] < 0 || newY + dy[j] >= r) && !(newX + dx[j] < 0 || newX + dx[j] >= c) && map[newY + dy[j]][newX + dx[j]] == 'X') {
-                        nextQueue.add(new Point(newY, newX)); //한칸 간다음 해당 방향으로 한칸 더 가서 x이면 애를 넣어줌 ,
-                        break;
-                    }
-                }
-                visited[newY][newX] = 1;
-                if (newX == otherS.x && newY == otherS.y) {
+        while(!nowQueue.isEmpty()){
+            Point point = nowQueue.poll();
+            for(int i = 0; i < 4; i++){
+                int nx = point.x + dx[i];
+                int ny = point.y + dy[i];
+                if(ny == otherS.y && nx == otherS.x){
+                    visited[ny][nx] = 1;
                     break Loop1;
-                } //일단 처음에 만나면 장땡임
-                nowQueue.add(new Point(newY, newX)); //queue에다가 그냥 넣었음 , 근데 여기서 이제 해당 point가 L이면 끝내야함
+                }
+                if(nx < 0 || nx >= c || ny < 0 || ny >= r || visited[ny][nx] == 1){
+                    continue;
+                }
+                if(map[ny][nx] == 'X'){
+                    nextQueue.add(new Point(ny , nx));
+                    visited[ny][nx] = 1;
+                    continue;
+                }
+                visited[ny][nx] = 1;
+                nowQueue.add(new Point(ny , nx));
             }
         }
     }
