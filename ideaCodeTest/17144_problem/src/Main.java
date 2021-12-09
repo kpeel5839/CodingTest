@@ -29,7 +29,7 @@ public class Main {
                     }
                 }
                 else if(map[i][j] != 0){
-                    dust.add(new Point(i , j));
+                    dust.add(new Point(i , j , map[i][j]));
                 }
                 tempMap[i][j] = map[i][j];
             }
@@ -39,12 +39,7 @@ public class Main {
             spread();
             clean(airU, -1);
             clean(airD , 1);
-            for(int v = 0; v < r; v++){
-                for(int j = 0; j < c; j++){
-                    System.out.print(map[v][j] + " ");
-                }
-                System.out.println();
-            }
+            insertQueue();
         }
 
         for(int i = 0; i < r; i++){
@@ -80,13 +75,12 @@ public class Main {
             ro += dy[nowD];
             co += dx[nowD];
         }
-        insertQueue();
     }
     public static void insertQueue(){//여기서는 clean 에서 다 밀어넣고 난 결과 다시 tempMap에다가 복사하면서 , 현재 dust 있는 거 queue에다가 다 집어넣기
         for(int i = 0; i < r; i++){
             for(int j = 0; j < c; j++){
                 if(map[i][j] != -1 && map[i][j] != 0){
-                    dust.add(new Point(i , j));
+                    dust.add(new Point(i , j , map[i][j]));
                 }
             }
         }
@@ -95,7 +89,7 @@ public class Main {
         //그러고서 clean으로 그냥 temp 에 있는 거 map에다가 옮겨 놓고서 그 다음에 queue에서 빼면서 확산 시키면 됨 , 근데 map에다가 그러면서 copy하면 다시 temp 에 가고 반복하면 됨
         while(!dust.isEmpty()){
             Point point = dust.poll();
-            int dustValue = (int)Math.floor((double)map[point.y][point.x] / 5.0);
+            int dustValue = (int)Math.floor((double)point.value / 5.0);
             for(int i = 0; i < 4; i++){
                 int nx = point.x + dx[i];
                 int ny = point.y + dy[i];
@@ -112,9 +106,11 @@ public class Main {
     public static class Point{
         int y;
         int x;
-        public Point(int y , int x){
+        int value;
+        public Point(int y , int x , int value){
             this.y = y;
             this.x = x;
+            this.value = value;
         }
     }
 }
