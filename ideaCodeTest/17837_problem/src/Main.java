@@ -11,7 +11,7 @@ public class Main {
     public static List<Horse> horse = new ArrayList<>();
     public static void main(String[] args)throws IOException{
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st; 
+        StringTokenizer st;  
 
         st = new StringTokenizer(input.readLine());
         n = Integer.parseInt(st.nextToken());
