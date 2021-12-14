@@ -1,14 +1,81 @@
 import java.util.*;
 import java.io.*;
-public class Main{
-    public static String st= "32451";
-    public static List<Integer> number = new ArrayList<>();
-    public static void main(String[] args){
-        int num = 3;
-        for(int i = 0; i < 4; i++){
-            number.add(i);
+
+public class Main {
+    public static void main(String[] args) throws IOException{
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+
+
+        int target = Integer.parseInt(input.readLine());
+        int[] nums = new int[3];
+        int[] result = new int[2];
+        st = new StringTokenizer(input.readLine());
+        for(int i = 0; i < nums.length; i++){
+            nums[i] = Integer.parseInt(st.nextToken());
         }
-        System.out.println(number.get(1));
-        System.out.println(st.indexOf(Integer.toString(num)));
+        Loop1:
+        for(int i = 0; i < nums.length; i++){
+            int goal = target - nums[i];
+            result[0] = i;
+            for(int j = 0; j < nums.length; j++){
+                if(i == j){
+                    continue;
+                }
+                if(goal == nums[j]){
+                    result[1] = j;
+                    break Loop1;
+                }
+            }
+        }
+        System.out.println(Arrays.toString(result));
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
