@@ -7,15 +7,27 @@ public class Main {
 
     public static class Point implements Comparable<Point> {
         int index;
-        int value;
-        public Point(int index , int value){
+        int count;
+        public Point(int index , int count){
             this.index = index;
-            this.value = value;
+            this.count = count;
         }
 
         @Override
         public int compareTo(Point other){
-
+            if(this.count > other.count){
+                return 1;
+            }
+            else if(this.count == other.count){
+                return this.index - other.index;
+            }
+            else{
+                return -1;
+            }
+        }
+        @Override
+        public String toString(){
+            return "index : " + index + " count :" + count;
         }
     }
     //설계를 먼저해보자.

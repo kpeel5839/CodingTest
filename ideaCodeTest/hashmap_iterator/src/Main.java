@@ -8,6 +8,7 @@ public class Main {
     //HashMap을 통해서 배열의 index와 , 해당 index의 숫자를 체크한다.
     //그리고 순서대로 list에다가 집어넣는다.
     //그다음 Collections.sort()를 통해서 list를 정렬한다.
+    public static int time = 0;
     public static HashMap<Integer, Integer> countIndex = new HashMap<>();
     public static List<Point> sortList = new ArrayList<>();
     public static class Point implements Comparable<Point>{
@@ -35,11 +36,10 @@ public class Main {
         }
     }
     public static void main(String[] args) throws IOException{
-        int[][] map = new int[3][3];
-        int[][] result = new int[100][100];
-        for(int i = 0; i < result.length; i++){
-            for(int j = 0; j < result[i].length; j++){
-                result[i][j] = -1;
+        int[][] map = new int[30][30];
+        for(int i = 0; i < map.length; i++){
+            for(int j = 0; j < map[i].length; j++){
+                map[i][j] = -1;
             }
         }
         Random random = new Random();
@@ -50,38 +50,59 @@ public class Main {
             }
             System.out.println();
         }
-        for(int i = 0; i < 3; i++){
-            countIndex = new HashMap<>();
-            sortList = new ArrayList<>();
-            int index = 0;
-            System.out.println("next");
-            for(int  j =0 ; j < 3; j++){
-                if(countIndex.containsKey(map[i][j])){
-                     countIndex.put(map[i][j], countIndex.get(map[i][j]) + 1);
-                }
-                else{
-                    countIndex.put(map[i][j] , 1);
-                }
-            }
-            System.out.println(countIndex);
-            Iterator it = countIndex.entrySet().iterator();
-            while(it.hasNext()){
-                Map.Entry entry = (Map.Entry)it.next();
-                sortList.add(new Point((int)entry.getKey() , (int)entry.getValue()));
-            }
-            Collections.sort(sortList);
-            for(Point point : sortList){
-                result[i][index] = point.index;
-                result[i][index + 1] = point.count;
-                index += 2;
-                if(index == 100){
+        while(true) {
+            for (int i = 0; i < 30; i++) {
+                countIndex = new HashMap<>();
+                sortList = new ArrayList<>();
+                int index = 0;
+                if(map[i][0] == -1){
                     break;
                 }
+                for (int j = 0; j < 30; j++) {
+                    if(map[i][j] == -1){
+                        break;
+                    }
+                    System.out.print(map[i][j] + " ");
+                    if (countIndex.containsKey(map[i][j])) {
+                        countIndex.put(map[i][j], countIndex.get(map[i][j]) + 1);
+                    } else {
+                        countIndex.put(map[i][j], 1);
+                    }
+                }
+                System.out.println();
+                Iterator it = countIndex.entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry entry = (Map.Entry) it.next();
+                    sortList.add(new Point((int) entry.getKey(), (int) entry.getValue()));
+                }
+                Collections.sort(sortList);
+                for (Point point : sortList) {
+                    System.out.println("index : " + point.index + " count : " + point.count);
+                    map[i][index] = point.index;
+                    map[i][index + 1] = point.count;
+                    index += 2;
+                    if (index == 30) {
+                        break;
+                    }
+                }
+                System.out.println("R연산 적용 이후");
+                for(int j = 0; j < 30; j++){
+                    if(map[i][j] == -1){
+                        break;
+                    }
+                    System.out.print(map[i][j] + " ");
+                }
+                System.out.println();
+            }
+            time++;
+            if(time == 1000){
+                break;
             }
         }
+        System.out.println(time);
         for(int i = 0; i < 30; i++){
             for(int j = 0; j < 30; j++){
-                System.out.print(result[i][j] + " ");
+                System.out.print(map[i][j] + " ");
             }
             System.out.println();
         }
