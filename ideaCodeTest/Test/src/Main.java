@@ -2,33 +2,49 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    public static void main(String[] args) throws IOException{
-        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-
-
-        int target = Integer.parseInt(input.readLine());
-        int[] nums = new int[3];
-        int[] result = new int[2];
-        st = new StringTokenizer(input.readLine());
-        for(int i = 0; i < nums.length; i++){
-            nums[i] = Integer.parseInt(st.nextToken());
+    public static class Pair implements Comparable<Pair>{
+        int x;
+        int y;
+        public Pair(int x , int y){
+            this.x = x;
+            this.y = y;
         }
-        Loop1:
-        for(int i = 0; i < nums.length; i++){
-            int goal = target - nums[i];
-            result[0] = i;
-            for(int j = 0; j < nums.length; j++){
-                if(i == j){
-                    continue;
-                }
-                if(goal == nums[j]){
-                    result[1] = j;
-                    break Loop1;
-                }
+
+        public int compareTo(Pair o){ //각 이 숫자로 우선순위가 적용 되나봄 , -1 , 1만 반환할 수 있는 것이 아니라
+            if(this.y > o.y){
+                return -1;
+            }
+            else if(this.y == o.y){
+                return o.x - this.x;
+            }
+            else{
+                return 1;
             }
         }
-        System.out.println(Arrays.toString(result));
+
+        @Override
+        public String toString(){
+            return "x : " + x + " y : " + y;
+        }
+    }
+    public static void main(String[] args) throws IOException{ //Comparable 시험해보기 객체 정렬 두가지로도
+        List<Pair> sortList = new ArrayList<>();
+        Random random = new Random();
+        int number = 6;
+        for(int i = 12; i != -1; i--){
+            if(i % 3 == 0){
+                number--;
+            }
+            sortList.add(new Pair(random.nextInt(11) , number));
+        }
+        for(Pair pair : sortList){
+            System.out.println(pair);
+        }
+        Collections.sort(sortList);
+        System.out.println();
+        for(Pair pair : sortList){
+            System.out.println(pair);
+        }
     }
 }
 
