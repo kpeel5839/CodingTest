@@ -11,6 +11,7 @@ public class Main {
     public static int time = 0;
     public static HashMap<Integer, Integer> countIndex = new HashMap<>();
     public static List<Point> sortList = new ArrayList<>();
+    public static int[][] map = new int[30][30];
     public static class Point implements Comparable<Point>{
         int index;
         int count;
@@ -36,7 +37,6 @@ public class Main {
         }
     }
     public static void main(String[] args) throws IOException{
-        int[][] map = new int[30][30];
         for(int i = 0; i < map.length; i++){
             for(int j = 0; j < map[i].length; j++){
                 map[i][j] = -1;
@@ -51,6 +51,7 @@ public class Main {
             System.out.println();
         }
         while(true) {
+            int max = 0;
             for (int i = 0; i < 30; i++) {
                 countIndex = new HashMap<>();
                 sortList = new ArrayList<>();
@@ -61,6 +62,9 @@ public class Main {
                 for (int j = 0; j < 30; j++) {
                     if(map[i][j] == -1){
                         break;
+                    }
+                    if(map[i][j] == 0){
+                        continue;
                     }
                     System.out.print(map[i][j] + " ");
                     if (countIndex.containsKey(map[i][j])) {
@@ -76,8 +80,11 @@ public class Main {
                     sortList.add(new Point((int) entry.getKey(), (int) entry.getValue()));
                 }
                 Collections.sort(sortList);
+                if(max < sortList.size() * 2){
+                    max = sortList.size() * 2;
+                }
                 for (Point point : sortList) {
-                    System.out.println("index : " + point.index + " count : " + point.count);
+                    System.out.println(point);
                     map[i][index] = point.index;
                     map[i][index + 1] = point.count;
                     index += 2;
@@ -94,6 +101,7 @@ public class Main {
                 }
                 System.out.println();
             }
+            fill(max);
             time++;
             if(time == 1000){
                 break;
@@ -105,6 +113,18 @@ public class Main {
                 System.out.print(map[i][j] + " ");
             }
             System.out.println();
+        }
+    }
+    public static void fill(int max){ //실제로는 여기에 어떻게 r연산 후인지 , c연산 후인지 있어야할 듯
+        for(int i = 0; i < map.length; i++){
+            for(int j = 0; j < max; j++){
+                if(map[i][j] == 0){
+                    continue;
+                }
+                else if(map[i][j] == -1){
+                    map[i][j] = 0;
+                }
+            }
         }
     }
 }
