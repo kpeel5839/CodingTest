@@ -28,23 +28,8 @@ public class Main {
         }
     }
     public static void main(String[] args) throws IOException{ //Comparable 시험해보기 객체 정렬 두가지로도
-        List<Pair> sortList = new ArrayList<>();
-        Random random = new Random();
-        int number = 6;
-        for(int i = 12; i != -1; i--){
-            if(i % 3 == 0){
-                number--;
-            }
-            sortList.add(new Pair(random.nextInt(11) , number));
-        }
-        for(Pair pair : sortList){
-            System.out.println(pair);
-        }
-        Collections.sort(sortList);
-        System.out.println();
-        for(Pair pair : sortList){
-            System.out.println(pair);
-        }
+        double number = 0;
+        System.out.print(number / 9D);
     }
 }
 
