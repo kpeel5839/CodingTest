@@ -28,8 +28,15 @@ public class Main {
         }
     }
     public static void main(String[] args) throws IOException{ //Comparable 시험해보기 객체 정렬 두가지로도
-        double number = 0;
-        System.out.print(number / 9D);
+        Scanner input = new Scanner(System.in);
+        double sum = 0;
+        for(int i = 0; i < 4; i++){
+            for(int j = 0; j < 6; j++){
+                sum += input.nextInt();
+            }
+        }
+        sum = (float)sum / 24f;
+        System.out.print(sum);
     }
 }
 

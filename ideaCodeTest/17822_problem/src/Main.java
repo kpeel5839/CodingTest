@@ -3,7 +3,7 @@ import java.io.*;
 
 public class Main {
     public static int n , m , t;
-    public static int[] dx = {0 , 1 , 0 , -1} , dy = {-1 , 0 , 1 , -1};
+    public static int[] dx = {0 , 1 , 0 , -1} , dy = {-1 , 0 , 1 , 0};
     public static float[] average;
     public static int[][] sector , tempSector;
     public static Queue<Point> queue = new LinkedList<>();
@@ -53,13 +53,6 @@ public class Main {
         for(int i = 0; i < t; i++){
             clean();
             spin(instruct[i][0] , instruct[i][1] , instruct[i][2]);
-            System.out.println("after spin");
-            for(int j = 0; j < n; j++){
-                for(int c = 0; c < m; c++){
-                    System.out.print(sector[j][c] + " ");
-                }
-                System.out.println();
-            }
             boolean existsClose = false;
             for(int j = 0; j < n; j++){
                 for(int c = 0; c < m; c++){
@@ -98,7 +91,7 @@ public class Main {
                                 if(average > sector[j][c]){
                                     sector[j][c] += 1;
                                 }
-                                else{
+                                else if(average < sector[j][c]){
                                     sector[j][c] -= 1;
                                 }
                             }
@@ -107,13 +100,6 @@ public class Main {
                     average = (float)sum / (float)count ;
                 }
                 copy();
-            }
-            System.out.println("after next");
-            for(int j = 0; j < n; j++){
-                for(int c = 0; c < m; c++){
-                    System.out.print(sector[j][c] + " ");
-                }
-                System.out.println();
             }
         }
 
@@ -176,7 +162,7 @@ public class Main {
                 for (int j = start; j != end; j += dir) {
                     sector[i - 1][j + dir == -1 ? m - 1 : (j + dir) % m] = tempSector[i - 1][j];
                 }
-                i *= mulNum;
+                i = mul * mulNum;
             }
             copy();
         }
