@@ -32,9 +32,26 @@ public class Main {
             return false;
         }
     }
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException{
         getSequence("");
         System.out.println(sequence);
+
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+        int sum = 0;
+        for(int i = 0; i < 6; i++){
+            st = new StringTokenizer(input.readLine());
+            for(int j = 0; j < 6; j++){
+                sum += Integer.parseInt(st.nextToken());
+            }
+        }
+        System.out.println(sum);
+        st = new StringTokenizer(input.readLine() , ",");
+        sum = 0;
+        for(int i = 0; i < 5; i++){
+            sum += Integer.parseInt(st.nextToken());
+        }
+        System.out.println(sum);
     }
 }
 
