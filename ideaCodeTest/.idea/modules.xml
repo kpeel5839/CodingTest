@@ -24,6 +24,8 @@
       <module fileurl="file://$PROJECT_DIR$/17144_problem/17144_problem.iml" filepath="$PROJECT_DIR$/17144_problem/17144_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/17779_problem/17779_problem.iml" filepath="$PROJECT_DIR$/17779_problem/17779_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/17822_problem/17822_problem.iml" filepath="$PROJECT_DIR$/17822_problem/17822_problem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/17825_problem/17825_problem.iml" filepath="$PROJECT_DIR$/17825_problem/17825_problem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/17825_problem_node_solve/17825_problem_node_solve.iml" filepath="$PROJECT_DIR$/17825_problem_node_solve/17825_problem_node_solve.iml" />
       <module fileurl="file://$PROJECT_DIR$/17837_problem/17837_problem.iml" filepath="$PROJECT_DIR$/17837_problem/17837_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/3190_problem/3190_problem.iml" filepath="$PROJECT_DIR$/3190_problem/3190_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/3197_problem/3197_problem.iml" filepath="$PROJECT_DIR$/3197_problem/3197_problem.iml" />
@@ -33,6 +35,7 @@
       <module fileurl="file://$PROJECT_DIR$/L938_problem/L938_problem.iml" filepath="$PROJECT_DIR$/L938_problem/L938_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/Test/Test.iml" filepath="$PROJECT_DIR$/Test/Test.iml" />
       <module fileurl="file://$PROJECT_DIR$/collections_sort/collections_sort.iml" filepath="$PROJECT_DIR$/collections_sort/collections_sort.iml" />
+      <module fileurl="file://$PROJECT_DIR$/encodeDate_decodeDate/encodeDate_decodeDate.iml" filepath="$PROJECT_DIR$/encodeDate_decodeDate/encodeDate_decodeDate.iml" />
       <module fileurl="file://$PROJECT_DIR$/hashmap_iterator/hashmap_iterator.iml" filepath="$PROJECT_DIR$/hashmap_iterator/hashmap_iterator.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/ideaCodeTest.iml" filepath="$PROJECT_DIR$/.idea/ideaCodeTest.iml" />
     </modules>
