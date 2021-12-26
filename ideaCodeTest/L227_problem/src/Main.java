@@ -32,10 +32,10 @@ public class Main {
                 i--;
                 if (multOrDiv == 1) {
                     record *= num;
-                    multOrDiv = 0;
+                    multOrDiv = 0; //곱하고 나며 그냥으로 돌아감
                 } else if (multOrDiv == -1) {
                     if (num == 0) {
-                        return 0;
+                        return 0; //유효하지 않아서
                     } else {
                         record /= num;
                     }

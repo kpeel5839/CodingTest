@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main{
+public class Merge{
     public static int[] l;
     /*
     -- MergeSort 정의
@@ -72,49 +72,3 @@ public class Main{
         System.out.println(Arrays.toString(l));
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
