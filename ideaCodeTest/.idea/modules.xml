@@ -29,6 +29,10 @@
       <module fileurl="file://$PROJECT_DIR$/17837_problem/17837_problem.iml" filepath="$PROJECT_DIR$/17837_problem/17837_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/19236_problem/19236_problem.iml" filepath="$PROJECT_DIR$/19236_problem/19236_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/19237_problem/19237_problem.iml" filepath="$PROJECT_DIR$/19237_problem/19237_problem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/19238_problem/19238_problem.iml" filepath="$PROJECT_DIR$/19238_problem/19238_problem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/20056_problem/20056_problem.iml" filepath="$PROJECT_DIR$/20056_problem/20056_problem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/20057_problem/20057_problem.iml" filepath="$PROJECT_DIR$/20057_problem/20057_problem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/20058_problem/20058_problem.iml" filepath="$PROJECT_DIR$/20058_problem/20058_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/20061_problem/20061_problem.iml" filepath="$PROJECT_DIR$/20061_problem/20061_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/3190_problem/3190_problem.iml" filepath="$PROJECT_DIR$/3190_problem/3190_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/3197_problem/3197_problem.iml" filepath="$PROJECT_DIR$/3197_problem/3197_problem.iml" />
@@ -42,6 +46,7 @@
       <module fileurl="file://$PROJECT_DIR$/L938_problem/L938_problem.iml" filepath="$PROJECT_DIR$/L938_problem/L938_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/L973_problem/L973_problem.iml" filepath="$PROJECT_DIR$/L973_problem/L973_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/Test/Test.iml" filepath="$PROJECT_DIR$/Test/Test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bubble_sort/bubble_sort.iml" filepath="$PROJECT_DIR$/bubble_sort/bubble_sort.iml" />
       <module fileurl="file://$PROJECT_DIR$/collections_sort/collections_sort.iml" filepath="$PROJECT_DIR$/collections_sort/collections_sort.iml" />
       <module fileurl="file://$PROJECT_DIR$/encodeDate_decodeDate/encodeDate_decodeDate.iml" filepath="$PROJECT_DIR$/encodeDate_decodeDate/encodeDate_decodeDate.iml" />
       <module fileurl="file://$PROJECT_DIR$/hashmap_iterator/hashmap_iterator.iml" filepath="$PROJECT_DIR$/hashmap_iterator/hashmap_iterator.iml" />
