@@ -31,30 +31,30 @@ public class Main {
         }
         int pivot = pivot(low , high);
 
-        System.out.println("low : " + low + " high : " + high + " pivot : " + pivot);
         quickSort(low , pivot - 1);
-        quickSort(pivot + 1 , high);
+        quickSort(pivot , high);
     }
     public static int pivot(int low , int high){
         /*
-        1. 그냥 하나임 기준치를 가지고 첫번째 인덱스부터 탐색을 하는데
-        2. 근데 pivot 을 돌리게 되면 적어도 10 9 8 2 3 4 이렇게 있다고 했을 때 2 3 4 이렇게는 되어야함 그러니까 자기보다 작은 것들은 앞으로 가야함 그래야지 2 3 4 10 9 8 이런식으로 됨
-        3. 이렇게는 적어도 되어야 각자 구역을 나눠서 자기들끼리 정렬이 가능한 것
-        4. 그러니까 pivot을 기준으로 하되 끝 값보다 작은 값을 즉 기준 값보다 작은 값을 만나게 되면 현재의 인덱스와 내가 가진 index = 0; 과 swap을 하는 것임 그러면 index++ 이 되서 1이 될 것이고
-        5. 최종적으로 index + 1 에 본인의 값이 들어가게 되면 되는 것이다. 그리고 그렇기에 탐색은 무조건 자신과 이전까지만 와야함
-        6. 전체적인 설계는 완벽했지만 짜잘한 오류들이 있었음
-        7. 그러니까 마지막에도 swap을 하게 되면 어쨌든 index + 1을 하게 되고 그러면 무조건 끝나게 되면 pivot 이 들어갈 위치에 index 값이 위치하게 됨 그렇기 떄문에
-        8. 그냥 swap(index , high) 와 return index; 를 하게 되면 됨
+        1. 이 설계는 pivot을 가운데로 하고 가운데를 기준으로 오른쪽은 큰 값 , 왼쪽은 작은 값을 분포하려고 하는 것이다.
+        2. 그러면 이 설계에서는 계속 pivot을 기준으로 pivot보다 큰 값이 왼쪽에 보일 때까지 low를 증가시키고
+        3. 오른쪽은 pivot보다 작은 값이 보일때까지 high 를 감소시킨다.
+        4. 그러면 pivot을 기준으로 low , high가 결정이 된다. 그러면 그것을 서로 swap 하고
+        5. 이미 이전에 검사한 것들은 상관이 없으니까 low ++ , high --를 시켜준다.
+        6. 이것을 while(low <= high) 가 될때까지 반복한다.
+        7. 물론 low > high 가 되면은 swap하지 않는다.
          */
-        int index = low;
-        int pivot = list[high];
-        for(int i = low; i < high; i++){
-            if(list[i] <= pivot){
-                swap(i , index++);
+        int pivot = list[(low + high) / 2];
+        while (low <= high) {
+            while (list[low] < pivot) low++;
+            while (list[high] > pivot) high--;
+            if (low <= high) {
+                swap(low, high);
+                low++;
+                high--;
             }
         }
-        swap(high , index);
-        return index;
+        return low;
     }
     public static void main(String[] args) throws IOException{
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -68,8 +68,6 @@ public class Main {
         }
 
         quickSort(0 , list.length - 1);
-        for(int i = 0; i < list.length; i++){
-            System.out.print(list[i] + " ");
-        }
+//        System.out.println(Arrays.toString(list));
     }
 }
