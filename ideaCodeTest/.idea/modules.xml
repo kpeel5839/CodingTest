@@ -52,6 +52,7 @@
       <module fileurl="file://$PROJECT_DIR$/hashmap_iterator/hashmap_iterator.iml" filepath="$PROJECT_DIR$/hashmap_iterator/hashmap_iterator.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/ideaCodeTest.iml" filepath="$PROJECT_DIR$/.idea/ideaCodeTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/merge_sort_explain/merge_sort_expain.iml" filepath="$PROJECT_DIR$/merge_sort_explain/merge_sort_expain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/quick_sort/quick_sort.iml" filepath="$PROJECT_DIR$/quick_sort/quick_sort.iml" />
     </modules>
   </component>
 </project>
