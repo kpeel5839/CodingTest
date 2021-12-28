@@ -43,6 +43,8 @@ public class Main {
         5. 이미 이전에 검사한 것들은 상관이 없으니까 low ++ , high --를 시켜준다.
         6. 이것을 while(low <= high) 가 될때까지 반복한다.
         7. 물론 low > high 가 되면은 swap하지 않는다.
+        8. 5 4 3 5 7 8 9
+        9. 5 4 3 5 7 8 9
          */
         int pivot = list[(low + high) / 2];
         while (low <= high) {
@@ -68,6 +70,6 @@ public class Main {
         }
 
         quickSort(0 , list.length - 1);
-//        System.out.println(Arrays.toString(list));
+        System.out.println(Arrays.toString(list));
     }
 }
