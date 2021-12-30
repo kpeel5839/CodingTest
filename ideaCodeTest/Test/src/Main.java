@@ -2,74 +2,64 @@ import java.util.*;
 import java.io.*;
 
 public class Main{
-    public static int[] l;
     /*
-    -- MergeSort 정의
-    1. 일단 두 구간을 나눌 수 있는 공간까지 나눈다. 그 기준은 1 2 3 4 5 그러면 처음은 low = 0 , high = 4 , middle = (low + high) / 2 = 2
-    2. 그러면 1번째는 mergeSort로 반으로 나눠주고 , 2번째는 그 후 3번째가 병합해주는 과정을 하게 되면 size 가 1이 되었을 때 그때 진행하게 될 듯
-    3. 예를 들어서 위와 같이 5인 경우가 있다고 가정하자 첨에는 (0 , 2) , (3 , 4) 이런식으로 나눠지게 될 것이다. 이전에는 (0 , 4)를 가지고 있고
-    4. (0 , 4) -> (0 , 2) -> (0 , 1) -> (0 , 0) , (1, 1) -> ...
-    5. 이런식으로 흘러가게 되면서 가장 작은 단위로 나뉘게 되고 그 작은 단위는 바로 size가 2일때이다 그러면 이제 이렇게 해서 서로 영역을 나누어서 순서를 지켜서 swap을 하면서 가는 것이다.
+    -- 실험 설계
+    1. 만약 배열을 deepcopy를 했는데 거기서 배열 안에 class로 존재하고 그 class를 변경하면? 그러면 결과가 바뀔까?
+    2. 그럴려면 point 클래스를 선언하고 random number로 2차원 배열로 채워넣을 것임, 그 다음에 그 안에 있는 point 값을 변경하면 실제 값은 변경이 될까?
      */
-    public static void mergeSort(int low , int high){
-        if(low >= high){
-            return;
+    public static class Point{
+        int value;
+        public Point(int value){
+            this.value = value;
         }
-        int middle = (low + high) / 2;
-        mergeSort(low , middle);
-        mergeSort(middle + 1, high);
-        merge(low, high , middle);
-    }
-    public static void merge(int low , int high , int middle){
-        /*
-        -- 설계
-        1. 그럼 이렇게 넘어오게 되면 low , high 가장 작은 단위인 0 ,1을 따져보았을 때에는 low = 0 , high = 1 , middle = 0이다. 이런 경우에는 당연히 low <= middle 이면 진행이고 , right <= high이면 진행이다.
-        2. 이렇게 되면 int left = low; int right = middle + 1;이렇게 하면되는 것이다.
-        3. 이렇게 해서 새로운 배열을 선언을 한다. high - low + 1 이 size이다.
-         */
-        int right = middle + 1;
-        int left = low;
-        int size = high - low + 1;
-        int[] temp = new int[size];
-        int tempIndex = 0;
-        while(left <= middle && right <= high){
-            /*
-            1. left에 있는놈이랑 만약에 같게 되면 left가 먼저 들어가야함
-            2. 그래야지 안전정렬이 지켜짐
-             */
-            if(l[left] <= l[right]){
-                temp[tempIndex++] = l[left++];
-            }
-            else{
-                temp[tempIndex++] = l[right++];
-            }
-        }
-        while(left <= middle){
-            temp[tempIndex++] = l[left++];
-        }
-        while(right <= high){
-            temp[tempIndex++] = l[right++];
-        }
-        tempIndex = 0;
-        for(int i = low; i <= high; i++){
-            l[i] = temp[tempIndex++];
+        @Override
+        public String toString(){
+            return Integer.toString(value);
         }
     }
-
+    public static void dfs(Point[][] map){
+        Random random = new Random();
+        Point[][] deepMap = new Point[3][3];
+        for(int i = 0;i < map.length; i++){
+            System.arraycopy(map[i] , 0 , deepMap[i] , 0 , map[i].length);
+        }
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                deepMap[i][j] = new Point(random.nextInt(9));
+            }
+        }
+        System.out.println("after map modified");
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                System.out.print(deepMap[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
     public static void main(String[] args) throws IOException{
-        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(input.readLine());
-        /*
-        1. 일단은 merge sort를 실험할 것이기에 1차원 배열로 진행할 것임
-         */
-        int index = 0;
-        int size = st.countTokens();
-        l = new int[size];
-        while(st.hasMoreTokens()){
-            l[index++] = Integer.parseInt(st.nextToken());
+        Random random = new Random();
+        Point[][] map = new Point[3][3];
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                map[i][j] = new Point(random.nextInt(9));
+            }
         }
-        mergeSort(0 , size - 1);
-        System.out.println(Arrays.toString(l));
+        System.out.println("before array status");
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                System.out.print(map[i][j] + " ");
+            }
+            System.out.println();
+        }
+        dfs(map);
+        System.out.println("after array status");
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                System.out.print(map[i][j] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println(-1 * 2);
     }
 }
 
