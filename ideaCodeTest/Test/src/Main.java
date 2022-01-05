@@ -1,55 +1,30 @@
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.io.*;
-
 public class Main{
-    public static int[][] map;
-    public static int n = 3;
-    public static void rotate(){
-        /*
-        1. 맵을 90도 반시계 방향으로 회전시켜주는 역할
-        2. 끝에 열부터 순서대로 읽어서 위치시키면 됨
-        3. 끝에 열 첫행 부터 순서대로 읽으면서 원래의 map에다가 투입
-         */
-        int[][] copyMap = new int[n][n];
-        for(int i = 0; i < n; i++){
-            System.arraycopy(map[i] , 0 , copyMap[i] , 0 , map[i].length);
-        }
-        int y = 0;
-        int x = 0;
-        for(int i = n - 1; i != -1; i--){
-            for(int j = 0; j < n; j++){
-                map[y][x++] = copyMap[j][i];
-            }
-            y++;
-            x %= n;
-        }
-    }
     public static void main(String[] args) throws IOException{
-        Random random = new Random();
-        map = new int[n][n];
-        for(int i = 0; i < n; i++){
-            for(int j = 0;j  < n; j++){
-                map[i][j] = random.nextInt(9);
-            }
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+        int[] record;
+        Long year = 2022L;
+        int[] monthDay = new int[12];
+        if(year%4 == 0 && year%100 !=0 || year%400 == 0){
+            record = new int[366];
         }
-        System.out.println("------------rotate before----------------");
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j < n; j++){
-                System.out.print(map[i][j] + " ");
-            }
-            System.out.println();
+        else {
+            record = new int[365];
         }
-        rotate();
-        System.out.println("------------rotate after-----------------");
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j < n; j++){
-                System.out.print(map[i][j] + " ");
-            }
-            System.out.println();
+        LocalDate newDate;
+        for(int i = 1; i < 12; i++){ //1월 1일 = 0 1 월 31일 = 30 , 2월 1일? = 31 3월 1일 = 60
+            newDate = LocalDate.of(year.intValue() , i , 1);
+            monthDay[i] = monthDay[i - 1] + newDate.lengthOfMonth();
         }
+        System.out.println(Arrays.toString(monthDay));
+        int frontNullCount = LocalDate.of(year.intValue() , 1 ,2).getDayOfWeek().getValue() % 7;
+        System.out.println(frontNullCount);
     }
 }
-
 
 
 
