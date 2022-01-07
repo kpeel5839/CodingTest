@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-// 23290 : 마법사 상어와 복제
+// 15922 : 아우으 우아으이야!!
 /*
 -- 전제조건
 1.
@@ -14,3 +14,4 @@ public class Main {
         StringTokenizer st;
     }
 }
+

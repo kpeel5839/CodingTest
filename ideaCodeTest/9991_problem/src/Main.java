@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-// 23290 : 마법사 상어와 복제
+// 9991 : Auto-Complete
 /*
 -- 전제조건
 1.
