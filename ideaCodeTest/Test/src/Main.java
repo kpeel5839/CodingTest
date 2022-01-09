@@ -6,8 +6,11 @@ public class Main{
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
 
-        String string = "aaasdbbdb";
-        System.out.println(string.indexOf("bbb"));
+        PriorityQueue<String> word = new PriorityQueue<>();
+        word.add("aaa");
+        word.add("aa");
+        System.out.println(word.size());
+        System.out.println(word.poll());
     }
 }
 

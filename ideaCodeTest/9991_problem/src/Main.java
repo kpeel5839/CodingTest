@@ -20,10 +20,12 @@ import java.io.*;
 -- 해맸던 점
 1. 그냥 findNumber를 -1 을 해서 받았어야 했는데 순간 헷갈려서 안해서 조금 지연됨
 2. 그리고 이게 주어지는 단어가 시작 지점에 위치해야함 (안에 해당 문자열이 포함이 되어 있기만 한게 아니라 처음에 위치하여야함)
+3. 근데 시간초과
  */
 public class Main {
     public static void main(String[] args) throws IOException{
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter output = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(input.readLine());
 
         int w = Integer.parseInt(st.nextToken());
@@ -58,9 +60,11 @@ public class Main {
 
         for(int i = 1; i <= n; i++){
             for(int j = 0; j < w; j++){
-                if(dic[j].indexOf(findWord[i]) == 0){
-                    autoList.get(i).add(dic[j]);
+                if(dic[j].length() < findWord[i].length()){
+                    continue;
                 }
+                String subWord = dic[j].substring(0, findWord[i].length());
+                if(subWord.equals(findWord[i])) autoList.get(i).add(dic[j]);
             }
         }
 
@@ -70,10 +74,12 @@ public class Main {
 
         for(int i = 1; i <= n; i++){
             if(autoList.get(i).size() > findNumber[i]){
-                System.out.println(dicHash.get(autoList.get(i).get(findNumber[i])));
+                output.write((dicHash.get(autoList.get(i).get(findNumber[i]))) + "\n");
             }else{
-                System.out.println(-1);
+                output.write(-1 + "\n");
             }
         }
+        output.flush();
+        output.close();
     }
 }
