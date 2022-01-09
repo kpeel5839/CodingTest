@@ -10,6 +10,7 @@ import java.io.*;
 4. 일단 visited , dist , 그리고 그와 연결된 Edge 를 이용하는 것이 이 알고리즘의 핵심임
  */
 public class Main {
+    public static int start, end;
     public static class Edge{
         int nxtNode;
         int cost;
@@ -19,11 +20,11 @@ public class Main {
         }
     }
     public static void find(int vertexNumber , int[] parent){
-        if(vertexNumber == 1){ //start를 그냥 1이라고 고정하고 , 만약 고정이 안되있는 거면 그냥 start 전역으로 만들거나 넘겨주면 됨
+        if(vertexNumber == start){ //start를 그냥 1이라고 고정하고 , 만약 고정이 안되있는 거면 그냥 start 전역으로 만들거나 넘겨주면 됨
             System.out.println(vertexNumber + "]");
             return;
         }else{
-            if(vertexNumber == 6) { //end를 그냥 8이라고 고정하고 시작
+            if(vertexNumber == end) { //end를 그냥 8이라고 고정하고 시작
                 System.out.print("[" + vertexNumber + " -> ");
             }
             else{
@@ -38,8 +39,8 @@ public class Main {
 
         int v = Integer.parseInt(st.nextToken());
         int e = Integer.parseInt(st.nextToken());
-        int start = Integer.parseInt(st.nextToken());
-        int end = Integer.parseInt(st.nextToken()); //이거는 나중에 짜고 나서 end 지점까지 지정해서 거기까지의 최소 경로를 찾을 때 쓰도록 하자 , end 지점까지의 최소 비용 경로가 나오게 되면 더 할 필요가 없으니까
+        start = Integer.parseInt(st.nextToken());
+        end = Integer.parseInt(st.nextToken()); //이거는 나중에 짜고 나서 end 지점까지 지정해서 거기까지의 최소 경로를 찾을 때 쓰도록 하자 , end 지점까지의 최소 비용 경로가 나오게 되면 더 할 필요가 없으니까
         /*
         1. 일단 vertexList로 관리하는데 이것은 일단 2차원의 List로 관리를 하고
         2. 가장 겉의 인덱스는 해당 정점을 뽑아 내는 것 , 그리고 안쪽의 index는 해당 정점이 가지고 있는 edge의 정보를 나타낸다.
@@ -105,7 +106,7 @@ public class Main {
                 }
             }
         }
-        find(6 , parent);
+        find(end , parent);
 //        System.out.println(Arrays.toString(dist));
     }
 }
