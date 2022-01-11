@@ -23,6 +23,12 @@ import java.io.*;
 7. heating() 모든 온풍기를 통해서 온도를 높이는 부분
 8. success() 를 해서 온도가 k 도 이상이 되었는지 5로 주어진 정점만 확인한다.
 9. 처음에 heating()(check() , clean()) -> spread()(check()) -> edgeDown() -> chocolate++ -> if(success()) break; 이렇게
+-- 해맸던 점
+1. 갈 수 있는지 가지 못하는 지 결정하는 check 함수에서 heater의 방향에 따라서 어떠한 벽에 막히는지를 정확히 이해하지 못하고 하였었음 (재귀적으로 해결함)
+2. spread에서 그냥 하나하나 반복문 돌면서 되게 간단하게 온도를 나눴으면 됐는데 괜히 bfs로 생각해서 복잡하게 생각했었음
+3. 제일 외곽에 있는 온도들을 내리는 edgeDown 함수를 꼭짓점들이 2가 온도가 떨어지게 했었음
+4. heater에서도 innerDir를 처음에 사용해서 continue 되었을 때 방향이 바뀌지 않았었음 그래서 완전히 다른 결과가 나왔었음
+5. 역시나 항상 그렇듯 설계는 괜찮았으나 낮은 문제 이해력과 잦은 실수로 시간이 너무 오래걸렸었음 , 항상 더 생각하고 풀것
  */
 public class Main {
     public static int r , c , k ,chocolate = 0;
@@ -77,78 +83,48 @@ public class Main {
         for(int i = 0; i < map.length; i++){
             System.arraycopy(map[i] , 0 , deepMap[i] , 0 , map[i].length);
         }
-//        Queue<Point> queue = new LinkedList<>();
-//        clean();
-//        visited[0][0] = 1;
-//        queue.add(new Point(0, 0));
-//        while(!queue.isEmpty()){
-//            Point point = queue.poll();
-//            for(int i = 0; i <= 6; i+=2){
-//                int ny = point.y + dy[i];
-//                int nx = point.x + dx[i];
-//                if(ny < 0 || ny >= r || nx < 0 || nx>= r || visited[ny][nx] == 1){
-//                    continue;
-//                }
-//                if(check(point , new Point(ny , nx) , i , i)){
-//                    int beforeValue = deepMap[point.y][point.x];
-//                    int afterValue = deepMap[ny][nx];
-//                    int high = Math.max(deepMap[point.y][point.x] , deepMap[ny][nx]);
-//                    Point highPoint;
-//                    Point lowPoint;
-//                    if(high == beforeValue){
-//                        highPoint = point;
-//                        lowPoint = new Point(ny , nx);
-//                    }else{
-//                        highPoint = new Point(ny , nx);
-//                        lowPoint = point;
-//                    }
-//                    int gap = (int)Math.floor((Math.max(beforeValue , afterValue) - Math.min(beforeValue , afterValue)) / 4d);
-//                    System.out.println(gap);
-//                    map[highPoint.y][highPoint.x] -= gap;
-//                    map[lowPoint.y][lowPoint.x] += gap;
-//                    visited[ny][nx] = 1;
-//                    queue.add(new Point(ny , nx));
-//                }
-//            }
-//        }
-//        for(int i = 0; i < r; i++){
-//            for(int j = 0; j < c; j++){
-//                if(deepMap[i][j] == 0 || visited[i][j] == 1){
-//                    continue;
-//                }
-//                Point before = new Point(i , j);
-//                for(int v = 0; v <= 6; v+=2){
-//                    int ny = before.y + dy[v];
-//                    int nx = before.x + dx[v];
-//                    if(ny < 0 || ny >= r || nx < 0 || nx >= c || visited[ny][nx] == 1){
-//                        continue;
-//                    }
-//                    Point after = new Point(ny , nx);
-//                    visited[ny][nx] = 1;
-//                    if(check(before , after , v , v)){
-//                        int beforeValue = deepMap[before.y][before.x];
-//                        int afterValue = deepMap[after.y][after.x];
-//                        int high = Math.max(deepMap[before.y][before.x] , deepMap[after.y][after.x]);
-//                        Point highPoint;
-//                        Point lowPoint;
-//                        if(high == beforeValue){
-//                            highPoint = before;
-//                            lowPoint = after;
-//                        }else{
-//                            highPoint = after;
-//                            lowPoint = before;
-//                        }
-//                        int gap = (int)Math.floor((Math.max(beforeValue , afterValue) - Math.min(beforeValue , afterValue)) / 4d);
-//                        System.out.println("(" + i + "," + j + ")");
-//                        System.out.println(beforeValue + "," +afterValue + "," + gap);
-//                        map[highPoint.y][highPoint.x] -= gap;
-//                        map[lowPoint.y][lowPoint.x] += gap;
-//                        System.out.println(map[2][4]);
-//                        System.out.println(map[highPoint.y][highPoint.x] + "," + map[lowPoint.y][lowPoint.x]);
-//                    }
-//                }
-//            }
-//        }
+        for(int i = 0; i < r; i++){
+            for(int j = 1; j < c; j++){ //2
+                if(check(new Point(i, j - 1) , new Point(i , j) , 2 , 2)){
+                    int beforeValue = deepMap[i][j - 1];
+                    int afterValue = deepMap[i][j];
+                    int high = Math.max(deepMap[i][j - 1] , deepMap[i][j]);
+                    Point highPoint;
+                    Point lowPoint;
+                    if(high == beforeValue){
+                        highPoint = new Point(i , j - 1);
+                        lowPoint = new Point(i , j);
+                    }else{
+                        highPoint = new Point(i , j);
+                        lowPoint = new Point(i , j - 1);;
+                    }
+                    int gap = (int)Math.floor((Math.max(beforeValue , afterValue) - Math.min(beforeValue , afterValue)) / 4d);
+                    map[highPoint.y][highPoint.x] -= gap;
+                    map[lowPoint.y][lowPoint.x] += gap;
+                }
+            }
+        }
+        for(int i = 0; i < c; i++){
+            for(int j = 1; j < r; j++){ //4
+                if(check(new Point(j - 1, i) , new Point(j , i) , 4 , 4)){
+                    int beforeValue = deepMap[j - 1][i];
+                    int afterValue = deepMap[j][i];
+                    int high = Math.max(deepMap[j - 1][i] , deepMap[j][i]);
+                    Point highPoint;
+                    Point lowPoint;
+                    if(high == beforeValue){
+                        highPoint = new Point(j - 1 , i);
+                        lowPoint = new Point(j , i);
+                    }else{
+                        highPoint = new Point(j , i);
+                        lowPoint = new Point(j - 1 , i);;
+                    }
+                    int gap = (int)Math.floor((Math.max(beforeValue , afterValue) - Math.min(beforeValue , afterValue)) / 4d);
+                    map[highPoint.y][highPoint.x] -= gap;
+                    map[lowPoint.y][lowPoint.x] += gap;
+                }
+            }
+        }
     }
     public static void edgeDown(){
         /*
@@ -338,19 +314,14 @@ public class Main {
 
         for(int i = 0; i <= 100; i++){
             heating();
-//            mapPrint();
-            mapPrint();
             spread();
-//            mapPrint();
             edgeDown();
-//            mapPrint();
             chocolate++;
             if(success()){
                 break;
             }
         }
-        mapPrint();
-//        System.out.println(check(new Point(5 , 4), new Point(4 , 5)));
+//        mapPrint();
         System.out.println(chocolate);
     }
     public static void mapPrint(){
