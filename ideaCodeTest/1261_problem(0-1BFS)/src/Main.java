@@ -19,6 +19,15 @@ import java.io.*;
 6. 그러고서 일단 그냥 주변에 있는 것들을 다 집어넣는데 , 여기서 비용이 0인 칸을 queue.addFirst로 집어넣는다 (높은 우선순위를 보장)
 7. 그리고 한번 갔던 위치는 갈 수 없도록 visited 도 선언하여서 관리한다.
 8. 그래서 Point 를 뽑았을 때 point.y == r - 1 && point.x == c - 1 이면 현재 값을 출력한다.
+-- 0-1BFS 원리
+1. 그냥 0 , 1로 가중치들이 이루어져 있기 때문에
+2. 낮은 가중치를 먼저 처리하는 것임
+3. 예로 4개의 정점에 0 , 1의 가중치를 가진 간선들로 이루어져 있는 그래프를 생각해보면 쉬움
+4. 이것은 그리고 성능 향상을 위해서 짜피 0 , 1 로 이루어져있으니까 , map 자체를 지나온곳을 -1로 처리하는 방법이 존재함
+5. 그러고서 0 , 1 만 queue에다가 집어넣으면 되는 것
+6. 이렇게 visited 처리를 하는 것이고 다익스트라 우선순위 큐 방법도 결국은 if(dist[edge.idx] < cost) 면 continue 하는 방법에서
+7. 어떻게 보면 다시 여기를 방문하지 않도록 방문처리를 하는 것과 굉장히 흡사하다고 할 수 있음 , 근데 완전히 접근 못하는 것은 아니고 가중치가 더 낮은 경우에는 접근이 가능해
+8. visited 사용과 완전히 같은 것은 아니다.
  */
 public class Main {
     public static class Point{
@@ -39,7 +48,6 @@ public class Main {
         int c = Integer.parseInt(st.nextToken());
         int r = Integer.parseInt(st.nextToken());
 
-        int[][] visited = new int[r][c];
         int[][] map = new int[r][c];
 
         for(int i = 0; i < r; i++){
@@ -51,7 +59,6 @@ public class Main {
 
         LinkedList<Point> queue = new LinkedList<>();
         queue.add(new Point(0 , 0 , 0));
-        visited[0][0] = 0;
 
         while(!queue.isEmpty()){
             Point point = queue.poll();
@@ -63,15 +70,17 @@ public class Main {
             for(int i = 0; i < 4; i++){
                 int ny = point.y + dy[i];
                 int nx = point.x + dx[i];
-                if(ny < 0 || ny >= r || nx < 0 || nx >= c || visited[ny][nx] == 1){
+                if(ny < 0 || ny >= r || nx < 0 || nx >= c || map[ny][nx] == -1){
                     continue;
                 }
-                visited[ny][nx] = 1;
+
                 if(map[ny][nx] == 0){
                     queue.addFirst(new Point(ny , nx , value));
-                } else{
+                } else if(map[ny][nx] == 1){
                     queue.add(new Point(ny , nx , value + 1));
                 }
+
+                map[ny][nx] = -1;
             }
         }
     }
