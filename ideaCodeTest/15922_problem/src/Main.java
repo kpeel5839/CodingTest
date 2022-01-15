@@ -30,8 +30,8 @@ public class Main {
         3. 그리고 만일 이전의 finish 가 x보다 큰 경우는 이제 두가지의 경우로 나뉘게 된다
         4. finish가 이번의 y보다 커서 그대로 유지 될 것인가 아니면 finish가 지금의 y보다 작아서 교체될 것인가
         5. if(finish > x) -> 경우에서 추가적으로 if(finish < y) 이 경우에만 finish 가 바뀌면 되고 아니면 그대로 가면된다.
-        6. 이제 특별한 상황인 마지막 상황을 봐야하는데 마지막은 finish 가 x 보다 작으면 이전에 score += finish - start 를 해주고
-        7. 만일 크면 finish < y 보다 크냐 아니면 아니면 그냥 같거나 작냐 finish 가 이거면 finish = y 해주고 score += finish -start 해주면 된다. 마지막으로
+        6. 이제 특별한 상황인 마지막 상황을 봐야하는데 마지막은 finish 가 x 보다 작으면 이전에 score += finish - start 를 해주고.
+        7. 만일 크면 finish < y 보다 크냐 아니면 아니면 그냥 같거나 작냐 finish 가 이거면 finish = y 해주고 score += finish -start 해주면 된다. 마지막으로.
          */
 
         for(int i = 0; i < n; i++){
