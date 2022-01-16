@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/0-1_bfs_graph/0-1_bfs_graph.iml" filepath="$PROJECT_DIR$/0-1_bfs_graph/0-1_bfs_graph.iml" />
+      <module fileurl="file://$PROJECT_DIR$/11049_problem/11049_problem.iml" filepath="$PROJECT_DIR$/11049_problem/11049_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/1197_easy_easy_problem/1197_easy_easy_problem.iml" filepath="$PROJECT_DIR$/1197_easy_easy_problem/1197_easy_easy_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/1197_easy_problem/1197_easy_problem.iml" filepath="$PROJECT_DIR$/1197_easy_problem/1197_easy_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/1197_problem/1197_problem.iml" filepath="$PROJECT_DIR$/1197_problem/1197_problem.iml" />
@@ -50,6 +51,7 @@
       <module fileurl="file://$PROJECT_DIR$/21609_problem/21609_problem.iml" filepath="$PROJECT_DIR$/21609_problem/21609_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/21610_problem/21610_problem.iml" filepath="$PROJECT_DIR$/21610_problem/21610_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/21611_problem/21611_probelm.iml" filepath="$PROJECT_DIR$/21611_problem/21611_probelm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/2178_problem/2178_problem.iml" filepath="$PROJECT_DIR$/2178_problem/2178_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/2217_problem/2217_problem.iml" filepath="$PROJECT_DIR$/2217_problem/2217_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/2239_problem/2239_problem.iml" filepath="$PROJECT_DIR$/2239_problem/2239_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/23288_problem/23288_problem.iml" filepath="$PROJECT_DIR$/23288_problem/23288_problem.iml" />
