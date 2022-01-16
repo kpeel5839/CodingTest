@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/0-1_bfs_graph/0-1_bfs_graph.iml" filepath="$PROJECT_DIR$/0-1_bfs_graph/0-1_bfs_graph.iml" />
       <module fileurl="file://$PROJECT_DIR$/11049_problem/11049_problem.iml" filepath="$PROJECT_DIR$/11049_problem/11049_problem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/11049_second_solution/11049_second_solution.iml" filepath="$PROJECT_DIR$/11049_second_solution/11049_second_solution.iml" />
       <module fileurl="file://$PROJECT_DIR$/1197_easy_easy_problem/1197_easy_easy_problem.iml" filepath="$PROJECT_DIR$/1197_easy_easy_problem/1197_easy_easy_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/1197_easy_problem/1197_easy_problem.iml" filepath="$PROJECT_DIR$/1197_easy_problem/1197_easy_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/1197_problem/1197_problem.iml" filepath="$PROJECT_DIR$/1197_problem/1197_problem.iml" />
