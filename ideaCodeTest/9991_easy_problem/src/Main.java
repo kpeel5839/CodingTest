@@ -110,6 +110,7 @@ public class Main {
         if(startNode.finish){
             count++;
         }
+
         if(count == findNumber){
             find = true;
             ans = startNode.wordNumber;
@@ -118,6 +119,7 @@ public class Main {
         Iterator iterator = startNode.child.keySet().iterator();
         while(iterator.hasNext()){
             Character key = (Character)iterator.next();
+            System.out.println(key);
             dfs(startNode.child.get(key) , findNumber);
         }
     }
