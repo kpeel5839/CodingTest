@@ -25,11 +25,118 @@ import java.io.*;
 벨트 회전 -> 가장 먼저 벨트에 올라간 로봇부터 벨트가 회전하는 방향으로 한칸 이동 -> 올리는 위치에 로봇을 올리는 것(내구도가 0이 아니라면) -> 검사 이것을 반복
 그러고서 이 과정들을 몇번 반복했는지 출력하면 되는 문제이다.
 -- 틀 설계
+컨베이어 벨트의 내구도를 처음에 받는다 belt[2 * n] 으로 받아서
+컨베이어 벨트의 끝 부분은 n - 1이라는 것을 잊으면 안된다.(인덱스)
+일단 벨트를 beltRotate() 함수를 만들고 belt를 회전시키는 그냥 , 이때는 로봇도 움직이게 하면 됨
+그 다음에 robotMove() 함수를 만들어서 robot을 움직일 수 있도록 한다. (이 때 다음칸에 로봇이 있으면 안되며 가려는 칸의 내구도가 1 이상이 남아있어야 한다.
+그 다음에 로봇을 올리는 것은 그냥 중간에 내가 robot에다가 1 올리면 된다. (0 == robot 없는 상태 , 1 == robot이 있는 상태
+그리고 아직 진행 가능한지 체크하는 check()하는 함수를 만든다.
+time 변수를 두어서 한번씩 진행 될 때마다 증감시킨다.
 
+-- 해맸던 점
+설계는 다 좋았음
+얼마 안 해맸지만 beltMove에서 robot을 앞으로 옮기는 과정에서 robot[0] 을 고려하지 않았음
+옮겨지면 robotMove 지나고 나면 무조건 robot[0] 은 로봇이 없다는 것을 고려하지 않았었음
  */
 public class Main {
+    public static int n ,k;
+    public static int[] belt , robot;
+
+    public static void robotMove(){
+        /*
+        로봇이 이동하는 상황에서만 내구도가 감소한다는 것을 꼭 인식하고 있어야함
+        로봇이 내리는 위치에 도달하면 그 즉시 내린다.
+        robot들을 움직이게 하면서 belt의 내구도를 감소시킨다.
+        일단 for문으로 싹 돌면서 먼저 탄 로봇을 탐색해야 한다.
+        그럴려면 어쩔 수 없이 배열의 끝에서부터 탐색을 해야한다.
+        마지막에는 로봇이 존재할 수 없으니 beltRotate에서 없앴기 때문에
+        n - 2 에서 시작한다.
+        n - 2 에서 시작해서 끝으로 거슬러 올라가는데 i + 1 위치에 만일 로봇이 있다면 움직이지 않고
+        있다면 내구도를 검사해야한다.
+        그래서 내구도를 검사해서 옮기면 거기의 내구도를 감소시켜야한다.
+        짜피 뒤에서 부터 하는 것이니까 딱히 temp 이런 것도 필요 없이 배열의 값만 이동시키면 된다.
+         */
+        for(int i = n - 2; i != -1; i--){
+            if(robot[i] == 1){
+                if(robot[i + 1] != 1 && belt[i + 1] != 0){
+                    robot[i + 1] = robot[i];
+                    robot[i] = 0;
+                    belt[i + 1]--;
+                    if(i + 1 == n - 1){
+                        robot[i + 1] = 0;
+                    }
+                }
+            }
+        }
+    }
+
+    public static void beltRotate(){
+        /*
+        로봇이 내리는 위치에 도달하면 그 즉시 내린다.
+        belt의 내구도를 앞으로 옮기면서 꼭 robot도 같이 옮겨줘야 하는데 robotMove는 비교적으로 쉽다.
+        belt에서 다 앞으로 옮기면서 belt의 내구도는 2n - 1 -> 0 으로 가야한다는 것을 인식
+        robot은 그냥 다 앞으로 옮기면서 robot이 내리는 위치에 가면 즉 n - 1에 도달하면 그 즉시 0으로 만든다.
+        그냥 robot[n - 1] = 0; 은 항상 해주면 된다.
+        1 2 3 4 -> 4만 기억하고 뒤에서부터 앞으로 옮겨주면서 맨 마지막에 넣어주면 된다.
+        */
+        int temp = belt[2 * n - 1];
+        for(int i = 2 * n - 2; i != -1; i--){
+            belt[i + 1] = belt[i];
+        }
+        belt[0] = temp;
+        for(int i = n - 2; i != -1; i--){
+            robot[i + 1] = robot[i];
+        }
+        robot[0] = 0;
+        robot[n - 1] = 0; //마지막에 도착한 robot은 무조건 없애기
+    }
+
+    public static boolean check(){
+        /*
+        belt가 k 이상이 남아 있는지 확인하는 역할
+         */
+        int count = 0;
+        for(int i = 0; i < 2 * n; i++){
+            if(belt[i] == 0){
+                count++;
+            }
+        }
+        if(k <= count){
+            return true;
+        }
+        return false;
+    }
+
+
     public static void main(String[] args) throws IOException{
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
+        StringTokenizer st = new StringTokenizer(input.readLine());
+
+
+        n = Integer.parseInt(st.nextToken());
+        k = Integer.parseInt(st.nextToken());
+
+        belt = new int[2 * n];
+        robot = new int[n];
+
+        st = new StringTokenizer(input.readLine());
+
+        for(int i = 0; i < 2 * n; i++){
+            belt[i] = Integer.parseInt(st.nextToken());
+        }
+
+        int time = 0;
+        while(true){
+            time++;
+            beltRotate();
+            robotMove();
+            if(belt[0] != 0){ //0이 아니면 올리고 그 즉시 내구도 감소
+                robot[0] = 1;
+                belt[0]--;
+            }
+            if(check()) break;
+        }
+
+        System.out.println(time);
     }
 }
