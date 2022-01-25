@@ -68,6 +68,8 @@ for문으로 사이즈만큼 돌면서 구할 수 있다
 5 - [1 1 1 1 1] [1 1 1 2] [1 2 2] [5] 가 된다. dp[inputNumber == 5]++ 를 해서 [5]가 추가된 것이다.
 이런식으로 inputNumber로만 이룰 수 있는 가장 작은 숫자에다가 하나의 경우의 수를 추가해주고 나머지는 본인이 선택할 수 있는 최고의 경우의 수인 dp[i - inputNumber]를 선택함으로써 모든 경우의 수를 구할 수 있는 것이다.
 
+그리고 마지막으로 설명하면 dp[InputNumber]++ 만 해주는 이유는 이거를 해주면 짜피 그 다음 inputNumber로만 구성 가능한 것들은 인덱스 inputNumber가 가지고 있는 것에다가 inputNumber 를 추가하면
+inputNumber 로만 구성된 경우가 생기기 때문에 dp[inputNumber]만 ++ 해준 것이다
 -- 해맸던 점
 inputNumber가 k 보다 큰 경우를 생각안했고
 그리고 반복문에서 i , j를 또 잘못썼었음
