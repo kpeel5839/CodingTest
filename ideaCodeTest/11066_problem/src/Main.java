@@ -19,19 +19,142 @@ import java.io.*;
 첫줄에는 테스트 케이스의 개수가 주어지며 각각 2줄씩 총 파일의 개수와 파일들의 크기들이 나와있음
 테스트 케이스마다 결과를 출력하면 된다 , 500개나 되니까 이건 무조건 다이나믹 프로그래밍으로 해결해야한다.
 -- 틀설계
+c1 , c2 , c3 , c4 == 40 , 30 , 30 , 50 으로 들어왔다고 가정해보자
+그러면 여기서 가장 최적의 해... 그것을 구하려면 일단 1차원 배열로 c4로 접근해본다고 가정하자
+0  1   2   3   4
+0  40  70  160 300 이런식으로 가게 된다.
+합치는 수가 적어야 하는 것? 아니다 합치는 수는 짜피 다 똑같을 수 밖에 없음
+그러면 어디를 신경써야 하냐... 최종적인 수의 신경을 써야 할 것이다.
+
+1차원 배열은 답이 안나오는 것 같다 2차원 배열로 가보자
+40 30 30 50
+나올 수 있는 경우의 수
+1번째
+70 30 50 - 70
+70 80 - 150
+150 - 300
+2번째
+40 60 50 - 60
+100 50 - 160
+150 - 310
+3번째
+40 60 50 - 60
+40 110 - 170
+150 - 320
+4번째
+40 30 80 - 80
+40 110 - 190
+150 - 340
+5번쨰
+70 30 50 - 70
+100 50 - 170
+150 - 320
+
+이러한 경우들이 있음
+여기서 공통적인 상황은 짜피 마지막은 같다는 것 , 마지막에 더해지는 수는 짜피 같다
+40 30 30 50
+이것으로 나눌 수 있는 상황은 ? 괄호는 치는 것과 같다
+그리고 이 괄호로 쳐진 것에 나오는 합들을 결과에 다 더하는 것이다
+그러면 일단 최적의 해는
+(40 30) (30 50)
+인 것이다
+이것을 괄호도 많이 나뉘어질 수가 있음
+(40) 30 30 70 순서대로 더하는 경우
+그러면 70 + 100 + 150 이 될 것이다
+그러면 일단 재귀적으로는 이 순서를 만들어주면 된다.
+40 ((30 30) 50) 이런식의 연산도 된다.
+근데 인근에 붙은 것들과 연산이 된다.
+이 문제에서 행렬 최대 곱셈문제가 보이는 것 같다.
+60 + (60 + 70)
+70 + (70 + 60)
+공식은 이렇게 될 듯하다 일단 2 ~ 4 이런 경우는 이 숫자들만 더해주고 비용은 따로 2차원 배열에다가 저장해놓는다.
+그런 다음에 경우의 수를 할 때 2 ~ 3 까지의 숫자 즉 dp[1][1] + dp[2][2] + dp[3][3] + dp[2][3] 이런 느낌으로 가야하는 것이다.
+그니까 현재의 비용을 더하는 것과 , 해당 숫자를 더하는 것은 따른 영역으로 나누어서 처리해야함
+1 ~ 3 까지의 방법의 수는
+1 + (2 ~ 3) = 40 + (30 + 30) + 60 = 160
+(1 ~ 2) + 3 = (40 + 30) + 30 + 70 = 170
+
+2 ~ 4 까지의 방법의 수는
+2 + (3 ~ 4) = 30 + (30 + 50) + 80 = 190
+(2 ~ 3) + 4 = (30 + 30) + 50 + 60 = 170
+
+1 ~ 4 까지의 방법의 수는
+1 + (2 ~ 4) = 40 + (30 + 30 + 50) + 170 = 320
+(1 ~ 2) + (3 ~ 4) = (40 + 30) + (30 + 50) + 70 + 80 = 300
+(1 ~ 3) + 4  = (40 + 30 + 30) + 50 + 160 = 310
+
+이런식으로 점화식을 세우게 되면
+dp[1][1] 이런 것들은 그냥 0으로 만들어 놓자
+그래서 dp[start][i] + dp[i + 1][end] + start ~ end 까지 더한 것
+0  1  2  3  4
+
+1  40 70 160 300
+
+2     30 60 170
+
+3        30 80
+
+4           50
+
+그래서 설계는 일단 file 배열로 배열의 사이즈들을 다 받아 놓은다음에 물론 1부터
+그 다음에 계속 저 점화식을 돌려주는 것이다.
+일단 start 와 end 가 1차이 나는 것부터 진행하고
+그 다음에 마지막으로 start 와 end 가 n - 1 만큼 차이나도록 진행하면 된다.
+그래서 일단은 testCase 숫자를 받아서 for 문으로 돌리면서 n을 받으면
+dp[n + 1][n + 1] 을 선언 그리고 file[n + 1] 을 선언하고
+입력을 i = 1 부터 받는다
+그런 다음에 calculate 함수를 만들어서 start , end 를 주면 배열에다가 다 채워넣는 형태로 진행하면 될 것 같다.
  */
 public class Main {
+    public static int[][] dp;
+    public static int[] file;
+    public static void calculate(int start , int end){
+        /*
+        start와 end 를 받으면 일단 start 부터 end 까지의 합들을 게산해줌 file 리스트들의 합
+        그런 다음에 int i = start i < end; i++ 반복문을 돌려주면서
+        dp[start][i] + dp[i + 1][end] + total; 을 하면서 계속 max와 비교해준다.
+         */
+        int total = 0;
+        int result = Integer.MAX_VALUE;
+
+        for(int i = start; i <= end; i++) {
+            total += file[i];
+        }
+
+        for(int i = start; i < end; i++){
+            result = Math.min(result , dp[start][i] + dp[i + 1][end] + total);
+        }
+
+        dp[start][end] = result;
+    }
     public static void main(String[] args) throws IOException {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter output = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st;
+
+        int t = Integer.parseInt(input.readLine());
+
+        for(int i = 0; i < t; i++){
+            int n = Integer.parseInt(input.readLine());
+
+            file = new int[n + 1];
+            dp = new int[n + 1][n + 1];
+            st = new StringTokenizer(input.readLine());
+
+            for(int j = 1; j <= n; j++){
+                file[j] = Integer.parseInt(st.nextToken());
+            }
+
+            for(int j = 1; j < n; j++){
+                for(int c = 1; j + c <= n; c++){
+                    calculate(c , c + j);
+                }
+            }
+
+            output.write(dp[1][n] + "\n");
+
+        }
+        output.flush();
+        output.close();
     }
 }
-
-
-
-
-
-
-
-
-
