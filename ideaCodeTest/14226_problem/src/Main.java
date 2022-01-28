@@ -80,13 +80,15 @@ public class Main {
             copy가 안되기 때문이다 , 그러면 계속 copy = 1을 가지고 가야하기 때문에 이러한 조건을 넣었다.
 
             일단 백트래킹을 이용하여서 한 지점에서 3가지의 방법으로 분기하지만 , 적절한 조건문 처리를 이용해서 시간을 줄였다.
+
+            이 코드가 맞기 위해서는 무조건 다른 copy 값을 가진 emoticon 객체가 같은 시간에 같은 count 값으로 올 수가 없어야함 , 그렇지 않고서는 말이 안됨 , 내가 풀고서도 이게 왜 맞았는지 의아하다.
              */
             Emoticon emoticon = queue.poll();
             int count = emoticon.count , time = emoticon.time , copy = emoticon.copy;
             if(count == n) {System.out.print(time); break;}
             if(dp[count] > time) dp[count] = time;
-            if(count - 1 != 0 && dp[count - 1] > time + 1)queue.add(new Emoticon(count - 1 , copy , time + 1)); // 무지성으로 일단 3가지 경우 다 때려박아보자.
-            if(count + copy <= n * 2 && dp[count + copy] > time + 1)queue.add(new Emoticon(count + copy , copy , time + 1));
+            if(count - 1 != 0 && dp[count - 1] > time + 1) queue.add(new Emoticon(count - 1 , copy , time + 1)); // 무지성으로 일단 3가지 경우 다 때려박아보자.
+            if(count + copy <= n * 2 && dp[count + copy] > time + 1) queue.add(new Emoticon(count + copy , copy , time + 1));
             if(count != copy) queue.add(new Emoticon(count , count , time + 1));
         }
     }
