@@ -46,6 +46,10 @@ public class Main {
             this.copy = copy; // 현재 복사해놓은 이모티콘 개수
             this.time = time;
         }
+        @Override
+        public String toString(){
+            return "count : " + count + " copy : " + copy + " time : " + time;
+        }
     }
     public static void main(String[] args) throws IOException{
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -54,6 +58,7 @@ public class Main {
 
         Queue<Emoticon> queue = new LinkedList<>();
         int[] dp = new int[n * 2 + 1]; // 오히려 n을 넘어서 -1 하는 경우가 더 빠를 수도 있기 때문에 , n * 2 + 1로 넉넉하게 잡아놓음 , 사실 이정도는 필요 x
+//        int[][][] visited = new int[n * 2 + 1][n * 2 + 1][50];
         dp[1] = 1;
         queue.add(new Emoticon(2 , 1 , 2));
         //copy가 0이면 더 이상 붙여넣기 못한다.
@@ -119,7 +124,7 @@ public class Main {
             애초에 여기서부터 copy값이 차이가 나게 되는 것이다. 그렇기 때문에 똑같은 지점에 도달하는 경우 , 더 높은 copy 값을 가진 값이 , 그 경우는 고려할 필요가 없는 것이 이 이유이다 , 더 큰 값을 가진 값이
             이미 6을 차지하고 있기 때문이다 , 하지만 copy 연산에서는 다르다 , copy 연산에서는 말 그대로 copy하는 경우이기 때문에 무조건 이 경우에는 dp[count]가 채워져 있을 수밖에 없다 , 하지만
             3가지로 분기하기 위해서는 무조건 필요한 연산이니 , dp[count]를 고려하지 않고 , (즉 이미 방문한 지점이여도 copy는 가능하도록) queue에다가 넣어주게 된다. 그러면 아까와 같은 4 4 5 , 6 3 5 이런 경우가
-            가능하게 되는 것이다 , 그렇게 되면 9 3 6 , 8 4 6 이러한 다양한 값들이 존재할 수 있게 되며 , copy를 통한 time을 최저로 잡는 연산이 가능하게 된다
+            가능하게 되는 것이다 , 그렇게 되면 9 3 6 , 8 4 6 이러한 다양한 값들이 존재할 수 있게 되며 , copy를 통한 time을 최저로 잡는 연산이 가능하게 된다.
 
             애초에 근데 time이 1초씩 증가하고 , 거기에서 가능한 count들이 나오게 된다 , 그렇기 때문에 새로 방문하는 곳 , 그곳은 무조건 해당 time이 최저 값이 될 수밖에 없다.
             그 증거로 아래에 while 문 안에 emoticon.time 값을 찍어보면 2 3 3 4 4 4 5 5 5 5 5 6 6 6 6 6 6 6 6 7 7 7 7 이러한 값들이 나오게 된다,
@@ -144,10 +149,13 @@ public class Main {
 //            if(count != copy) queue.add(new Emoticon(count , count , time + 1));
 
             //솔직히 그래서 아래와 같이 짜도 됨
-
+            //근데 이렇게 짜니까 더느리네
             Emoticon emoticon = queue.poll();
             int count = emoticon.count , time = emoticon.time , copy = emoticon.copy;
             if(count == n) {System.out.print(time); break;}
+//            if(visited[count][copy][time] == 1) continue;
+//            System.out.println(emoticon);
+//            visited[count][copy][time] = 1;
             dp[count] = 1;
             if(count - 1 != 1 && dp[count - 1] == 0) queue.add(new Emoticon(count - 1 , copy , time + 1));
             if(count + copy <= n * 2 && dp[count + copy] == 0) queue.add(new Emoticon(count + copy , copy , time + 1));
