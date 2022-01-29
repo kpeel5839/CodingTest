@@ -4,6 +4,7 @@ import java.io.*;
 // 17136 : 색종이 붙히기
 /*
 -- 전제조건
+
 -- 틀 설계
  */
 public class Main {
