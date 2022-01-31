@@ -1,2 +1,18 @@
-package PACKAGE_NAME;public class Main {
+import java.util.*;
+import java.io.*;
+
+// 1854 : K번째 최단경로 찾기
+/*
+-- 전제조건
+
+-- 틀 설계
+
+ */
+public class Main {
+
+    public static void main(String[] args) throws IOException{
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+
+    }
 }
