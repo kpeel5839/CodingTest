@@ -33,7 +33,7 @@ dist[h][목적지 후보들] + dist[s][h] == dist[s][목적지 후보] 이러면
 public class Main {
     public static int[][] dist;
     public static int n , m ,t , g , h , s;
-//    public static boolean findG , findH;
+    //    public static boolean findG , findH;
     public static List<ArrayList<Edge>> graph;
     public static class Edge{
         int idx;
@@ -43,7 +43,7 @@ public class Main {
             this.cost = cost;
         }
     }
-//    public static void find(int vertex){
+    //    public static void find(int vertex){
 //        /*
 //        main 함수에서 목적지 정점을 주면 find에서 지나가면서 g , h를 찾으면 findG, findH를 true로 만들어준다.
 //        그것만 하면된다.
@@ -124,15 +124,22 @@ public class Main {
             /*
             출력할 정답 배열을 만들고
             그 다음에 목적지가 가능한 것들은 1로 채우는 가정으로 간다.
-            여기서 이제 dist[s][g] + dist[g][목적지 후보들] == dist[s][목적지 후보들] 인지 확인하면서 맞으면 리스트에다가 넣는다.
-            dist[s][h] + dist[h][목적지 후보들] == dist[s][목적지 후보들] 이것도 같다.
+            여기서 이제 dist[s][g] + dist[h][목적지 후보들] + dist[g][h] == dist[s][목적지 후보들] 인지 확인하면서 맞으면 리스트에다가 넣는다.
+            dist[s][h] + dist[g][목적지 후보들] + dist[h][g] == dist[s][목적지 후보들] 이것도 같다.
+
+            그러니까 이런 원리인 것이다 , 일단은 최소지점의 가중치를 구해놓고서,
+            두번째 테스트 케이스 같은 경우에서 , 1 -> 3 으로 지난다는 것을 알았으니
+            일단 1 -> 3 의 가중치를 비용에서 더해준다.
+            그 다음에 1 혹은 3까지 가는 최소거리를 구한다.
+            그 다음에 1 이나 3에서 목적지까지 거리를 구해서 아까 s -> 1 , 3  -> 1 , 3 -> 1 , 3 -> 1 , 3 -> 목적지 후보들
+            그래서 처음에 구해놓은 최소비용과 같다면 1 -> 3 , 3 -> 1 을 지나쳐도 최소비용이 나온다는 것이니 이것은 가능한 목적지라는 답이 나온다.
              */
 
             int[] result = new int[n + 1];
 
             for(int j = 0; j < destination.length; j++){
-                if(dist[s][g] + dist[g][destination[j]] == dist[s][destination[j]]) result[destination[j]] = 1;
-                if(dist[s][h] + dist[h][destination[j]] == dist[s][destination[j]]) result[destination[j]] = 1;
+                if(dist[s][g] + dist[h][destination[j]] + dist[g][h] == dist[s][destination[j]]) result[destination[j]] = 1;
+                if(dist[s][h] + dist[g][destination[j]] + dist[h][g] == dist[s][destination[j]]) result[destination[j]] = 1;
             }
 
             for(int j = 1; j < result.length; j++){
