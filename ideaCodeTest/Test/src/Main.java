@@ -6,6 +6,14 @@ public class Main{
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
 
-        System.out.println(('9' - '0') - 3);
+        PriorityQueue<Integer> queue = new PriorityQueue<>();
+        queue.add(1);
+        queue.add(2);
+        queue.add(3);
+        queue.add(4);
+        System.out.println(queue.size());
+        while(!queue.isEmpty()){
+            System.out.println(queue.poll());
+        }
     }
 }
