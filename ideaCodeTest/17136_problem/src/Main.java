@@ -16,6 +16,9 @@ import java.io.*;
 그 다음에 dfs로 해서 depth == 5 && remain == 0일 때에 이제 fill 함수를 호출한다.
 fill함수는 이제 paper 에 적혀있는 숫자대로 진행하는데 여기서도 재귀적으로 해결해야 한다.
 
+-- 해맸던 점
+map[ny][nx] == 0 일때에는 그냥 다음 fill을 호출해주어야 하는데
+그것을 처리안해줘서 살짝 해맸었음
  */
 public class Main {
     public static int n = 10 , ans = Integer.MAX_VALUE , needPaperCount;
