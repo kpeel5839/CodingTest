@@ -61,10 +61,10 @@ public class Main {
         }
 
         for(int i = 0; i < 2; i++){
-            if(i == 0) {
+            if(i == 0) { // 선택하지 않음
                 dfs(depth + 1, remain);
             }
-            else{
+            else{ // 선택함
                 if(remain > 0) {
                     letter[depth] = 1;
                     dfs(depth + 1, remain - 1);
@@ -110,6 +110,7 @@ public class Main {
             System.out.println(0);
             return;
         }
+
         if(k == 26){
             System.out.println(n);
             return;
