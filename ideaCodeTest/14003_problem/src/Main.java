@@ -52,6 +52,7 @@ public class Main {
 
         for(int i = 0; i < n; i++){
             int value = number[i];
+//            output.write("list :" + list + "\n");
 
             if(value > list.get(list.size() - 1)){
                 list.add(value);
@@ -84,6 +85,30 @@ public class Main {
                 즉 if(list.get(mid) >= value) right = mid;
                 else left = mid + 1; 을 할수가 있다. 그런 다음에 while 문에서 벗어 나면
                 index[i] = right 를 해줄 수가 있다.
+
+                1 2 4
+                여기서 1 2 4 라고 하면 그리고 들어갈 값이 2이면
+                2를 탐색하고 left = 1 , right = 3 에서 left = 3 , right = 3이 되어야 한다.
+                그 다음에 left <= right 이렇게 해놔서 탐색하였을 때 4가 더 크니까 right = mid - 1; 을 해준다.
+                right = 2 , left = 3 으로 끝나게 된다.
+                이제 1 2 4 value = 5 로 해보자
+                1 2 4 더 크기 때문에 left = 3 right = 3 이 된다.
+                그 다음에 5가 이번에도 더 크다. 그러면 mid + 1 이 되서 left = 4 right = 3 이 된다.
+                그러면 여기서도 right가 정답이다.
+                while(left <= right) 를 하고 같거나 더 value가 큰 경우에는 그러니까 list.get(mid) <= value 인 경우에는
+                left = mid + 1 을 해주고 아니면 right = mid - 1; 을 해주고 , right 를 출력하는 것이다.
+                이거는 다른 방법 , 같은 원리이지만 다른 풀이 방법이다.(살짝)
+                근데 바로 틀렸습니다 나오는 거 보니까 아닌가보다 ...
+                1 2 4 일 때 , value == 3 이라고 하면 2 하고 left = 3 , right = 3이다.
+                그리고서 right = mid - 1; 해서 right = 2 , left = 3하고 끝나는데 ... 왜 틀릴까?
+                1 2 4 3 2 2
+
+                본인보다 작은 값과 교환하면 안됨,
+                value 보다 , 작은 값과 교환하면 안된다. 왜냐하면 더 작은 값은 분명히
+                남아있으면 가장 긴 수열을 찾기에 수월하니까,
+                근데 while(left <= right) if(list.get(mid) > value) 는 더 작은 값에 들어가게 됨,
+                그래서 안되는 것이며 더 큰 값에 들어가기 위해서는 while(left < right) if(list.get(mid) >= value) right = mid;
+                else left = mid + 1; 로 해야함
                  */
                 int left = 1;
                 int right = list.size() - 1;
@@ -92,6 +117,8 @@ public class Main {
                     if(list.get(mid) >= value) right = mid;
                     else left = mid + 1;
                 }
+//                output.write("value : " + value + " last index value : " + list.get(list.size() - 1) + " \n");
+//                output.write("left : " + left + " right : " + right + "\n");
                 list.set(right , value);
                 index[i] = right;
             }
