@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/0-1_bfs_graph/0-1_bfs_graph.iml" filepath="$PROJECT_DIR$/0-1_bfs_graph/0-1_bfs_graph.iml" />
+      <module fileurl="file://$PROJECT_DIR$/10217_problem/10217_problem.iml" filepath="$PROJECT_DIR$/10217_problem/10217_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/1039_problem/1039_problem.iml" filepath="$PROJECT_DIR$/1039_problem/1039_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/1043_problem/1043_problem.iml" filepath="$PROJECT_DIR$/1043_problem/1043_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/1062_problem/1062_problem.iml" filepath="$PROJECT_DIR$/1062_problem/1062_problem.iml" />
@@ -13,6 +14,7 @@
       <module fileurl="file://$PROJECT_DIR$/11066_problem/11066_problem.iml" filepath="$PROJECT_DIR$/11066_problem/11066_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/1107_problem/1107_problem.iml" filepath="$PROJECT_DIR$/1107_problem/1107_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/11404_problem/11404_problem.iml" filepath="$PROJECT_DIR$/11404_problem/11404_problem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/11438_problem/11438_problem.iml" filepath="$PROJECT_DIR$/11438_problem/11438_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/11657_problem/11657_problem.iml" filepath="$PROJECT_DIR$/11657_problem/11657_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/1167_problem/1167_problem.iml" filepath="$PROJECT_DIR$/1167_problem/1167_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/1182_problem/1182_problem.iml" filepath="$PROJECT_DIR$/1182_problem/1182_problem.iml" />
@@ -55,6 +57,7 @@
       <module fileurl="file://$PROJECT_DIR$/16236_problem/16236_problem.iml" filepath="$PROJECT_DIR$/16236_problem/16236_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/1655_problem/1655_problem.iml" filepath="$PROJECT_DIR$/1655_problem/1655_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/16637_problem/16637_problem.iml" filepath="$PROJECT_DIR$/16637_problem/16637_problem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/16954_problem/16954_problem.iml" filepath="$PROJECT_DIR$/16954_problem/16954_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/17070_problem/17070_problem.iml" filepath="$PROJECT_DIR$/17070_problem/17070_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/17135_problem/17135_problem.iml" filepath="$PROJECT_DIR$/17135_problem/17135_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/17136_problem/17136_problem.iml" filepath="$PROJECT_DIR$/17136_problem/17136_problem.iml" />
@@ -77,6 +80,7 @@
       <module fileurl="file://$PROJECT_DIR$/19237_problem/19237_problem.iml" filepath="$PROJECT_DIR$/19237_problem/19237_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/19238_problem/19238_problem.iml" filepath="$PROJECT_DIR$/19238_problem/19238_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/1941_problem/1941_problem.iml" filepath="$PROJECT_DIR$/1941_problem/1941_problem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/1967_problem/1967_problem.iml" filepath="$PROJECT_DIR$/1967_problem/1967_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/1981_problem/1981_problem.iml" filepath="$PROJECT_DIR$/1981_problem/1981_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/1987_problem/1987_problem.iml" filepath="$PROJECT_DIR$/1987_problem/1987_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/2002_problem/2002_problem.iml" filepath="$PROJECT_DIR$/2002_problem/2002_problem.iml" />
@@ -86,14 +90,17 @@
       <module fileurl="file://$PROJECT_DIR$/20058_problem/20058_problem.iml" filepath="$PROJECT_DIR$/20058_problem/20058_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/20061_problem/20061_problem.iml" filepath="$PROJECT_DIR$/20061_problem/20061_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/2042_problem/2042_problem.iml" filepath="$PROJECT_DIR$/2042_problem/2042_problem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/2096_problem/2096_problem.iml" filepath="$PROJECT_DIR$/2096_problem/2096_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/2133_dynamic_programming_version/2133_dynamic_programming_version.iml" filepath="$PROJECT_DIR$/2133_dynamic_programming_version/2133_dynamic_programming_version.iml" />
       <module fileurl="file://$PROJECT_DIR$/2133_problem/2133_problem.iml" filepath="$PROJECT_DIR$/2133_problem/2133_problem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/2151_problem/2151_problem.iml" filepath="$PROJECT_DIR$/2151_problem/2151_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/21608_problem/21608_problem.iml" filepath="$PROJECT_DIR$/21608_problem/21608_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/21609_easy_problem/21609_easy_problem.iml" filepath="$PROJECT_DIR$/21609_easy_problem/21609_easy_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/21609_problem/21609_problem.iml" filepath="$PROJECT_DIR$/21609_problem/21609_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/21610_problem/21610_problem.iml" filepath="$PROJECT_DIR$/21610_problem/21610_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/21611_problem/21611_probelm.iml" filepath="$PROJECT_DIR$/21611_problem/21611_probelm.iml" />
       <module fileurl="file://$PROJECT_DIR$/2178_problem/2178_problem.iml" filepath="$PROJECT_DIR$/2178_problem/2178_problem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/2206_problem/2206_problem.iml" filepath="$PROJECT_DIR$/2206_problem/2206_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/2217_problem/2217_problem.iml" filepath="$PROJECT_DIR$/2217_problem/2217_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/2239_problem/2239_problem.iml" filepath="$PROJECT_DIR$/2239_problem/2239_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/2243_problem/2243_problem.iml" filepath="$PROJECT_DIR$/2243_problem/2243_problem.iml" />
@@ -110,6 +117,7 @@
       <module fileurl="file://$PROJECT_DIR$/2933_problem/2933_problem.iml" filepath="$PROJECT_DIR$/2933_problem/2933_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/3190_problem/3190_problem.iml" filepath="$PROJECT_DIR$/3190_problem/3190_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/3197_problem/3197_problem.iml" filepath="$PROJECT_DIR$/3197_problem/3197_problem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/3860_problem/3860_problem.iml" filepath="$PROJECT_DIR$/3860_problem/3860_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/4991_easy_solution/4991_easy_solution.iml" filepath="$PROJECT_DIR$/4991_easy_solution/4991_easy_solution.iml" />
       <module fileurl="file://$PROJECT_DIR$/4991_problem/4991_problem.iml" filepath="$PROJECT_DIR$/4991_problem/4991_problem.iml" />
       <module fileurl="file://$PROJECT_DIR$/5373_problem/5373_problem.iml" filepath="$PROJECT_DIR$/5373_problem/5373_problem.iml" />
