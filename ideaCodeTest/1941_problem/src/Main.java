@@ -89,7 +89,7 @@ public class Main {
 
 //        System.out.println(depth);
 
-        for(int i = depth; i < n * n; i++){
+        for(int i = depth; i < n * n; i++){ // n * n == 25
             visited[i] = 1;
             selected[count] = i;
             if(map[i / 5][i % 5] == 'S') dfs(i + 1 , count + 1 , countS + 1);
@@ -103,7 +103,7 @@ public class Main {
         checkVisited = new int[n * n];
         int count = 0;
         while (!queue.isEmpty()) {
-            Integer position = queue.poll();
+            int position = queue.poll();
 //            System.out.println(position);
             int y = position / 5;
             int x = position % 5;
