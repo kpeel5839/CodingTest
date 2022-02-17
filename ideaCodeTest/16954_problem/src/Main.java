@@ -150,6 +150,7 @@ public class Main {
     public static int n = 8;
     public static boolean success = false;
     public static char[][][] mapList = new char[n][n][n];
+    public static boolean[][][] visited = new boolean[n][n][n];
     public static int[] dx = {0 , 1 , 1 , 1 , 0 , -1 , -1 , -1} , dy = {-1 , -1 , 0 , 1 , 1 , 1 , 0 , -1};
     public static class Point{
         int y;
@@ -203,6 +204,10 @@ public class Main {
                 success = true;
                 break;
             }
+
+            if(visited[point.time][point.y][point.x]) continue;
+            visited[point.time][point.y][point.x] = true;
+
             if(mapList[point.time][point.y][point.x] == '#') continue; // 지금 서있는 곳이 지옥이면 나가리
             for(int i = 0; i < 9; i++){
                 if(i == 8){ // 가만히 서있기 이거는 체크 할 필요가 없다 , 이미 가능한 곳으로 이동하였고 , 내가 서있는 곳에 #이 오는 경우는 위에서 걸러냈기 때문에 , 이것은 걸릴 일이 x
