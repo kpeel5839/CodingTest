@@ -25,6 +25,15 @@ dp[i][j] + dp[j][i] 이 두 경우를 어떻게 발생시킬 것이냐 이게 �
 결국 , dp[i][i] + dp[i][j] 같은 상황 즉 k == i || j == k 같은 상황만 , 고려하면 될 것 같다.
 짜피 min 값 집어넣으면 되는데 , 이 경우에 INF 값을 넘어서 , 값이 음수로 변해버릴 것 같아서 그냥
 진행하는 게 나을 것 같다.
+
+-- 결론
+경유하는 경로가 있나 확인하고 , 경로가 없는 곳들은 INF 값으로 초기화를 해놓는다. (dist[i][i] 같은 경우도 경로가 없으니 INF)
+그리고 dp[i][k] + dp[k][j] 같은 플로이드 워샬의 주축이 되는 연산에서 , INF + ~ or ~ + INF or INF + INF 인 경우는 값이 음수로 나와 정확하지 않게 된다.
+그래서 dist[i][k] == INF || dp[k][j] == INF 인 경우에는 연산을 하지 않고 넘어간다 , dp[i][j] == INF 인 경우는 짜피 더하기 하는 것도 아니고 , Math.min(dp[i][j] , dp[i][k] + dp[k][j])
+연산을 하게 된다면 , k 지점을 경유하는 지점이 있는 것이니 막으면 오히려 안된다 , 그래서 이런 식으로 dp[i][i] 를 INF 로 초기화 해놓고서,
+본인에게 돌아오는 지점을 구할 수 있고 , 플로이도 워샬 알고리즘의 특성상으로 계속 최소값으로 초기화하게 되면서 , 본인에게 돌아오는 가장 최소의 사이클을 찾는다.
+0으로는 못한다 , 왜냐하면 , 애초에 distance 값에 0이 없으니까 , 설령 0이 있다고 한들 , dist[i][i] == 0 이면 그게 맞는 값이다 , 쩃든
+이렇게 하게 되면 본인에게 돌아오는 최소 비용의 사이클을 찾을 수 있고 이렇게 하면 for(int i = 1; i <= V; i++) ans = Math.min(ans , dist[i][i]) 를 이용해서 최소의 사이클을 찾을 수 있다.
  */
 public class Main {
     public static int toInt(String number){
@@ -34,8 +43,8 @@ public class Main {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(input.readLine());
 
-        int V = Integer.parseInt(st.nextToken());
-        int E = Integer.parseInt(st.nextToken());
+        int V = toInt(st.nextToken());
+        int E = toInt(st.nextToken());
         int INF = Integer.MAX_VALUE;
 
         int[][] dist = new int[V + 1][V + 1];
