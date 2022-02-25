@@ -1,4 +1,3 @@
-import java.awt.*;
 import java.util.*;
 import java.io.*;
 import java.util.List;
@@ -62,13 +61,6 @@ public class Main{
             map[ny][nx] = point.value;
         }
 
-//        for(int i = 1; i <= h; i++){
-//            for(int j = 1; j <= w; j++){
-//                System.out.print(map[i][j] + " ");
-//            }
-//            System.out.println();
-//        }
-
         for(int i = r1; i <= r2; i++){
             for(int j = c1; j <= c2; j++){
                 if(map[i][j] == 0){
@@ -77,13 +69,6 @@ public class Main{
                 }
             }
         }
-
-//        for(int i = 1; i <= h; i++){
-//            for(int j = 1; j <= w; j++){
-//                System.out.print(map[i][j] + " ");
-//            }
-//            System.out.println();
-//        }
 
         resultList.add(result);
     }

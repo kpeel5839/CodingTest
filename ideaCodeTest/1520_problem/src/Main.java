@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-// 1520 : 내려가기
+// 1520 : 내리막길
 /*
 --전제 조건
 항상 지점이 높은 곳에서 , 낮은 곳으로만 이동하였을 때
@@ -59,6 +59,8 @@ public class Main {
         }
 
         System.out.println(dfs(0 , 0));
+
+        for(int i = 0; i < h; i++) System.out.println(Arrays.toString(dp[i]));
     }
     public static int dfs(int y , int x){
         if(y == h - 1 && x == w - 1){
@@ -68,13 +70,16 @@ public class Main {
         if(dp[y][x] != -1){
             return dp[y][x]; // 이미 방문한 곳이다.
         }
+
         dp[y][x] = 0;
+
         for (int i = 0; i < 4; i++) {
             int ny = y + dy[i];
             int nx = x + dx[i];
             if (check(ny, nx)) continue;
             if (map[y][x] > map[ny][nx]) dp[y][x] += dfs(ny, nx);
         }
+
         return dp[y][x];
     }
     public static boolean check(int y , int x){
