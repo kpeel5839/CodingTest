@@ -26,8 +26,7 @@ public class Main {
         if(parent[a] == a){
             return a;
         }else{
-            parent[a] = find(parent[a]);
-            return parent[a];
+            return parent[a] = find(parent[a]);
         }
     }
     public static void union(int a , int b){
