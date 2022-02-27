@@ -24,7 +24,7 @@ arr[0] 에 오게 된다. 그렇다는 것은 memo[i + 1 - 2 * n] 으로 정리�
 public class Main {
     public static void main(String[] args) throws IOException{
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        
+
         int n = Integer.parseInt(input.readLine());
 
         int m = Integer.parseInt(input.readLine());
