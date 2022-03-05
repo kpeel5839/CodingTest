@@ -52,6 +52,7 @@ public class Main {
         p = Long.parseLong(st.nextToken());
         q = Long.parseLong(st.nextToken());
 
+        System.out.println();
         System.out.println(div(n));
     }
 }
