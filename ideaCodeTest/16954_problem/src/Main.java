@@ -243,6 +243,16 @@ public class Main {
             setMapList(i);
         }
 
+//        for(int i = 0; i < 8; i++){
+//            for(int j = 0; j < 8; j++){
+//                for(int c = 0; c < 8; c++){
+//                    System.out.print(mapList[i][j][c] + " ");
+//                }
+//                System.out.println();
+//            }
+//            System.out.println();
+//        }
+
 //        for(int i = 0; i < n; i++){
 //            mapPrint(i);
 //        }
