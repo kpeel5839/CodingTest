@@ -53,6 +53,9 @@ A + B 번의 비교가 있다 , 근데 이것은 약간 추상적으로 묶음�
 를 반복하는 것임 , 그러다가 하나만 남았을 경우 끝낸다.
 
 그러면서 계속 더하는 과정에서 생긴 cost들을 다 더해서 저장해놨다고 출력하면 가능하지 않을까?
+
+해매고 , 그냥 내봤을 때 , 틀리긴 했지만 , 결국 질문 게시판에서 , priorityQueue 라는 힌트를 얻어냈고
+거기서 어떤식으로 하면 될까 라는 생각을 통해서 , 답을 도출했음
  */
 public class Main {
     public static void main(String[] args) throws IOException{
