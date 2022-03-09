@@ -89,6 +89,8 @@ public class Main {
         int y = 5000 , x = 5000;
         if((r1 - 5000 <= 0 && 0 <= r2 - 5000) && (c1 - 5000 <= 0 && 0 <= c2 - 5000)) map[y - 5000 - diffY][x - 5000 - diffX] = count;
 
+
+        // 1 1 2 2 3 3 4 4
         Loop:
         while(true){
             for(int i = 0; i < 2; i++){
