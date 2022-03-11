@@ -145,7 +145,7 @@ public class Main {
         } // 일단 불과 사람위치를 구했음
 
         while(!escapeSuccess){
-//            mapPrint();
+            mapPrint();
             if(human.isEmpty()){
                 output.write("IMPOSSIBLE" + "\n");
                 break;
