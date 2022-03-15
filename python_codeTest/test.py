@@ -7,7 +7,7 @@ def dfs(number , y,  x):
 
     if number == 2:
         if y <= row <= y + 1 and x <= col <= x + 1:
-            if y == row and x == col:
+            if y == row and x == col:  
                 count += 1
             elif y == row and x + 1 == col:
                 count += 2
