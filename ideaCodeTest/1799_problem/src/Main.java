@@ -35,8 +35,6 @@ public class Main{
         }
     }
 
-    static boolean end = false;
-
     public static void dfs(int y, int x , int count){
         /**
          * 여기서는 그냥 y , x 를 증가시키면서 , y == N 이 되면 y++ x = 0 으로 진행해주고
@@ -46,14 +44,12 @@ public class Main{
          * 그리고 필터링이 끝나면 queue 를 선언해서 , 왼쪽 대각과 , 오른쪽 대각을 처리를 해준다.
          * 대각을 처리하는 방법은 x++ , y++ 과 , y++ , x-- 가 존재한다.
          * outOfRange 함수를 만들어서 큐에다가 담다가도 범위가 끝나게 되면 넘어간다.
+         *
          */
         ans = Math.max(count , ans);
 
-        if(end) return;
-
         if(y == N && x == 0) {
-            mapPrint();
-            end = true;
+//            mapPrint();
             return;
         }
 
@@ -71,6 +67,12 @@ public class Main{
          * 그 때 중요한 점은 y, x 의 값을 정확히 넘기는 일이고
          * 이제 끝내고 돌아왔을 떄에는 해당 지점을 다시 0 으로 바꾸고
          * queue 에다가 담아놓은 것을 다시 0으로 바꾼다 (1로 바뀌어 있었음 , 이전 체스가 잡아먹는 공간이라서)
+         *
+         * 내가 애초에 한 설계 자체가 먼저 체스말을 놔야 한다.
+         * 그런 다음에 , 거기서 놓냐 안놓냐가 결정되는 것이라서 , 먼저 선택해야 한다.
+         *
+         * 그리고 queue 에다가 넣을 때에도 , 이전에 못놓는 range 를 지워버리면 안되기 때문에 ,
+         * 이미 1이 들어가있는 것은 queue 에다가 집어넣을 때 , 제외하고 집어넣어야 한다.
         */
 
         for(int i = 0; i < 2; i++){
@@ -79,18 +81,22 @@ public class Main{
                 else dfs(y , x + 1 , count);
             }
             if(i == 0){ // 선택하는 경우
+                if(map[y][x] == 1) continue;
+
                 int ny = y;
                 int nx = x;
 
                 map[y][x] = 2;
 
-                System.out.println("y : " + y + " x : " + x);
-                mapPrint();
+//                System.out.println("y : " + y + " x : " + x);
+//                mapPrint();
 
                 while(true){ // 왼쪽
                     ny++;
                     nx--;
+
                     if(outOfRange(ny , nx)) break;
+                    if(map[ny][nx] == 1) continue;
 
                     map[ny][nx] = 1;
                     queue.add(new Point(ny , nx));
@@ -103,6 +109,7 @@ public class Main{
                     ny++;
                     nx++;
                     if(outOfRange(ny , nx)) break;
+                    if(map[ny][nx] == 1) continue; // 1인 경우는 넘어감
 
                     map[ny][nx] = 1;
                     queue.add(new Point(ny , nx));
