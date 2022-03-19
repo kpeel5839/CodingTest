@@ -1,62 +1,95 @@
 import java.util.*;
 import java.io.*;
 
-public class Main{
-    public static void main(String[] args) throws IOException{
-        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+/*
+다음과 같은 스터디룸의 예약 신청 정보를 관리하는 프로그램을 작성하세요.
+스터디룸은 1시에 문을 열고 6시에 문을 닫으며, 스터디룸이 문을 연 시간 내에 1시간 단위로 예약 가능하다.
+각 예약은 예약 번호, 시작시간, 종료시간으로 이루어지며, 이 세가지 정보는 모두 정수형이다.
 
-        int n = Integer.parseInt(input.readLine());
-        int[] numberList = new int[n];
-        int[] countList = new int[8001]; // 0 == -4000 , 4000 = 0 , 8000 = 4000
-        double sum = 0;
-        int modeResult = 0;
+- 입력: 없음
+- 출력: 전체 예약 정보, 예약 길이별 예약 건수
 
-        for(int i = 0; i < n; i++){
-            int number = Integer.parseInt(input.readLine());
-            countList[number + 4000]++;
-            numberList[i] = number;
-            sum += number;
-        } // 범위 , 가장 큰 값 - 가장 작은 값 + 1 본인도 포함이라서
-        // 중앙 값 정렬후 중간값 , 무조건 n 홀수
-        // 최빈 값은 countList에서 가장 높은 숫자 선택
-        // 산술평균 sum / n 하고 반올림
+1. 메인 클래스
+main 메소드에서  다음 작업을 차례대로 수행
+(1) 크기가 n인 예약 배열을 생성 (단, n = 10)
+(2) 예약 번호는 1, 2, 3..., 시작시간, 종료시간은 랜덤 값인 예약 객체를 n개 생성하여 배열에 저장
+    이 스터디룸 정책에 맞도록 랜덤 값을 생성해야 함
+    예약 확정이 아니라 예약 신청을 받는 것이므로 시간이 중복되어도 된다.
+    힌트: 스터디룸 정책에 따르면 시작시간은 1~5이며, 종료시간은 시작시간+1~6이다.
+(3) n개의 예약 각각에 대해 시작시간, 종료시간, 길이를 출력
+(4) 각 길이의 예약이 몇개씩인지 구함 (중첩 반복문을 사용하지 말고 수행시간 복잡도가 O(n)이 되도록 작성해 볼 것)
+    힌트: 각 길이(1~5)의 예약 갯수를 세기 위해 크기가 5인 count 배열을 이용
+(5) 각 길이의 예약 수를 출력
 
-        int maxMode = 0;
-        int modeIndex = 0;
-        int modeCount = 1;
-        Arrays.sort(numberList);
+2. Reservation 클래스 ********* lab1_2와 동일
+정수형 예약 번호, 시작시간, 종료시간으로 구성된 예약을 표현하는 클래스
+private 인스턴스 변수 :
+       예약 번호(id), 시작시간(startTime), 종료시간(endTime)
+       이 필드값의 타당성은 고려하지 말 것. 즉, 아무 정수값이라도 저장되도록 할 것
+public 메소드 :
+       생성자, getId, getStartTime, getEndTime를 정의하고
+       길이를 조회하는 메소드, toString 오버라이드 등, 그밖의 메소드들은 각자 알아서 정의
 
-        for(int i = 0; i <= 8000; i++){
-            if(maxMode < countList[i]) {
-                maxMode = countList[i];
-                modeIndex = i;
-                modeCount = 1;
-            }
-            else if(maxMode == countList[i]){
-                modeCount++;
-            }
+
+- 실행 예:
+hw1_2 : 홍길동
+1 1시~3시 2시간
+2 4시~6시 2시간
+3 4시~5시 1시간
+4 1시~6시 5시간
+5 5시~6시 1시간
+6 5시~6시 1시간
+7 2시~6시 4시간
+8 5시~6시 1시간
+9 3시~6시 3시간
+10 2시~6시 4시간
+1시간 = 4
+2시간 = 2
+3시간 = 1
+4시간 = 2
+5시간 = 1
+
+-----------------------------------
+목적
+- 알고리즘 과제 수행에 앞서 객체 배열 사용을 연습한다.
+- 랜덤 넘버 생성을 연습한다.
+
+-----------------------------------
+유의사항
+- 적절한 comment
+- 들여쓰기 철저히 할 것
+- 식별자 이름을 자바 관례에 맞게 적절히 붙일 것
+- 프로그램 맨 앞에 과제코드와 본인의 이름을 출력할 것
+- 입출력 형식을 실행 예와 동일하게 할 것
+ */
+
+public class Main {
+
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+        System.out.println("hw1_2 : 진세은");
+
+        //(1) 크기가 n인 예약 배열을 생성 (단, n = 10)
+        Reservation [] array = new Reservation [10];
+
+        //(2) 예약 번호는 1, 2, 3..., 시작시간, 종료시간은 랜덤 값인 예약 객체를 n개 생성하여 배열에 저장
+        for(int n = 0; n<10; n++) {
+            int randomNumber_s = (int)(Math.random()*5) + 1;
+            int randomNumber_e = (int)(Math.random()*(6-randomNumber_s)) + (randomNumber_s + 1);
+            array[n] = new Reservation(n+1, randomNumber_s, randomNumber_e);
         }
 
-        if(modeCount == 1){
-            modeResult = modeIndex;
-        }else{
-            modeCount = 0;
-            for(int i = 0; i <= 8000; i++){
-                if(maxMode == countList[i]){
-                    modeCount++;
-                    if(modeCount == 2){
-                        modeResult = i;
-                        break;
-                    }
-                }
-            }
+        int [] count = new int[5];
+
+        //(3) n개의 예약 각각에 대해 시작시간, 종료시간, 길이를 출력
+        for(int i = 0; i < 10; i++) {
+            System.out.println(array[i]);
+            count[array[i].getLength() - 1]++;
         }
 
-        int range = numberList[numberList.length - 1] - numberList[0];
-
-        System.out.println(Math.round(sum / n));
-        System.out.println(numberList[numberList.length / 2]);
-        System.out.println(modeResult - 4000);
-        System.out.println(range);
+        //(4) 각 길이의 예약이 몇개씩인지 구함
+        for(int i = 0; i < 5; i++){
+            System.out.println(i + 1 + "시간 = " + count[i]);
+        }
     }
 }
