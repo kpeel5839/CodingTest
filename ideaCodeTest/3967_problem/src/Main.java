@@ -41,15 +41,36 @@ X로 표기되어 있는 곳을 담으면 된다.
 그 중에 작은 수에 맞춰서 1 부터 그 수까지 순서대로 넣으면 된다.
 
 그것을 계속반복한다.
+
+-- 해맸던 점
+일단 처음에는 합이 26이 되는 경우는 고려하지 않았다.
+그러다가 구문을 발견하게 되었다.
+A ~ L 까지만 들어온다고
+이거를 ascii code 로 변환하게 되면 65 ~ 76 즉 숫자로 변경하게 되면
+1 ~ 12 만 들어오는 것이였다.
+
+1 ~ 12 까지 순서대로 들어오게 된다면 , 아니 필수적으로 모든 자리 수가 26이 되려면 1 ~ 12라는 숫자가 전부 다 존재해야지 그 경우가 가능하다.
+그래서 중복된 알파벳도 그냥 들어오게 했던 것을 안되는 것으로 바꿔서 적어도 합들이 26이 될 확률을 맞춰줬고,
+
+해당 limit 을 구해서 (해당 위치에 들어갈 수 있는 가장 큰 수)
+
+그리고서 , 1 ~ 12 까지 i로 지정해서 순서대로 집어넣는데 , 이 경우에 if(limit < i) 즉 i 가 limit 보다 크면
+즉 들어올 수 없는 수가 들어오면 , 다시 바꿔말하면 이 수 가 들어오면 합이 26이 넘어버리는 수를 배제했다.
+
+그랬더니 마법같이 풀렸음
+
+완전 진짜 스도쿠 하위호환판이였음 , 아마 스도쿠를 풀지 못했다면 해맸지 않았을까.
+그리고 dx , dy 도 원래는 1차원 배열 여러개로 표현하다가,
+그냥 2차원 배열로 표현하니까 2중 포문으로 깔끔하게 해결 할 수 있었음
  */
 public class Main {
+    public static BufferedWriter output = new BufferedWriter(new OutputStreamWriter(System.out));
     public static List<Point> zeroPoint = new ArrayList<>();
     public static final int H = 5 , W = 9;
     public static int[][] map = new int[H][W];
 
     public static int[][] dx = {{-1 , 1} , {1 , -1} , {1 , -1}} , dy ={{0 , 0} ,{-1 , 1} , {1 , -1}};
     public static boolean finish = false;
-    public static BufferedWriter output = new BufferedWriter(new OutputStreamWriter(System.out));
     public static boolean[] visited = new boolean[13]; // false 이면 방문 x , true 이면 방문 o
 
     public static int findMax(Point point){
@@ -72,17 +93,13 @@ public class Main {
                 int ny = point.y;
                 int nx = point.x; // ny , nx 초기화 , 양 방향으로 뻗어 나가야 하니까
                 while(!outOfRange(ny = ny + dy[i][j] , nx = nx + dx[i][j])){
-//                    System.out.println("("+ny+","+nx+")");
                     if(map[ny][nx] == 0 || map[ny][nx] == -1) continue; // 0 이거나 -1 이면 넘어감
 
                     innerRes += map[ny][nx]; // 아니며 더함
                 }
             }
-//            System.out.println(innerRes);
             res = Math.max(innerRes , res);
         }
-
-//        System.out.println(res);
 
         return 26 - res; // 남은 수를 return 하는 것은 그대로 가고
     }
@@ -160,18 +177,13 @@ public class Main {
                 else if(character == 'x') map[i][j] = 0;
                 else {
                     map[i][j] = (int)character - 64;
-                    visited[map[i][j]] = true;
+                    visited[map[i][j]] = true; // 이미 들어온 알파벳들
                 }
             }
         }
 
-//        System.out.println(zeroPoint.get(0).y + " " + zeroPoint.get(0).x);
-//        System.out.println(findMax(zeroPoint.get(0).y , zeroPoint.get(0).x));
-
         dfs(0);
 
-        // 잘못 알았다 L이 최대 수이다.
-        // 즉 12가 최대인 수이다.
         output.flush();
         output.close();
     }
