@@ -43,7 +43,7 @@ k == 2.xxxx 이다.
 틀렸다 .. ㅠ
 
  */
-public class Main {
+public class Main3 {
     public static int N , height;
     public static List<ArrayList<Edge>> graph = new ArrayList<>();
     public static int[] depth;
@@ -115,88 +115,41 @@ public class Main {
         비용을 출력하는 것은 됐음
         이제 몇 번째 정점에 있는 것을 고르는 알고리즘만 진행하면 된다.
          */
-        int initA = a;
-        int initB = b;
 
-        boolean swap = false; // swap 여부를 나타낸다.
         // 일단 해당 두 정점까지의 비용만 출력해보자.
         if(depth[a] < depth[b]){ // a 를 올릴 것이기 때문에 b가 만약에 더 크다면 스왑 진행
-            swap = true;
             int tmp = b;
             b = a;
             a = tmp;
         }
 
-        int aUp = 1;
-        int bUp = 1;
         long res = 0;
 
         for (int i = height - 1; i != -1; i--) {
             if (1 << i <= depth[a] - depth[b]) { // 이전에 했던 방법으로 하면 안된다.
                 res += parent[1][a][i];
-                aUp += 1 << i;
                 a = (int) parent[0][a][i];
             }
         }
 
-        if (a == b && k != -1) { // 애초에 a의 조상이 b 였을 때
+        if (a == b && k == 1) { // 애초에 a의 조상이 b 였을 때
             return res;
         }
 
         for (int i = height - 1; i != -1; i--) {
             if (parent[0][a][i] != parent[0][b][i]) { // 공통 조상 위에는 조상 다 같을 수 밖에 없음 , 그 같지 않을 때까지 진행한다.
                 res += parent[1][a][i] + parent[1][b][i];
-                aUp += 1 << i;
-                bUp += 1 << i; // 서로 올라간 높이들을 기억 가능하다.
                 a = (int) parent[0][a][i];
                 b = (int) parent[0][b][i];
             }
         }
 
-        if(k == -1) {
+        if(k == 1) {
             return res + parent[1][a][0] + parent[1][b][0];
         }
 
-        // 이제 k 가 있을 때의 값을 구해야 한다.
-        // swap true 라면 , 지금 현재 b == u 이다.
-        // 아니면 a == u 이다.
-
-        // 그러면 일단 이것들도 바꿔줘야 한다. aUp , bUp 도 말이다.
-
-        if(swap){
-            int tmp = aUp;
-            aUp = bUp;
-            bUp = tmp;
-        } // 이전에 swap 이 되었었다면 바꿔준다.
-
-        a = initA;
-        b = initB;
-
-        k = k - 1;
-
-        if(aUp < k){ // 그럼 b 에서 부터 찾아야한다.
-            k = bUp - (k - aUp); // bUp 에서 k - aUp을 빼준다.
-
-            // 그리고서 b에서부터 찾아준다.
-            for(int i = height - 1; i != -1; i--){
-                if(1 << i <= k){
-                    k -= 1 << i;
-                    b = (int)parent[0][b][i];
-                }
-            }
-
-            return b;
-        }
-
-        else{ // 그럼 그냥 a 에서부터 시작해서 k 번째꺼 찾으면 된다.
-            for(int i = height - 1; i != -1; i--){
-                if(1 << i <= k){
-                    k -= 1 << i;
-                    a = (int)parent[0][a][i];
-                }
-            }
-
-            return a;
+        else {
+            return parent[0][a][0];
         }
     }
 
@@ -215,14 +168,7 @@ public class Main {
         StringTokenizer st;
 
         N = Integer.parseInt(input.readLine());
-
-        int tmp = 1;
-        height = 0;
-
-        while(tmp <= N){
-            tmp = tmp << 1;
-            height++;
-        }
+        height = (int)(Math.ceil(Math.log(N) / Math.log(2)));
 
         parent = new long[2][N + 1][height]; // [0][i][j] 에서 i 는 해당 정점을 나타내고 , j 는 2 ^ j 의 조상을 나타낸다.
         depth = new int[N + 1];
@@ -246,37 +192,61 @@ public class Main {
 
         int T = Integer.parseInt(input.readLine());
 
-//        parentPrint();
-
         for(int i = 0; i < T; i++){
             st = new StringTokenizer(input.readLine());
 
             int judge = Integer.parseInt(st.nextToken());
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
-            int k = -1;
+            int k = 1;
 
             if(judge == 2){ // 해당 정점까지의 비용
                 k = Integer.parseInt(st.nextToken());
             }
 
-            output.write(lca(a , b , k) + "\n");
+            if(k == 1){
+                output.write(lca(a , b , k) + "\n");
+            }
+
+            else{
+                long root = lca(a , b , k);
+
+                int cnt = depth[a] - depth[(int)root] + 1;
+
+                if(cnt == k){ // 같을 때에는 바로 반환
+                    output.write(root + "\n");
+                }
+
+                else if(cnt < k){ // k 가 더 클 때에는 k를 다시 계산해주어야함
+                    k = cnt + depth[b] - depth[(int)root] - k + 1;
+                    k--; // k-- 를 하면서 시작
+
+                    for(int j = height - 1; j != -1; j--){
+                        if(1 << j <= k){
+                            k -= 1 << j;
+                            b = (int)parent[0][b][j];
+                        }
+                    }
+
+                    output.write(b + "\n");
+                }
+
+                else{
+                    k--;
+                    for(int j = height - 1; j != -1; j--){
+                        if(1 << j <= k){
+                            k -= 1 << j;
+                            a = (int)parent[0][a][j];
+                        }
+                    }
+
+                    output.write(a + "\n");
+                }
+            }
         }
 
         output.flush();
         output.close();
     }
 
-    public static void parentPrint(){
-        for(int i = 0; i < 2; i++){
-            System.out.println(i);
-            for(int j = 1; j <= N; j++){
-                for(int c = 0; c < height; c++){
-                    System.out.print(parent[i][j][c] + " ");
-                }
-                System.out.println();
-            }
-            System.out.println();
-        }
-    }
 }

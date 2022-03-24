@@ -42,39 +42,52 @@ k == 2.xxxx 이다.
 결국 열심히 짜봤지만
 틀렸다 .. ㅠ
 
+-- 결론
+결국 해답을 보았다.
+접근법은 좋았으나 예외 사항이 있었던 듯 하다.
+이 문제의 해결 방법은 나처럼 바로 distance 를 기록해놓는 것이 아닌
+공통조상을 찾고 그것을 이용해서 길이를 반환하면 되는 것이였다.
+모든 노드는 root 노드로부터의 거리를 기록한다.
+
+그러면 root 노드를 구하게 되면
+일단 root 까지는 공통 거리이다.
+그렇기 때문에 dist[a] + dist[b] 에는
+dist[root] 가 2번이나 들어간다 그래서
+dist[a] + dist[b] - 2 * dist[root] 로 하고
+
+이제 서로 거리가 주어졌을 때 , 몇번째 정점인지 구할 때에는
+
+depth를 이용해서 일단 root 노드와 시작 정점인 u 의 깊이랑 비교한다.
+만일 둘의 거리가 k와 같다면 바로 출력
+k가 더 크다면 b에서부터 다시 탐색을 진행해야 한다.
+
+그 때는 이런식으로 계산할 수 있다.
+cnt = depth[u] - depth[root] + 1;
+k = cnt + depth[v] - depth[root] - k + 1;
+k-- 로 시작하면 되고
+v 에서 부터 탐색을 진행하면 된다.
+
+그리고 cnt >= k 인 경우에는 즉 root 노드까지의 거리가 k 보다 크거나 같은 경우
+그러면 그냥 a 에서 직접적으로 찾으면 된다.
+
+참 별거 아닌데 , 너무 오래걸렷다.
  */
-public class Main {
+public class Main2 {
     public static int N , height;
     public static List<ArrayList<Edge>> graph = new ArrayList<>();
+    public static boolean[] visited;
     public static int[] depth;
-    public static long[][][] parent; // parent[0][i][j] 는 조상이고 , parent[1][i][j] 는 해당 조상까지의 비용이다.
-    public static void getDepth(int start , int depthValue){
-        /*
-        각 정점의 depth 를 구해야 한다.
-        depth 는 1부터 시작하도록 한다.
-        그리고 정점도 1번부터 시작하도록 한다.
-         */
-        boolean[] visited = new boolean[N + 1];
-        Queue<int[]> queue = new LinkedList<>(); // arr[0] 은 현재 정점 , arr[1] 은 현재 depth
+    public static long[] dist;
+    public static int[][] parent; // parent[0][i][j] 는 조상이고 , parent[1][i][j] 는 해당 조상까지의 비용이다.
+    public static void getDepth(int vertex , int value){
+        depth[vertex] = value;
 
-        visited[start] = true;
-        queue.add(new int[]{start , depthValue}); // start 와 depth 를 추가해서
-
-        // 1번이 루트가 아니라고 하더라도 , 그냥 트리 모양이니까 내가 1번을 루트 취급하면된다. 근데 사실 잘 모르겠다
-
-        while (!queue.isEmpty()) { // bfs로 간다.
-            int[] arr = queue.poll();
-            depth[arr[0]] = arr[1]; // depth 등록
-
-            for(Edge edge : graph.get(arr[0])){
-                if(!visited[edge.idx]){ // 방문하지 않았을 때만 진행
-                    visited[edge.idx] = true;
-                    // 해당 정점의 부모는 현재 정점이라는 것도 등록
-                    parent[0][edge.idx][0] = arr[0];
-                    // 그리고 현재 바로 조상의 값도 등록
-                    parent[1][edge.idx][0] = edge.cost;
-                    queue.add(new int[]{edge.idx , arr[1] + 1});
-                }
+        for(Edge edge : graph.get(vertex)){
+            if(!visited[edge.idx]){
+                parent[edge.idx][0] = vertex;
+                visited[edge.idx] = true;
+                dist[edge.idx] = dist[vertex] + edge.cost;
+                getDepth(edge.idx , value + 1);
             }
         }
     }
@@ -97,15 +110,14 @@ public class Main {
 
         for(int i = 1; i < height; i++){ // height 값을 이용한다. 0 은 이미 구했으니까 1번째부터 시작한다.
             for(int j = 1; j <= N; j++){ // j는 N까지 구하면 된다.
-                parent[0][j][i] = parent[0][(int)parent[0][j][i - 1]][i - 1];
-                parent[1][j][i] = parent[1][j][i - 1] + parent[1][(int)parent[0][j][i - 1]][i - 1];
+                parent[j][i] = parent[parent[j][i - 1]][i - 1];
                 // 이런식으로 비용까지 구하기가 가능하다.
             }
         }
 
     }
 
-    public static long lca(int a , int b , int k){
+    public static int lca(int a , int b){
         /*
         k == -1 이면
         그냥 해당 같은 지점까지의 그냥 경로 비용만 출력하면 된다.
@@ -115,89 +127,30 @@ public class Main {
         비용을 출력하는 것은 됐음
         이제 몇 번째 정점에 있는 것을 고르는 알고리즘만 진행하면 된다.
          */
-        int initA = a;
-        int initB = b;
 
-        boolean swap = false; // swap 여부를 나타낸다.
         // 일단 해당 두 정점까지의 비용만 출력해보자.
         if(depth[a] < depth[b]){ // a 를 올릴 것이기 때문에 b가 만약에 더 크다면 스왑 진행
-            swap = true;
             int tmp = b;
             b = a;
             a = tmp;
         }
 
-        int aUp = 1;
-        int bUp = 1;
-        long res = 0;
-
-        for (int i = height - 1; i != -1; i--) {
-            if (1 << i <= depth[a] - depth[b]) { // 이전에 했던 방법으로 하면 안된다.
-                res += parent[1][a][i];
-                aUp += 1 << i;
-                a = (int) parent[0][a][i];
+        for(int i = height - 1; i != -1; i--){
+            if(1 << i <= depth[a] - depth[b]){
+                a = parent[a][i];
             }
         }
 
-        if (a == b && k != -1) { // 애초에 a의 조상이 b 였을 때
-            return res;
-        }
+        if(a == b) return a;
 
-        for (int i = height - 1; i != -1; i--) {
-            if (parent[0][a][i] != parent[0][b][i]) { // 공통 조상 위에는 조상 다 같을 수 밖에 없음 , 그 같지 않을 때까지 진행한다.
-                res += parent[1][a][i] + parent[1][b][i];
-                aUp += 1 << i;
-                bUp += 1 << i; // 서로 올라간 높이들을 기억 가능하다.
-                a = (int) parent[0][a][i];
-                b = (int) parent[0][b][i];
+        for(int i = height - 1; i != -1; i--){
+            if(parent[a][i] != parent[b][i]){
+                a = parent[a][i];
+                b = parent[b][i];
             }
         }
 
-        if(k == -1) {
-            return res + parent[1][a][0] + parent[1][b][0];
-        }
-
-        // 이제 k 가 있을 때의 값을 구해야 한다.
-        // swap true 라면 , 지금 현재 b == u 이다.
-        // 아니면 a == u 이다.
-
-        // 그러면 일단 이것들도 바꿔줘야 한다. aUp , bUp 도 말이다.
-
-        if(swap){
-            int tmp = aUp;
-            aUp = bUp;
-            bUp = tmp;
-        } // 이전에 swap 이 되었었다면 바꿔준다.
-
-        a = initA;
-        b = initB;
-
-        k = k - 1;
-
-        if(aUp < k){ // 그럼 b 에서 부터 찾아야한다.
-            k = bUp - (k - aUp); // bUp 에서 k - aUp을 빼준다.
-
-            // 그리고서 b에서부터 찾아준다.
-            for(int i = height - 1; i != -1; i--){
-                if(1 << i <= k){
-                    k -= 1 << i;
-                    b = (int)parent[0][b][i];
-                }
-            }
-
-            return b;
-        }
-
-        else{ // 그럼 그냥 a 에서부터 시작해서 k 번째꺼 찾으면 된다.
-            for(int i = height - 1; i != -1; i--){
-                if(1 << i <= k){
-                    k -= 1 << i;
-                    a = (int)parent[0][a][i];
-                }
-            }
-
-            return a;
-        }
+        return parent[a][0];
     }
 
     public static class Edge{
@@ -215,17 +168,12 @@ public class Main {
         StringTokenizer st;
 
         N = Integer.parseInt(input.readLine());
+        height = (int)(Math.ceil(Math.log(N) / Math.log(2)));
 
-        int tmp = 1;
-        height = 0;
-
-        while(tmp <= N){
-            tmp = tmp << 1;
-            height++;
-        }
-
-        parent = new long[2][N + 1][height]; // [0][i][j] 에서 i 는 해당 정점을 나타내고 , j 는 2 ^ j 의 조상을 나타낸다.
+        parent = new int[N + 1][height]; // [0][i][j] 에서 i 는 해당 정점을 나타내고 , j 는 2 ^ j 의 조상을 나타낸다.
         depth = new int[N + 1];
+        visited = new boolean[N + 1];
+        dist = new long[N + 1];
 
         for(int i = 0; i <= N; i++){
             graph.add(new ArrayList<>());
@@ -241,12 +189,11 @@ public class Main {
             graph.get(b).add(new Edge(a , cost));
         } // 다 받음
 
+        visited[1] = true;
         getDepth(1 , 1);
         fillParent();
 
         int T = Integer.parseInt(input.readLine());
-
-//        parentPrint();
 
         for(int i = 0; i < T; i++){
             st = new StringTokenizer(input.readLine());
@@ -254,29 +201,50 @@ public class Main {
             int judge = Integer.parseInt(st.nextToken());
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
-            int k = -1;
 
-            if(judge == 2){ // 해당 정점까지의 비용
-                k = Integer.parseInt(st.nextToken());
+            int root = lca(a , b);
+
+            if(judge == 1){
+                output.write(dist[a] + dist[b] - 2 * dist[root] + "\n");
             }
 
-            output.write(lca(a , b , k) + "\n");
+            else{
+                int k = Integer.parseInt(st.nextToken());
+                int cnt = depth[a] - depth[root] + 1;
+
+                if(cnt == k){ // 같을 때에는 바로 반환
+                    output.write(root + "\n");
+                }
+
+                else if(cnt < k){ // k 가 더 클 때에는 k를 다시 계산해주어야함
+                    k = cnt + depth[b] - depth[root] - k + 1;
+                    k--; // k-- 를 하면서 시작
+
+                    for(int j = height - 1; j != -1; j--){
+                        if(1 << j <= k){
+                            k -= 1 << j;
+                            b = parent[b][j];
+                        }
+                    }
+
+                    output.write(b + "\n");
+                }
+
+                else{
+                    k--;
+                    for(int j = height - 1; j != -1; j--){
+                        if(1 << j <= k){
+                            k -= 1 << j;
+                            a = parent[a][j];
+                        }
+                    }
+
+                    output.write(a + "\n");
+                }
+            }
         }
 
         output.flush();
         output.close();
-    }
-
-    public static void parentPrint(){
-        for(int i = 0; i < 2; i++){
-            System.out.println(i);
-            for(int j = 1; j <= N; j++){
-                for(int c = 0; c < height; c++){
-                    System.out.print(parent[i][j][c] + " ");
-                }
-                System.out.println();
-            }
-            System.out.println();
-        }
     }
 }
