@@ -1,11 +1,9 @@
 import java.util.*;
 import java.io.*;
 
-// 2342 : Dance Dance revolution
-
+// 3108 : 로고
 /*
 -- 전제 조건
-
 -- 틀 설계
  */
 public class Main {

@@ -1,11 +1,9 @@
 import java.util.*;
 import java.io.*;
 
-// 2342 : Dance Dance revolution
-
+// 2473 : 세 용액
 /*
 -- 전제 조건
-
 -- 틀 설계
  */
 public class Main {
@@ -14,4 +12,3 @@ public class Main {
         StringTokenizer st;
     }
 }
-
