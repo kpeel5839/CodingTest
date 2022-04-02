@@ -3,6 +3,13 @@ import java.io.*;
 
 // 한번 내가 생각했던 걸로 가보자.
 // 설마 abs 가 int 만 처리하는 것일까?
+
+/*
+아얘 그냥 sum 과 반대되는 -sum 과 비슷한 값을 찾고
+그 주변에서 탐색을 하니까 맞았음
+뭔가 일반된 방향으로 진행할 수가 없었던게 , 해당 값과 비슷한 값으로 가는 것을 찾는 경우라서 , 뭔가 일반되게 특정할 수 없었다.
+역시나 left 로 처리해도 맞았음
+ */
 public class Main2 {
     public static long N , min = Long.MAX_VALUE;
     public static long[] res = new long[3] , arr;
@@ -24,30 +31,37 @@ public class Main2 {
 
         for(int i = 0; i < N - 1; i++){
             for(int j = i + 1; j < N; j++){
+                // 방향을 조금 바꿔보자 , -sum 과 가까운 애를 찾는 다는 개념으로 진행하자.
                 int left = 0;
                 int right = (int)(N - 1);
 
                 long sum = arr[i] + arr[j];
                 // 이제 mid 값으로 가운데 값을 찾아갈 것이다.
+//                int index = 0;
+
                 while(left <= right){
                     int mid = (left + right) / 2;
 
-                    if(abs(sum + arr[mid]) < abs(min) && i != mid && j != mid){ // i , j 가 아니면서 더 작으면 채택
-                        min = sum + arr[mid];
-                        res[0] = arr[mid];
-                        res[1] = arr[i];
-                        res[2] = arr[j];
-                    }
+//                    index = mid;
+                    // 찾는 값이 sum 의 -1 을 곱한것 과 같다면 0 을 만들 수 있으니까 바로 아웃
+                    if(sum == -1 * arr[mid]) break;
 
-                    // mid 값을 찾아주고 , 해당 mid 값에 따라서 sum 이 0보다 작아지면 즉 음수가 되면 left = mid + 1
-                    // 양수이면 right = mid - 1; 로 찾아주고
-                    // 값의 갱신은 계속 sum 을 min 값과 비교해가면서 진행
+                    // arr[mid] 값이 찾으려는 값보다 , 작다면 ? 올린다
+                    if(arr[mid] < -1 * sum) left = mid + 1;
 
-                    if(sum + arr[mid] == 0 && i != mid && j != mid) break;
-
-                    if(sum < 0) left = mid + 1;
-
+                    // arr[mid] 값이 찾으려는 값보다 , 크면 ? 내린다.
                     else right = mid - 1;
+                }
+
+                for(int c = left - 2; c < left + 3; c++){
+                    if(c == i || c == j || c < 0 || c >= N) continue;
+
+                    if(abs(sum + arr[c]) < abs(min)){
+                        min = sum + arr[c];
+                        res[0] = arr[i];
+                        res[1] = arr[j];
+                        res[2] = arr[c];
+                    }
                 }
             }
         }
