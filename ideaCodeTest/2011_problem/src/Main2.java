@@ -34,35 +34,48 @@ index + String 으로 해서
 일단 ascii 코드 1 ~ 26을 64를 더해야 한다.
 
 결국 해쉬의 한계로 메모리 초과가 났음
+
+생각해보니까 , 지금까지 알파벳 한게 무슨 상관이야
+지금 현재 index 만이 중요한 거지
+바보같이 생각했었다.
+
+쓸데 없이 , 이전까지 정해온 코드들을 신경쓰느라 , 메모리 초과와 , 시간초과를 경험했다.
+앞으로는 조금 더 생각을 많이 했으면 좋겠고
+
+조금은 해맸던 점이 MOD 연산을 안하고 반환한 것이였음
+
+그리고 이전 정한 알파벳들은 현재 부터의 알파벳을 정할 수 있는 가짓수에 전혀 영향을 끼치지 않는데 , 그 점 조차도 간과하고 있었음
  */
-public class Main {
+public class Main2 {
     public static final int MOD = 1000000;
-    public static HashMap<String , Integer> dp = new HashMap<>();
+    public static int[] dp;
     public static int[] problem;
 
-    public static int dfs(int index ,String now){
+    public static int dfs(int index){
         /*
         현재 index 와 , now == 지금까지 만든 알파벳을 해서
         index + now 를 해서 Hash 있으면 저장하고
         없으면 만들어서 더한다
+
+        생각해보니까 , 지금 현재 여기서부터 몇개의 암호를 만들 수 있냐가 중요한 것이지
+        그 전에 어떠한 알파벳을 선택했냐는 전혀 중요하지 않았음
+
+        당연하게도 , 그러니까 현재 dp[index] 에다가 이후의 결과를 넣어서 더하기만 하면됨
          */
 
         if(index == problem.length) {
-//            System.out.println(now);
             return 1;
         }
 
-        String nowValue = index + now;
-        if(dp.containsKey(nowValue)) return dp.get(nowValue);
-
         // 없으니까 0으로 만들어주고
-        if(!dp.containsKey(nowValue)) dp.put(nowValue , 0);
+        if(dp[index] != 0) return dp[index];
 
-        if(problem[index] != 0) dp.put(nowValue , dp.get(nowValue) + dfs(index + 1 , now + (char)(problem[index] + 64)));
-        if(index != problem.length - 1 && problem[index] != 0 && Integer.parseInt(problem[index] + "" + problem[index + 1]) <= 26)
-            dp.put(nowValue , dp.get(nowValue) + dfs(index + 2 , now + (char)(Integer.parseInt(problem[index] + "" + problem[index + 1]) + 64)));
+        if(problem[index] == 0) return 0;
 
-        return dp.get(nowValue) % MOD;
+        dp[index] += dfs(index + 1);
+        if(index != problem.length - 1 && Integer.parseInt(problem[index] + "" + problem[index + 1]) <= 26) dp[index] += dfs(index + 2);
+
+        return dp[index] % MOD;
     }
 
     public static void main(String[] args) throws IOException{
@@ -70,11 +83,12 @@ public class Main {
 
         String string = input.readLine();
         problem = new int[string.length()];
+        dp = new int[string.length()];
 
         for(int i = 0; i < string.length(); i++){
             problem[i] = string.charAt(i) - '0';
         }
 
-        System.out.println(dfs(0 , ""));
+        System.out.println(dfs(0));
     }
 }
