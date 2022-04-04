@@ -39,47 +39,57 @@ X 가 끝냈다면 X가 하나가 더 많아야 한다.
 
 틀렸다고 나왔다...
 내가 놓친 게 무엇이 있을까?
- */
-public class Main {
-    public static final int SIZE = 3;
-    public static boolean endO , endX;
-    public static char[][] map;
 
-    public static boolean checkEnd(){
+솔직히 이전 풀이방법 뭐가 틀린지 모르겠으나,
+당연히 틀렸으니까 틀렸다고 나올 것이다.
+그렇기 때문에 사람들이 많이 하는 방법으로 진행해보자.
+
+일단 9 개가 다 차있는 경우는
+O 가 이기면 안되고 , X 가 하나가 더 많아야 한다.
+
+그리고 o == x 인 경우는 o 가 이겨야하고
+x + 1 == o 인 경우는 x 가 무조건 이겨야 한다.
+
+당연하게도 둘이 다 안 끝난 경우는 끝나지 않는다.
+
+그냥 이렇게 처리하니까 맞았다 , 근데 찝찝하다 겨우 이런 문제 하나를 이렇게 쩔쩔매서
+그냥 이렇다 , 9개 일때에는 x 가 무조건 o 보다 하나가 더 많아야 하고
+그리고 O 가 이긴 상태이면 안된다.
+
+그리고 , 다 차있는게 아닌 상황일 떄 , 즉 dot 이 있을 때에는 o == x , x - 1 == o 인 경우로 나뉜다.
+o == x 일때에는 o 가 무조건 빙고여야 하고 ,
+x - 1 == o 일 때에는 x 가 무조건 빙고여야 한다.
+만일 이 상황에 어긋나면 , 다 게임판의 상태가 이상한 것이다.
+ */
+public class Main2 {
+    public static final int SIZE = 3;
+    public static char[][] map;
+    public static int o , x , dot;
+    public static final char O = 'O' , X = 'X';
+
+    public static boolean check(char target){
         /*
-        해당 게임이 끝났는지 아닌지를 확인해준다.
-        일단 가로로 쭉쭉
-        그 다음 세로로 쭉쭉
-        그 다음에 대각으로 쭉쭉 하면 된다.
-        그냥 for 문으로 대충 구성해주자.
+        해당 target 으로 빙고가 있는지 확인한다.
+        그냥 가로 , 세로 , 대각 확인하면 된다.
          */
         boolean end = false;
 
         // 가로 세로 , 확인
         for(int c = 0; c < 2; c++) {
             for (int i = 0; i < SIZE; i++) {
-                char initial;
-                if(c == 0) initial = map[i][0];
-                else initial = map[0][i];
-                for (int j = 1; j < SIZE; j++) {
+                for (int j = 0; j < SIZE; j++) {
                     if(c == 0) {
                         // 만일 같지 않으면 break;
-                        if (initial != map[i][j]) break;
+                        if (target != map[i][j]) break;
 
                         // 여기까지 왔다라는 것은 지금까지 다 같았다라는 것이다 , end = true 로 만들어준다.
-                        if (j == SIZE - 1) {
-                            end = true;
-                            setEnd(initial);
-                        }
+                        if (j == SIZE - 1) end = true;
                     }
                     else{
-                        if (initial != map[j][i]) break;
+                        if (target != map[j][i]) break;
 
                         // 여기까지 왔다라는 것은 지금까지 다 같았다라는 것이다 , end = true 로 만들어준다.
-                        if (j == SIZE - 1) {
-                            end = true;
-                            setEnd(initial);
-                        }
+                        if (j == SIZE - 1) end = true;
                     }
                 }
             }
@@ -87,25 +97,16 @@ public class Main {
 
         // 이제 대각만 확인해주면 된다.
         for(int i = 0; i < 2; i++) {
-            char initial;
-            if(i == 0) initial = map[0][0];
-            else initial = map[2][0];
-            for (int j = 1; j < SIZE; j++) {
+            for (int j = 0; j < SIZE; j++) {
                 // 처음에는 왼쪽에서부터 촤르륵 , 두번째는 오른쪽에서부터 촤르륵
                 if(i == 0){
-                    if(map[j][j] != initial) break;
-                    if(j == SIZE - 1) {
-                        end = true;
-                        setEnd(initial);
-                    }
+                    if(map[j][j] != target) break;
+                    if(j == SIZE - 1) end = true;
                 }
 
                 else{
-                    if(map[2 - j][j] != initial) break;
-                    if(j == SIZE - 1) {
-                        end = true;
-                        setEnd(initial);
-                    }
+                    if(map[2 - j][j] != target) break;
+                    if(j == SIZE - 1) end = true;
                 }
             }
         }
@@ -113,10 +114,6 @@ public class Main {
         return end;
     }
 
-    public static void setEnd(char initial){
-        if(initial == 'O') endO = true;
-        else endX = true;
-    }
     public static void main(String[] args) throws IOException{
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter output = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -125,68 +122,49 @@ public class Main {
 
         while(!(problem = input.readLine()).equals("end")){ // end 와 같으면 끝
             map = new char[3][3];
-            int o = 0;
-            int x = 0;
-            int dot = 0;
-            endO = false;
-            endX = false; // 어떤 걸로 끝났는지 , 이전 것을 초기화
+            o = 0;
+            x = 0;
+            dot = 0;
 
             for(int i = 0; i < SIZE; i++){
                 for(int j = 0; j < SIZE; j++){
                     map[i][j] = problem.charAt(i * SIZE + j);
-                    if(map[i][j] == 'O') o++;
-                    else if(map[i][j] == 'X') x++;
+                    if(map[i][j] == O) o++;
+                    else if(map[i][j] == X) x++;
                     else dot++;
                 }
             }
 
-            // o 가 x 보다 크거나 , 혹은 x 와 o의 차이가 2보다 크면 바로 invalid
-            if(o > x || x - o >= 2){
-                output.write("invalid" + "\n");
-                continue;
-            }
-
-            // 이제 o , x 의 개수에는 이상이 없으니 게임이 끝난 경우와 , 아닌 경우를 나눠서 판다.ㄴ
-            boolean end = checkEnd();
-
-            if(end){
-                // 둘다 끝난 경우 넘김
-                if(endO && endX){
-                    output.write("invalid" +  "\n");
-                    continue;
-                }
-
-                // o 가 끝냈는데 o == x 가 아니라면 끝
-                if(endO && o != x){
-                    output.write("invalid" + "\n");
-                    continue;
-                }
-
-                // x 가 끝냈는데 x - o == 1 이 아니라면 끝
-                if(endX && x - o != 1){
-                    output.write("invalid" + "\n");
-                    continue;
-                }
-            }
-            else{
-                // 끝나지 않았는데 , . 이 있다면 끝
-                // 끝나지 않았는데 , x - o == 1 이 아니라면 끝
-                if(dot != 0){
-                    output.write("invalid" + "\n");
-                    continue;
-                }
-
-                if(x - o != 1){
-                    output.write("invalid" + "\n");
-                    continue;
-                }
-            }
-
-            output.write("valid" + "\n");
+            output.write((getRes() ? "valid" : "invalid") + "\n");
         }
 
         output.flush();
         output.close();
+    }
+    public static boolean getRes(){
+        /*
+        여기서는 해당 값이 invalid 하면 false
+        valid 하면 true 를 반환하는 함수이다.
+         */
+        // o , x로 가득 차있으면 , 1개 차이 인 경우
+       boolean xBingo = check(X);
+       boolean oBingo = check(O);
+
+       if(xBingo && oBingo) return false;
+
+       if(x < o || x - o >= 2) return false;
+
+       if(dot == 0){
+           if(x - 1 != o || oBingo) return false;
+           return true;
+       }
+       if(x == o) {
+           if (oBingo) return true;
+           return false;
+       }
+       if(xBingo) return true;
+       return false;
+//       return false;
     }
 }
 
