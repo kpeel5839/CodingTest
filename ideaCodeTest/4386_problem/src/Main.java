@@ -105,7 +105,8 @@ public class Main {
             }
         }
 
-        Collections.sort(edge , (o1 , o2) -> Double.compare(o1.cost , o2.cost));
+        // o1.cost 가 더 크면 1 , 아니면 -1 반환
+        Collections.sort(edge , (o1 , o2) -> o1.cost > o2.cost ? 1 : -1);
 
 //        System.out.println(edge);
 
