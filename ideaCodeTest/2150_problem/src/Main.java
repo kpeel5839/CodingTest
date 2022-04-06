@@ -48,7 +48,6 @@ if(id[a] == 0) , else if 로 진행했어야 했는데 , 이 점을 간과했었
 당연하게도 , 맞는 답이 나왔다.
 
 그래서 결론적으로 already , 현재 가려는 정점이 부모 정점인지 체크 x , if(id[i] == 0) dfs(i) 체크 이 3가지를 안해서 살짝 해맸음
-햐
  */
 public class Main {
     public static int V , E , idValue = 0;
