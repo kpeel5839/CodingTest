@@ -10,7 +10,8 @@ public class Main {
     public static Point[] instruct;
     public static int[] dx = {1 , 0 , -1 , 0};
     public static int[] dy = {0 , -1 , 0 , 1}; // 0 == 오른쪽 , 1 == 위 , 2 == 왼쪽 , 3 == 아래
-    public static void main(String[] args) throws IOException{ //드래곤 커브 n세대 만드는 방법 , 일단 방향 + 1 해주고 거꾸로 부터 추가해주면 됨
+    public static void main(String[] args) throws IOException{
+        //드래곤 커브 n세대 만드는 방법 , 일단 방향 + 1 해주고 거꾸로 부터 추가해주면 됨
         //그런다음 x , y 크기 100인 거 만들어주고 시작방향에다가 내가 만든 세대로 천천히 집어넣으면 됨
         //일단 처음에 시작점 찍고 그 방향대로 찍으면 됨 그다음 한점에서 n - 1 , n - 1까지만 돌면서 4개있나 확인하면 됨
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
