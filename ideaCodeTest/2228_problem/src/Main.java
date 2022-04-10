@@ -39,6 +39,7 @@ public class Main {
         if(select == M) return 0;
         if(N <= idx) return MIN;
 
+        // 이 3문장이 너무나도 이해가 가질 않음... 왜 이렇게 해야만 되지? 이전처럼 하면 안되는 것이지 왜?
         if(visited[select][idx]) return dp[select][idx];
 
         visited[select][idx] = true;
