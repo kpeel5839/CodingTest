@@ -184,6 +184,11 @@ dp[select][idx] == MIN 이 실제로 방문하고 최소값을 구하기 전까�
 셋째 , 본인을 선택하지 않는 경우는 본인 자신만이 결정해야 하는데 , 반복문에 넣게 되면서 다른 지점까지 넘어가는 그러한 로직이 되어버렸었음
 
 이렇게 3가지를 고치니까 정상적으로 문제를 해결 할 수 있었음
+
+근데 , 여기서 드는 의문점은 내가 실패했을 때 , 반환하는 MIN 값이 더 작아서
+만약에 실패할 수 밖에 없는 경우에서의 select의 값은 갱신 못하는 문제가 있지 않을까?
+해서 , 실패한 경우 반환하는 값을 기본적으로 들어있는 dp 값보다 더 크게 해주어서 ,
+실패하는 경우라도 dp의 값을 갱신할 수 있게 설정해주었다.
  */
 public class Main {
     // 이전에 내가 작성했던 limit 은 있으면 안됨 , 왜냐하면 구간의 사이즈는 각자 다를 수도 있기 떄문이다.
@@ -193,10 +198,10 @@ public class Main {
     public static int dfs(int idx , int select){
 
         if(select == M) return 0;
-        if(N <= idx) return MIN * 2;
+        if(N <= idx) return MIN;
         // 생각해보니까 , MIN 값을 반환한다. 그리고 arr 값이 다 만약에 0이다.
         // 그러면 개 클떄 안끝나지 않을까?
-        if(dp[select][idx] != MIN) return dp[select][idx];
+        if(dp[select][idx] != MIN * 2) return dp[select][idx];
 
         /*
         내가 이전에 했던 방식은 Math.max(dp[select][idx] , Math.max(dfs(i + 1 , select) , dfs(i + 2 , select + 1) + sum); 이런 방식이였음
@@ -227,7 +232,7 @@ public class Main {
         dp = new int[M][N];
         arr = new int[N];
 
-        for(int i = 0; i < M; i++) Arrays.fill(dp[i] , MIN);
+        for(int i = 0; i < M; i++) Arrays.fill(dp[i] , MIN * 2);
 
         for(int i = 0; i < N; i++){
             arr[i] = Integer.parseInt(input.readLine());
