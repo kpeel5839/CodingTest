@@ -5,11 +5,118 @@ import java.io.*;
 
 /*
 -- 전제조건
+황선자씨와 우주신을 연결할 것인데
+이미 연결되어 있는 우주신들이 있고,
+새로운 우주신들이 추가 될 것이다.
+이제 여기서 황선자씨가 모두에게 갈 수 있으면서
+새로 만들어지는 통로의 길이가 최소가 되도록 구성하여라 (소수점 둘째자리까지 출력하라.)
 -- 틀설계
+그냥 최소 스패닝 트리에다가
+이미 들어온 애들은 집합에다가 포함 시키고 진행한다.
+그러면 짜피 걔내들은 선택 안된다.
  */
 public class Main {
+    public static List<double[]> edges = new ArrayList<>();
+    public static int[][] point;
+    public static int N , M , count = 0;
+    public static int[] parent;
+    public static double res = 0;
+
+    public static double getDis(int[] point1 , int[] point2){
+        int y1 = point1[0] , x1 = point1[1];
+        int y2 = point2[0] , x2 = point2[1];
+
+        /*
+        항상 헷갈리는데
+        y1 , y2 , x1 , x2 가 있을 때
+        구해야 할 거리는 빗변이다.
+        그럴때 각 길이를 구하면 되는데
+        Math.abs(x2 - x1) 를 하면 가로
+        Math.abs(y2 - y1) 를 하면 세로 이다.
+        그러면 이것을 제곱해서 sqrt 해서 return 하면 된다.
+         */
+
+        return Math.sqrt(Math.pow(Math.abs(x2 - x1), 2) + Math.pow(Math.abs(y2 - y1) , 2));
+    }
+    public static void union(int a , int b){
+        parent[b] = a;
+    }
+
+    public static int find(int a){
+        if(parent[a] == a) return a;
+        return parent[a] = find(parent[a]);
+    }
+
     public static void main(String[] args) throws IOException{
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
+        StringTokenizer st = new StringTokenizer(input.readLine());
+
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+
+        // 각 우주신들 위치
+        point = new int[N][2];
+        // parent 배열 선언
+        parent = new int[N + 1];
+
+        for(int i = 0; i < N; i++){
+            st = new StringTokenizer(input.readLine());
+            point[i] = new int[]{Integer.parseInt(st.nextToken()) , Integer.parseInt(st.nextToken())};
+            parent[i + 1] = i + 1;
+        }
+
+        for(int i = 0; i < M; i++){
+            st = new StringTokenizer(input.readLine());
+
+            // 선택한 간선의 수를 업그레이드한다.
+            count++;
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+
+            // 입력으로 받은 값 부모 찾아주고
+            a = find(a);
+            b = find(b);
+
+            // 서로 같은 집합에 포함시키면서 , 추후에 선택하지 못하게 한다.
+            union(a , b);
+        }
+
+        // edges 에다가 추가해준다.
+        for(int i = 0; i < N; i++){
+            for(int j = 0; j < N; j++){
+                if(i == j) continue;
+                // 근데 번호는 1번 부터 시작하기 때문에 서로 번호를 + 1 해주어야 한다.
+
+                // cost 얻어냄
+                double cost = getDis(point[i] , point[j]);
+
+                // 간선 추가
+                edges.add(new double[]{i + 1 , j + 1 , cost});
+            }
+        }
+
+        // edges cost 값으로 정렬 o1 이 더 크면 1을 반환하고 , 작으면 -1 을 반환하며 오름차순을 유지시킨다.
+        Collections.sort(edges , (o1 , o2) -> o1[2] > o2[2] ? 1 : -1);
+
+        // 아직 다 선택된게 아니라면 , 진행한다.
+        if(count != N - 1) {
+            for (double[] edge : edges) {
+                int a = find((int) edge[0]);
+                int b = find((int) edge[1]);
+
+                // 둘이 같은 집합이라면 continue (사이클 방지)
+                if (a == b) continue;
+
+                // 같은 집합이 아니라면 union 하고 , count++ 하고 , res 에다가 더해준다.
+                union(a, b);
+                count++;
+                res += edge[2];
+
+                // 간선을 N - 1 개 선택하게 되면 끝낸다.
+                if (count == N - 1) break;
+            }
+        }
+
+        System.out.println(String.format("%.2f" , res));
     }
 }
