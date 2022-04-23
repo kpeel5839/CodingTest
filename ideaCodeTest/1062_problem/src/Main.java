@@ -135,7 +135,7 @@ public class Main {
             }
             word[i] = inputString;
         }
-//        System.out.println(Arrays.toString(word));
+        System.out.println(Arrays.toString(word));
 //        System.out.println(Arrays.toString(letter));
         dfs(0 , k - 5);
         System.out.println(ans);

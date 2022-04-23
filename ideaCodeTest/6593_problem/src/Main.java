@@ -40,7 +40,9 @@ public class Main {
     public static Queue<int[]> queue = new LinkedList<>();
 
     public static boolean outOfRange(int h , int y , int x){
-        if(h < 0 || h >= H || y < 0 || y >= R || x < 0 || x >= C) return true;
+        if (h < 0 || h >= H || y < 0 || y >= R || x < 0 || x >= C) {
+            return true;
+        }
         return false;
     }
 
