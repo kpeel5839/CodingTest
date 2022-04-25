@@ -1,67 +1,52 @@
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.io.*;
 
-public class Main {
-    public static void main(String[] args) throws Exception{
+class Test {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        // 파일 생성 주기
-        int diff = 3000;
+        String s = br.readLine();
+        int res = 0; // 답을 저장할 변수
+        int j = 0; // 이전 노드를 탐색할 변수
+        int preJ = 0;
+        int count = 0;
+        int preLength = 0;
 
-        // index == targetIndex 이면 실행
-        int targetIndex = diff / 100; // targetIndex is 700
+        // i 는 1부터 시작함
+        for (int i = 0; i < s.length(); i++) {
+            if (i == j) { // i == j, 라는 것은 문자열 탐색을 다시 시작하거나, 처음임
+                count++;
+                preJ = j;
+            } else if (s.charAt(i) == s.charAt(j)) {
+                // 근데 이게 처음으로 같은 문자열을 만난 건지 그것이 중요함
+                // 처음으로 같은 문자열을 만난 것이면, preLength 로 집어넣어놔야함
+                if (preLength == 0) {
+                    preLength = count; // preLength 로 저장
+                    count = 0; // 얼마나 같은 문자열이 반복될지 이제 저장 해야함
+                }
 
-        int index = targetIndex;
+                count++;
+                j++;
 
-        // 이전 시각과 현재 시각이 비교했을 때 , diff 의 차이가 있어야함
-        while (true) {
+                if (count == preLength) { // 이전에 탐색했던 문자열과 같으면
+                    res = Math.max(res, preLength);
+                    j = i + 1; // 결과값을 도출하고, j를 i로 변경
+                    preLength = 0;
+                    count = 0;
+                }
 
-            Date now = new Date();
-            String format = "yyyy-MM-dd HH.mm";
-            DateFormat df = new SimpleDateFormat(format);
-            String fileName = df.format(now);
+            } else { // 같은 문자열이 아닐 때
+                // 여기서, 같은 문자열 진행되다가 온 경우는 특별하게 진행해주어야 함
+                if (preLength != 0) {
+                    count += preLength;
+                }
 
-            // 폴더 새로 생성
-            File dir = new File("C:/Temp/" + fileName);
-            if (dir.exists() == false) {
-                dir.mkdirs();
+                count++; // 생각해보니까, j 도 증가시키면 안됨
+                j = preJ;
+                preLength = 0; // preLength 0 으로 초기화 계속
             }
+        }
 
-            // targetIndex 보다 index 가 작으면 실행이 된다 , targetIndex == index 인 순간에 실행이 되는 것이다.
-            if(index < targetIndex) Thread.sleep(100);
-
-            // 1. 폴더 만들기
-            // 날짜로 폴더이름
-            if(targetIndex != index++) continue;
-
-            index = 0;
-            System.out.println(LocalDateTime.now().getSecond());
-
-            // 2. 파일 복사
-            // 파일 이름 랜덤으로 바꿔줌.
-            UUID uuid = UUID.randomUUID();
-
-            String sourceFileName = "C:/Temp/source.zip";
-            String targetFileName = "C:/Temp/" + fileName + "/" + uuid + ".zip";
-
-            FileInputStream fis = new FileInputStream(sourceFileName);
-            FileOutputStream fos = new FileOutputStream(targetFileName);
-
-            int readByteNo;
-
-            byte[] readBytes = new byte[40];
-
-            while ((readByteNo = fis.read(readBytes)) != -1) {
-                fos.write(readBytes, 0, readByteNo);
-
-            } // while
-
-            fos.flush();
-            fos.close();
-            fis.close();
-
-        } // while
+        System.out.println(res);
     }
 }

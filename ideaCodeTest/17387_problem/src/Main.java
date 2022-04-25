@@ -12,7 +12,7 @@ ccw 와 그에 대한 예외처리를 이용해서 구하는 문제이다.
 
 notion 에다가 자세하게 정리를 해놓았음
 
-17387 선분교찾 2 (notion)
+17387 선분교차 2 (notion)
 https://www.notion.so/17387-2-12b60034c1ee422fb29c785c2dc4ffa0
  */
 public class Main {
@@ -35,9 +35,6 @@ public class Main {
         long y3 = fun.apply(input[1]);
         long x4 = fun.apply(input[2]);
         long y4 = fun.apply(input[3]); // L2 입력 받음
-
-//        System.out.println(x1 + " " + y1 + " " + x2 + " " + y2);
-//        System.out.println(x3 + " " + y3 + " " + x4 + " " + y4);
 
         System.out.println(checkCcw(x1, x2, x3, x4, y1, y2, y3, y4));
     }
@@ -85,7 +82,7 @@ public class Main {
         boolean compare4 = Math.min(y3, y4) <= Math.max(y1, y2);
 
         // 먼저, 4점이 모두 일직선 상에 존재하는 경우
-        if (p123 * p124 == 0 && p341 * p342 == 0) {
+        if ((p123 == 0 && p124 == 0) && (p341 == 0 && p342 == 0)) {
             // 이 경우에는, 무조건적으로 위에서 명시한 범위에 들어야지 교차하는 것임
             if((compare1 && compare2) && (compare3 && compare4)) {
                 result = 1;
