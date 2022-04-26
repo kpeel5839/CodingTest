@@ -1,34 +1,61 @@
-n , row , col= map(int , input().split())
-count = -1
-def dfs(number , y,  x):
-    global row
-    global col
-    global count
+import sys
+input=sys.stdin.readline
 
-    if number == 2:
-        if y <= row <= y + 1 and x <= col <= x + 1:
-            if y == row and x == col:  
-                count += 1
-            elif y == row and x + 1 == col:
-                count += 2
-            elif y + 1 == row and x == col:
-                count += 3
-            elif y + 1 == row and x + 1 == col:
-                count += 4
-    else:
-        number = number // 2
-        if y <= row < y + number and x <= col < x + number:
-            count += number * number * 0
-            dfs(number , y , x)
-        elif y <= row < y + number and x + number <= col < x + (number * 2):
-            count += number * number * 1
-            dfs(number , y , x + number)
-        elif y + number <= row < y + (number*2) and x <= col < x + number:
-            count += number * number * 2
-            dfs(number , y + number , x)
-        elif y + number <= row < y + (number * 2) and x + number <= col < x + (number * 2): 
-            count += number * number * 3
-            dfs(number , y + number , x + number)
 
-dfs(2 ** n , 0 , 0)
-print(count)
+sudoku=[]
+arr=[]
+n=9
+
+for i in range(n):
+  temp=[]
+  ins=input()
+  for j in range(n):
+    temp.append(int(ins[j]))
+  sudoku.append(temp)
+
+for x in range(n):
+  for y in range(n):
+    if sudoku[x][y]==0:
+      arr.append((x,y))
+
+# 열을 검사하는 함수
+def check_col(x,a):
+  for i in range(n):
+    if a==sudoku[x][i]:
+      return False
+  return True
+
+def check_row(y,a):
+  for i in range(n):
+    if a==sudoku[i][y]:
+      return False
+  return True
+
+
+def check_rect(x,y,a):
+    nx = (x // 3) * 3
+    ny = (y // 3) * 3
+    for i in range(nx , nx + 3):
+      for j in range(ny , ny + 3):
+        if a == sudoku[i][j]:
+          return False
+    return True
+
+
+def dfs(L):
+  if L==len(arr):
+    for i in range(n):
+        for j in range(n):
+            print(sudoku[i][j],end="")
+        print()
+    exit(0)
+
+  for a in range(1,10):
+    x=arr[L][0]
+    y=arr[L][1]
+    if check_col(x,a) and check_row(y,a) and check_rect(x,y,a):
+      sudoku[x][y]=a
+      dfs(L+1)
+      sudoku[x][y]=0
+
+dfs(0)

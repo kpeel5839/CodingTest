@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb417d26-77ad-418c-bd17-899ee527272d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/1260_problem.py" beforeDir="false" afterPath="$PROJECT_DIR$/1260_problem.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/2210_problem/bin/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/practice.py" beforeDir="false" afterPath="$PROJECT_DIR$/practice.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ideaCodeTest/4195_problem/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ideaCodeTest/4195_problem/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ideaCodeTest/out/production/3108_problem/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/../ideaCodeTest/out/production/3108_problem/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
