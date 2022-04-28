@@ -1,3 +1,4 @@
+import java.math.BigInteger;
 import java.util.*;
 import java.io.*;
 
@@ -6,7 +7,18 @@ class Solution {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         String[] input = br.readLine().split(" ");
+
+        long start = System.currentTimeMillis();
+
         System.out.println(multiply(input[0], input[1]));
+
+        long end = System.currentTimeMillis();
+
+        BigInteger big1 = new BigInteger(input[0]);
+        BigInteger big2 = new BigInteger(input[1]);
+
+        System.out.println(big1.multiply(big2));
+        System.out.println("총 걸린 시간 : " + (end - start));
     }
 
     public static String multiply(String num1, String num2) {
