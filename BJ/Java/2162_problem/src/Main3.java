@@ -14,11 +14,8 @@ import java.util.function.Function;
  *
  * notion 에다가 정리해놓았다.
  * https://www.notion.so/2162-ed1e5e1fca20407dad8317c40daec746
- *
- * Main3 가 최종적인 코드이고, 내가 이해한 바로 최대한 불필요한 부분들을 없앴음
- * 그랬더니 코드가 이해하기 좋아졌음
  */
-public class Main {
+public class Main3 {
     public static int[] parent; // parent 저장할 변수
     public static int[] count; // parent 를 통해서, 어떠한 인덱스의 포인터가, 어떠한 그룹에 속해있고, 그 그룹에는 몇개의 선분이 있는지 확인하기 위한 변수
     public static final int INF = 5000; // 이 문제에서의 x, y 최대 값, 즉 유효하지 않은 숫자.
@@ -39,7 +36,7 @@ public class Main {
 
     public static int find(int a) {
         if (parent[a] == a) {
-           return a;
+            return a;
         }
 
         return parent[a] = find(parent[a]); // 최종적으로 반환된, 부모 노드를 본인의 부모노드로 등록
@@ -125,25 +122,8 @@ public class Main {
 
                 double res = getX(p1, p2); // 두 직선의 교점을 얻음
 
-                if (res == INF + 1) { // 두 직선이 평행하거나 일치할 때
-                    // x = a 인 경우
-                    if ((p1.x2 - p1.x1) == 0 && (p2.x2 - p2.x1 == 0)) {
-                        // 이제 평행하는지 안하는 지를 보면 된다.
-                        if (p1.x1 != p2.x1) { // 평행한 경우
-                            continue;
-                        }
-
-                        if ((p1.y1 < Math.min(p2.y1, p2.y2) && p1.y2 < Math.min(p2.y1, p2.y2))
-                                || (p2.y1 < Math.min(p1.y1, p1.y2) && p2.y2 < Math.min(p1.y1, p1.y2))) {
-                            continue;
-                        }
-
-                        union(find(i), find(j));
-                        continue;
-                    }
-
-                    // x == a 가 아닌 경우, 이제 y == a 도 고려해주긴 해야함
-
+                // 일치하지 않는 경우에 대해서, 처리를 해주면서 진행을 하였음
+                if (res == INF + 1) { // 두 직선이 평행하거나 일치할 때, 즉 여기서는 y = a, x = a 부분과, 혹은 대각으로 직선이 뻗어나가더라도, 서로 범위가 일치하지 않으면, continue 하였음
                     // 이제, m 과, n 을 구하자.
                     // m = 기울기, n = y절편
 
@@ -155,36 +135,37 @@ public class Main {
                     double n1 = (-m1 * p1.x1) + p1.y1;
                     double n2 = (-m2 * p2.x1) + p2.y1;
 
+                    // 내가 봤을 때, x = a, y = a 부분은 여기서 걸릴 것 같은데, 역시나였음 x = a, y = a 는 이부분에서 걸림, 즉 기울기가 무한대인데, 평행한 경우는 여기서 걸리고
                     if (n1 != n2) { // 둘이 일치하지 않는 경우, 일단 평행한 것은 확실하니까 기울기는 같음 res = INF + 1 이였기 때문에, 즉 평행하다.
                         continue;
                     }
 
-                    // 두 직선이 일치하여도 만나지 않는 경우
+                    // 만일 일치하는 선에 있다고 하더라도, 여기서 겹치지 않으면 걸린다. x = a 에 대한 처리
                     if ((p1.x1 < Math.min(p2.x1, p2.x2) && p1.x2 < Math.min(p2.x1, p2.x2))
                             || (p2.x1 < Math.min(p1.x1, p1.x2) && p2.x2 < Math.min(p1.x1, p1.x2))) {
                         continue;
                     }
 
-                    // y = a 인 경우도 고려
+                    // y = a 에 대한 처리
                     if ((p1.y1 < Math.min(p2.y1, p2.y2) && p1.y2 < Math.min(p2.y1, p2.y2))
                             || (p2.y1 < Math.min(p1.y1, p1.y2) && p2.y2 < Math.min(p1.y1, p1.y2))) {
                         continue;
                     }
 
                     union(find(i), find(j));
-                } else { // 두 직선이 평행하거나, 일치하지 않고 교점이 존재할 때
+                } else { // 두 직선이 평행하거나, 일치하지 않고 교점이 존재할 때, 그래서 여기서는 그냥 교점 (y, x) 가 선분 위에 존재하면 된다.
                     // 일단 먼저 x 좌표가, 포함이 되는 지 확인 해야함, 그 다음에 y 좌표까지 확인할 것임
                     if (res >= Math.min(p1.x1, p1.x2) && res <= Math.max(p1.x1, p1.x2)
                             && res >= Math.min(p2.x1, p2.x2) && res <= Math.max(p2.x1, p2.x2)) {
 
                         res = getY(p1, p2); // 일단, x 좌표가 포함 되는지 확인을 했으니까, 다시 res 를 구해서, 교점 Y가 다시 포함되는지 확인해야 함
 
-                        if (-INF <= res && res <= INF) { // 좌표가, 범위에 포함되는 지
-                            if (res >= Math.min(p1.y1, p1.y2) && res <= Math.max(p1.y1, p1.y2)
-                                    && res >= Math.min(p2.y1, p2.y2) && res <= Math.max(p2.y1, p2.y2)) {
-                                union(find(i), find(j)); // y 좌표까지 포함이 되면, 또 union
-                            }
+                        // 역시 한번 더 범위를 확인할 필요가 없었음, getY, getX 즉 교점을 구하는 분모는 y, x 다 똑같은데, 여기로 넘어왔으면 다시 교점의 값이 무한대로 발산할 것을 걱정할 이유가 없음
+                        if (res >= Math.min(p1.y1, p1.y2) && res <= Math.max(p1.y1, p1.y2)
+                                && res >= Math.min(p2.y1, p2.y2) && res <= Math.max(p2.y1, p2.y2)) {
+                            union(find(i), find(j)); // y 좌표까지 포함이 되면, 또 union
                         }
+
                     }
                 }
             }
@@ -209,3 +190,4 @@ public class Main {
         System.out.println(groupCount + "\n" + maxCount);
     }
 }
+

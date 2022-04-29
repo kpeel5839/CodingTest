@@ -14,11 +14,8 @@ import java.util.function.Function;
  *
  * notion 에다가 정리해놓았다.
  * https://www.notion.so/2162-ed1e5e1fca20407dad8317c40daec746
- *
- * Main3 가 최종적인 코드이고, 내가 이해한 바로 최대한 불필요한 부분들을 없앴음
- * 그랬더니 코드가 이해하기 좋아졌음
  */
-public class Main {
+public class Main2 {
     public static int[] parent; // parent 저장할 변수
     public static int[] count; // parent 를 통해서, 어떠한 인덱스의 포인터가, 어떠한 그룹에 속해있고, 그 그룹에는 몇개의 선분이 있는지 확인하기 위한 변수
     public static final int INF = 5000; // 이 문제에서의 x, y 최대 값, 즉 유효하지 않은 숫자.
@@ -39,7 +36,7 @@ public class Main {
 
     public static int find(int a) {
         if (parent[a] == a) {
-           return a;
+            return a;
         }
 
         return parent[a] = find(parent[a]); // 최종적으로 반환된, 부모 노드를 본인의 부모노드로 등록
@@ -132,14 +129,14 @@ public class Main {
                         if (p1.x1 != p2.x1) { // 평행한 경우
                             continue;
                         }
+                    }
 
-                        if ((p1.y1 < Math.min(p2.y1, p2.y2) && p1.y2 < Math.min(p2.y1, p2.y2))
-                                || (p2.y1 < Math.min(p1.y1, p1.y2) && p2.y2 < Math.min(p1.y1, p1.y2))) {
+                    // y = a 인 경우
+                    if ((p1.y2 - p1.y1) == 0 && (p2.y2 - p2.y1 == 0)) {
+                        // 이제 평행하는지 안하는 지를 보면 된다.
+                        if (p1.y1 != p2.y1) { // 평행한 경우
                             continue;
                         }
-
-                        union(find(i), find(j));
-                        continue;
                     }
 
                     // x == a 가 아닌 경우, 이제 y == a 도 고려해주긴 해야함
@@ -159,13 +156,12 @@ public class Main {
                         continue;
                     }
 
-                    // 두 직선이 일치하여도 만나지 않는 경우
+                    // 그리고 서로 평행하고, 만나지 않는 경우 제거
                     if ((p1.x1 < Math.min(p2.x1, p2.x2) && p1.x2 < Math.min(p2.x1, p2.x2))
                             || (p2.x1 < Math.min(p1.x1, p1.x2) && p2.x2 < Math.min(p1.x1, p1.x2))) {
                         continue;
                     }
 
-                    // y = a 인 경우도 고려
                     if ((p1.y1 < Math.min(p2.y1, p2.y2) && p1.y2 < Math.min(p2.y1, p2.y2))
                             || (p2.y1 < Math.min(p1.y1, p1.y2) && p2.y2 < Math.min(p1.y1, p1.y2))) {
                         continue;
