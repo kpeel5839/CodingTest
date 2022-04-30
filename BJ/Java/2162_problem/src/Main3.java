@@ -14,6 +14,8 @@ import java.util.function.Function;
  *
  * notion 에다가 정리해놓았다.
  * https://www.notion.so/2162-ed1e5e1fca20407dad8317c40daec746
+ *
+ * 근데 아마 따로 나누었던 이유는, 예상하건데 y절편 만을 구했어서 그랬던 것 같음, 사실 수학이라서 정확히는 모르겠음
  */
 public class Main3 {
     public static int[] parent; // parent 저장할 변수
