@@ -27,6 +27,10 @@ import java.util.function.Function;
  *
  * Iterator it = map.keySet().iterator(); 이것을 통해서, map의 key 들을 다 받아내고,
  * 그것을 map.get(key) 를 해서, list 에다가 집어넣은다음 정렬해서, 순서대로 진행하면 된다.
+ *
+ * -- 결과
+ * 생각보다 한번에 맞아서 놀랐음
+ * feed 에다가 new String 안해서 처음에 nullPointer 뜨긴 했는데, 그 이후로는 그냥 쑥 맞음
  */
 public class Main {
     public static int N;
