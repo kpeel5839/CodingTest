@@ -91,19 +91,16 @@ public class Main {
                     continue;
                 } else if ((!outOfRange(ny1, nx1) && outOfRange(ny2, nx2)) // 메소드를 아얘 끝내준다, 이 경우까지는 벽에 막힐 일이 전혀 없음, 가장 자리에 있는 것이기 때문에, 벽에 떨어질 수가 없음
                         || (outOfRange(ny1, nx1) && !outOfRange(ny2, nx2))) { // 둘중 하나만 나간 경우
-//                    System.out.println("coin1 : " + "(" + ny1 + ", " + nx1 + ")");
-//                    System.out.println("coin2 : " + "(" + ny2 + ", " + nx2 + ")");
-//                    System.out.println("value : " + point[4]);
                     res = point[4] + 1;
                     return;
                 }
 
-                if (map[ny1][nx1] == '#' && map[ny2][nx2] == '#') { // 둘다 벽인 경우는 갈 필요자체가 없음
-                    continue;
-                } else if (map[ny1][nx1] == '#') { // 원래 자리로 돌려줌
+                if (map[ny1][nx1] == '#') { // 원래 자리로 돌려줌
                     ny1 = point[0];
                     nx1 = point[1];
-                } else if (map[ny2][nx2] == '#') { // 원래 자리로 돌려줌
+                }
+
+                if (map[ny2][nx2] == '#') { // 원래 자리로 돌려줌
                     ny2 = point[2];
                     nx2 = point[3];
                 }
