@@ -36,6 +36,10 @@ import java.util.function.Function;
  * -- 해맸던 점
  * 이상하게 항상 그러는데, for 문에서 j++ 를 해줘야 하는데, i++ 를 해준다 자꾸
  * 그래서, 그것때문에 한 1분 해맸고, 바로 찾아서 해결하였음
+ *
+ * height 를 저런식으로 log 로 구하니까 이상하게 나옴
+ * size 가 1일 때 문제가 있나?
+ * 거의 맨 마지막에 터졌는데
  */
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -45,7 +49,8 @@ public class Main {
 
         int N = fun.apply(br.readLine());
         String[] input = br.readLine().split(" ");
-        int height = (int) Math.floor(Math.log(N) / Math.log(2)) + 1; // 솔직히 size 로 19를 바로 사용해도 된다. (2 ^ 18) 이 20만이니까, 하지만 그렇게 하고 싶지않다, 사이즈는 동적으로 생성해보자.
+//        int height = (int) Math.floor(Math.log(N) / Math.log(2)) + 1; // 솔직히 size 로 19를 바로 사용해도 된다. (2 ^ 18) 이 20만이니까, 하지만 그렇게 하고 싶지않다, 사이즈는 동적으로 생성해보자.
+        int height = 18; // height 를 동적으로 생성하면 안되는 이유는, 배열의 크기가 작아도, n == 50 만에 가깝게 나올 수 있기 때문이다, 즉 height 는 쿼리가 주어졌을 때, 그것을 빨리 구하기 위함이다.
         int[][] parent = new int[height + 1][N + 1];
 
         for (int i = 1; i <= N; i++) {
@@ -71,7 +76,7 @@ public class Main {
             // 그러면 쉽다, 바로 부모, 위의 위의 부모, 그리고 8 개 위의 부모를 찾아가면 된다.
             // 그러면 식을 n & (1 << j) != 0 로 구성할 수 있다
             for (int j = 0; j <= height; j++) { // 최대 height 까지 가능하지는 않은 것 같은데 확실하게 그렇게 하자
-                if ((n & (1 << j)) != 0) { // 이렇게 했을 때, 0이 아니다? 그러면 그 자리가 1인 것이다 부모를 움직여준다.
+                if ((n & (1 << j)) > 0) { // 이렇게 했을 때, 0이 아니다? 그러면 그 자리가 1인 것이다 부모를 움직여준다.
                     x = parent[j][x];
                 }
             }
