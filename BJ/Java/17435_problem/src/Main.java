@@ -50,7 +50,7 @@ public class Main {
         int N = fun.apply(br.readLine());
         String[] input = br.readLine().split(" ");
 //        int height = (int) Math.floor(Math.log(N) / Math.log(2)) + 1; // 솔직히 size 로 19를 바로 사용해도 된다. (2 ^ 18) 이 20만이니까, 하지만 그렇게 하고 싶지않다, 사이즈는 동적으로 생성해보자.
-        int height = 18; // height 를 동적으로 생성하면 안되는 이유는, 배열의 크기가 작아도, n == 50 만에 가깝게 나올 수 있기 때문이다, 즉 height 는 쿼리가 주어졌을 때, 그것을 빨리 구하기 위함이다.
+        int height = 19; // height 를 동적으로 생성하면 안되는 이유는, 배열의 크기가 작아도, n == 50 만에 가깝게 나올 수 있기 때문이다, 즉 height 는 쿼리가 주어졌을 때, 그것을 빨리 구하기 위함이다, 그래서 19 가 더 안전할 듯
         int[][] parent = new int[height + 1][N + 1];
 
         for (int i = 1; i <= N; i++) {
