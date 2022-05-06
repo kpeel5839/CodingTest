@@ -20,6 +20,12 @@ import java.util.function.Function;
  * 진짜 개좆같네
  * 이것때문에 3시간 쏟았는데
  * 진짜 개좆같다...
+ *
+ * 진짜 테스트 케이스에서도 그럼 걸리던가 좆같이
+ * 테스트 케이스에서는 안그러고 왜 실제로 정답 제출할 때만 그런건데
+ * 진짜 시간 개 아깝네 2시간 전에 맞은 건데
+ *
+ * 이거 진짜 개좆같이 초기화 무조건 solution 에서 했었어야 했던 게 진짜 개좆같네..
  */
 class Solution {
     public static void main(String[] args) throws IOException {
