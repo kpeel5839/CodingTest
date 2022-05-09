@@ -38,6 +38,18 @@ import java.util.function.Function;
  * res 에다가 더해준다.
  *
  * 그러면서 1 ~ 9 까지 진행해준다.
+ *
+ * -- 해맸던 점
+ * queue, fill 초기화를 진행안해줘서 자꾸해맸었고
+ * outOfRange 에서도, 흘러내린 경우인데, 여기서 minHeight = 0 으로 처리 안해주어서도 해맸었고,
+ * 그리고, map[i][j] == number && !visited[i][j] 로 했었어야 했는데, map[i][j] == number || !visited[i][j] 로 해가지고 해맸었음
+ *
+ * 근데, 결국은 다 찾아서 맞았음
+ * 아이디어는 낮은 높이의 땅부터 시작해서, 물을 채워준다는 느낌으로 했음
+ *
+ * 왜냐하면 물을 채우면 그거는 땅이나 다름 없으니까,
+ * 낮은 애들 부터 물을 차근차근 채워가면서 하면, 그러면, 완전 흘러내리는 경우도 찾을 수 있고,
+ * 가장 적합한 물을 채울 수 있는 높이를 찾을 수 있음
  */
 public class Main {
     public static int H;
