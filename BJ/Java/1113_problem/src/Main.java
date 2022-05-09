@@ -47,8 +47,8 @@ public class Main {
     public static int[] dy = {-1, 0, 1, 0};
     public static int[][] map;
     public static boolean[][] visited;
-    public static Queue<Point> queue = new LinkedList<>();
-    public static Queue<Point> fill = new LinkedList<>();
+    public static Queue<Point> queue;
+    public static Queue<Point> fill;
 
     public static class Point {
         int y;
@@ -66,6 +66,9 @@ public class Main {
     }
 
     public static void bfs(int y, int x, int number) {
+        queue = new LinkedList<>();
+        fill = new LinkedList<>();
+
         fill.add(new Point(y, x));
         queue.add(new Point(y, x));
         visited[y][x] = true;
@@ -73,10 +76,6 @@ public class Main {
         int minHeight = 10;
         while (!queue.isEmpty()) {
             Point point = queue.poll();
-
-            if (y == 1 && x == 1) {
-                System.out.println(point);
-            }
 
             for (int i = 0; i < 4; i++) {
                 int ny = point.y + dy[i];
@@ -134,15 +133,13 @@ public class Main {
             visited = new boolean[H][W]; // number 마다 visited 배열을 선언하여서, 높이가 변경되는 경우를 대비
             for (int i = 0; i < H; i++) {
                 for (int j = 0; j < W; j++) {
-                    if (map[i][j] == number || !visited[i][j]) { // ma[[i][j] 가 number 와 같을 때만 진행한다, 그리고 방문을 아직 하지 않은 경우
-                        mapPrint();
+                    if (map[i][j] == number && !visited[i][j]) { // ma[[i][j] 가 number 와 같을 때만 진행한다, 그리고 방문을 아직 하지 않은 경우
                         bfs(i, j, number);
                     }
                 }
             }
         }
 
-        mapPrint();
         System.out.println(res);
     }
 
