@@ -47,6 +47,8 @@ import java.util.function.Function;
  * 근데, 이제 문제는 입력을 받았을 때, 애초에 1 / (진짜 쌉 개큰수) 인 경우를 생각안했었어서
  * 또 다시, 입력 받고나서도 분자 1이라면 그냥 res = b 해서 끝냈더니
  * 아주 깔끔하게 맞았음
+ *
+ * 그리고 틀렸던 것은 res = a 해서 그럼 res = b, 즉 분모를 넣어줘야 하는데 모르고 a 넣어서 1만 출력되게 했음 ㅋㅋ
  */
 public class Main {
     static int T;
