@@ -84,9 +84,9 @@ class Solution {
         int nextStartTime = jobs[0][0];
         int jobsIndex = 0;
 
-        while (jobsIndex < div || !queue.isEmpty()) {
+        while (jobsIndex < div || !queue.isEmpty()) { // 모든 jobs 들은 PriorityQueue 에 한번은 들어갔다가 나와야함, 그래서 queue 는 꼭 empty 할 때 끝날 수 있음
             while ((jobsIndex < div) && (nextStartTime >= jobs[jobsIndex][0])) { // nextStartTime 보다 같거나 작은 애들을 다 집어넣는다.
-                queue.add(jobs[jobsIndex++]);
+                queue.add(jobs[jobsIndex++]); // 지금 실행 가능한 애들 다 집어넣기
             }
 
             if (queue.isEmpty()) { // 바로 연달아서 시작하는 것이 아닌, 이전 것 하고서, 시간이 조금 있다가 하는 경우는
@@ -96,12 +96,12 @@ class Solution {
                 continue;
             }
 
-            int[] nowJobs = queue.poll();
-            answer += (nextStartTime - nowJobs[0]) + nowJobs[1];
-            nextStartTime += nowJobs[1];
+            int[] nowJobs = queue.poll(); // 현재로서 실행 가능한 애들 다 들어가있음, 여기서 가장 실행시간 짧은 놈 고름
+            answer += (nextStartTime - nowJobs[0]) + nowJobs[1]; // 요청시간부터, 종료시간까지의 시간을 구해서 더해줌
+            nextStartTime += nowJobs[1]; // 다음 작업이 실행 가능한 시간을 명시
         }
 
-        answer = answer / div;
+        answer = answer / div; // 평균 구함
         return answer;
     }
 }
