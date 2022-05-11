@@ -2,6 +2,37 @@ import java.util.*;
 import java.io.*;
 import java.util.function.Function;
 
+// 디스크 컨트롤러
+
+/**
+ * -- 해결 방법
+ * 일단, 지금 현재 실행 가능한 것들, 그것들에서 가장 짧은 것을 선택하는 것이 전체 평균적인 요청 해결 평균시간을 줄이는데 엄청나게 효과적이다.
+ * 왜냐하면, 기다리는 애들이 많을 수록, 평균치는 기하급수적으로 늘게 된다. 하지만, 짧은 요청부터 처리하면, 기다리는 애들이 확연히 빠르게 줄어든다.
+ * 그래서, shortest jobs first 방법을 사용하는 것이다.
+ *
+ * 그 이후에는 그냥, nextStartTime 이라는 변수를 두어서
+ * 현재, 시작 가능한 시각을 명시하였음
+ * 그래서, 처음에 queue 가 empty 할 때에는, 일단 내가 정렬을 해놨기 때문에, 가장 앞에것은 무조건 실행시킬 리스트에 들어가야 한다.
+ * 만일 이거랑 시작시간이 같은 것이 없다면?
+ * 무조건 적으로 이놈을 실행시켜야 한다.
+ *
+ * 근데, 만약에 같은 애들이 많다면?
+ * 그러면 개내들도 다 넣어줘야 한다.
+ * 그래서 while 문으로 구성을 해서, queue 가 empty 할 때에는
+ * 처음 시작이니까, nextStartTime 에다가 시작시간을 넣어주고
+ * continue 를 해서, 같은 애들을 다 넣을 수 있도록 하였다.
+ *
+ * 그 다음에는, queue 에는 이제 현재 실행 가능한 애들만 남아있으니까, queue.poll() 해서, 실행시간이 가장 짧은애를 선택하여서 실행하면 된다.
+ * 그래서, 실행시킨다음에, nextStartTime 을 또 갱신을 해주어서, 이 시간안에 실행 가능한 애들을 탐색한다.
+ *
+ * 일단, queue 가 empty 할 때에는, nextStartTime 을 jobs[i][0]; continue; 으로 하면서, 시간이 같은 애들을 넣을 수 있도록 하였고,
+ * 그 다음에, nextStartTime 보다 작거나 같은애들을 다 넣게하고 (이것은 이제 작업이 연달아서 겹쳐있는 경우에 이렇게 해야 함, 현재 작업 가능한 애들 다 넣어야 하니까)
+ * 런타임 에러를 방지하기 위해서, queue 가 empty 할 때에는 작업이 끝난 뒤 한참 있다가 시작하는 것이니까
+ * 다시 초기 세팅으로 돌아갈 수 있도록 하였음
+ *
+ * 근데 처음에는 이것을 모르고 queue.isEmpty() 일 떄를 처리 안해서 해맸었고,
+ * while 조건에다가 조건들을 빈약하게 설정하여서도 많이 해맸음
+ */
 class Solution {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
