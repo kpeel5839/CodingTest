@@ -37,6 +37,11 @@ import java.util.function.Function;
  * 내가 하는 것은 동쪽은 1, 서쪽은 3, 남쪽은 2, 북쪽은 0 이다.
  *
  * 그리고 항상 이동이 가능한 경우만 주어지기 때문에, 딱히 도착하지 못하는 경우는 고려하지 않아도 된다.
+ *
+ * -- 해맸던 점
+ * 다 잘 설계하고 해놓고서
+ * 모르고 for (int i = -1; i <= 1; i += 2) 할 때, calDir(point.dir + i) 해주어야 하는데
+ * 그냥 calDir(point.dir) 했음, 이러니까 답이 안나왔지
  */
 public class Main {
     static int H;
