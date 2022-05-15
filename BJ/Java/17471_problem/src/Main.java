@@ -19,6 +19,13 @@ import java.util.function.Function;
  * -- 틀 설계
  * 일단 브루트 포스 느낌으로다가 dfs 로 각 구역구마다 포함된 선거구를 정해준다.
  * 그 다음에, bfs 를 통해서, 해당 선거구로 나눴을 때, 서로 인접한 상황인지를 판단한다.
+ *
+ * -- 해맸던 점
+ * 일단, 복사 붙혀넣기 하는 과정에서
+ * while (!b.isEmpty()) 부분에서 수정해야 할 부분을 수정하지 않았었어서 틀렸었고,
+ * 그 다음에, if (N == area.length) 에서 무조건 return 해주지 않아서 index exception 났었음
+ *
+ * 이 부분들 고치니까 바로 맞았음
  */
 public class Main {
     static int N;
@@ -58,11 +65,11 @@ public class Main {
 
         while (!b.isEmpty()) {
             int sta = b.poll();
-            totalA += count[sta];
+            totalB += count[sta];
 
             for (Integer next : graph.get(sta)) {
-                if (!visited[next] && area[next] == 0) { // 아직 방문하지 않았을 때, 같은 선거구일 때
-                    a.add(next);
+                if (!visited[next] && area[next] == 1) { // 아직 방문하지 않았을 때, 같은 선거구일 때
+                    b.add(next);
                     visited[next] = true;
                 }
             }
@@ -105,7 +112,7 @@ public class Main {
                 ans = Math.min(ans, Math.abs(res[0] - res[1]));
             }
 
-            System.out.println(Arrays.toString(area));
+//            System.out.println(Arrays.toString(area));
             return;
         }
 
