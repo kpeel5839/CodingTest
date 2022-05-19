@@ -84,6 +84,7 @@ class Solution {
         int nextStartTime = jobs[0][0];
         int jobsIndex = 0;
 
+        // 모든 jobs 들을 다 한번씩은 봐야 하기 때문에, jobsIndex < div 무조건임
         while (jobsIndex < div || !queue.isEmpty()) { // 모든 jobs 들은 PriorityQueue 에 한번은 들어갔다가 나와야함, 그래서 queue 는 꼭 empty 할 때 끝날 수 있음
             while ((jobsIndex < div) && (nextStartTime >= jobs[jobsIndex][0])) { // nextStartTime 보다 같거나 작은 애들을 다 집어넣는다.
                 queue.add(jobs[jobsIndex++]); // 지금 실행 가능한 애들 다 집어넣기
