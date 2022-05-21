@@ -1,7 +1,24 @@
 import java.util.*;
 import java.io.*;
 
+/**
+ * -- 해맸던 점
+ * 시작 지점, 즉 visited[y][x] = true 를 안해줘서 틀렸었음
+ * 개같은 것
+ */
 class Solution {
+    public static void main(String[] args) {
+        List<Object[]> res = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            Object[] obj = new Object[2];
+            obj[0] = i +3;
+            obj[1] = "fuck" + i;
+        }
+
+        System.out.println(res.get(0)[0]);
+    }
+
     static char[][][] map;
     static int Z;
     static int H;
@@ -23,6 +40,7 @@ class Solution {
         Queue<int[]> queue = new LinkedList<>();
         visited = new boolean[H][W];
         queue.add(new int[] {y, x, 0}); // 움직인 거리
+        visited[y][x] = true;
 
         while (!queue.isEmpty()) {
             int[] point = queue.poll(); // 지점을 빼서 진행
@@ -31,14 +49,11 @@ class Solution {
                 int ny = point[0] + dy[i];
                 int nx = point[1] + dx[i];
 
-                System.out.println(ny + ", " + nx);
-
                 if (outOfRange(ny, nx) || visited[ny][nx] || map[z][ny][nx] == 'X') { // 이미 방문했거나, 혹은 범위를 넘어갔거나 아니면 X 를 만났을 때
                     continue;
                 }
 
                 if (map[z][ny][nx] == 'P') { // 현재 방문한 곳이 응시자가 앉아있는 자리일 때
-                    System.out.println(z + "번째 맵 실패 : (시작 : (" + y + ", " + x + ") 실패지점 : (" + ny + ", " + nx +")");
                     return true;
                 }
 
