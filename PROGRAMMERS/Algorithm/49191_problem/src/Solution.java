@@ -1,90 +1,73 @@
 import java.util.*;
 import java.io.*;
 
+// 결국 답을 보았음..
+// 계속 생각을 했는데, 순간 귀찮음의 충동을 이기지 못해서 답을 보았는데
+// 생각보다 굉장히 단순했음
+
+/*
+일단 플로이드 워샬 알고리즘을 통해서,
+모든 정점에서 어떤 정점까지 갈 수 있는지에 대해서,
+즉 내가 어떤 정점에게는 지고, 어떤 정점에게는 이길 수 있는지 체크하는 게 중점인 문제였음
+
+그래서, 처음에 그래프를 받아서 인접행렬에 등록을 하면 된다.
+(a, b) 의 쌍이 들어왔을 떄
+arr[a][b] 는 1이다.
+왜냐? a -> b, a 는 b 를 이겼다는 표시로 1이라고 설정할 수 있다.
+
+그리고 arr[b][a] = -1 이다. b -> a 는 a 에게 졌다라는 의미로 -1을 집어넣을 수 있다.
+그래서, 플로이드 워샬 알고리즘을 통해서, 어떤 노드에게는 지고, 어떤 노드에게는 이기는 지
+그게 갱신이 되려면?
+당연하게도, arr[i][k] == 1 && arr[k][i] == 1 이거나
+이말은 즉 이 문제와 같이 1 -> 2 -> 5에서
+1 은 결국 5번을 이긴것과 다름이 없다
+그러면 이런식으로 초기화가 가능한 것이다 arr[1번][2] == 이기고 && arr[2번][5번] == 이겼으면
+그러면 arr[1][5] = 이겼고 arr[5번][1번] == 졌다
+이런느낌으로 가면 되고
+반대도 똑같이 해주면 된다.
+근데 arr[1][1] 이런 것 같은 경우는 어떻게 관리해야 할까?
+사실, 이런 경우는 arr[1][1] -> arr[1][4] 이 말은 즉, 둘다 1일 수도 없거니와
+arr[i][i] 는 0으로 초기화 되어 있기 때문에, arr[1][4] 와 같다 그래서 신경쓸 바가 아니다.
+*/
 class Solution {
-    /*
-    Character.isAlphabetic()
-    Character.toLowerCase()
-    이 두개가 알파벳인지 판단과, 소문자로 반환을 해주게 된다.
-    
-    일단, 교집합 합집합을 계산하기 이전에 두 String 을 2개씩 끊어주어야 한다.
-    그 다음에, 그 list 에서 겹치는 것들을 체크해야 한다.
-    일단 집합으로 만든 것들을 정렬할 수도 있다.
-    
-    정렬한 뒤 같은 것들은 묶어서 체크도 가능하다.
-    일단 각각의 map 으로 같은 문자열이 있는지 확인을 다 해야 하니까
-    두 문자 -> 개수 로 맵핑한다.
-    이렇게 각각의 str1, 2 에 대해서 map 을 만들고
-    str1 map 을 쫘르륵 돌면서 str2 map 에 대해서도 본인의 key 에 있는 것이 있나 확인한다.
-    만일 있다라면 min 값으로 하고 intersection 에다가 추가해준다
-    합집합 연산은 평소에도 계속 더하다가 교집합이 나오는 순간 union 에다가 더해준다.
-    그 다음에 str2 의 map 을 쫘르륵 돌아주면서 교집합 나오는 것들은 안더해주고 쭈루륵 간다.
-    
-    그런 다음 둘다 0인 경우
-    intersection 만 0 인 경우는 그냥 0으로 출력하면 되고
-    union 이 0 인 경우는 무조건 당연히 intersection 도 0이니 1로 결정하면 된다.
-    
-    확실히 이 문제는 방금 그곡보다는 쉬웠음
-    */
-    static void makeMap(String str, HashMap<String, Integer> strMap) {
-        for (int i = 0; i < (str.length() - 1); i++) {
-            String res = "";
-            char c1 = str.charAt(i);
-            char c2 = str.charAt(i + 1);
-
-            if (!Character.isAlphabetic(c1) || !Character.isAlphabetic(c2)) { // 둘중 하나라도 알파벳이 아니라면 넘어간다.
-                continue;
-            }
-
-            c1 = Character.toUpperCase(c1);
-            c2 = Character.toUpperCase(c2);
-
-            res = Character.toString(c1) + Character.toString(c2);
-            if (strMap.containsKey(res)) {
-                strMap.put(res, strMap.get(res) + 1);
-            } else {
-                strMap.put(res, 1);
-            }
-        }
-    }
-
-    public int solution(String str1, String str2) {
+    public int solution(int n, int[][] results) {
         int answer = 0;
-        int mul = 65536;
+        int[][] dp = new int[n + 1][n + 1];
 
-        HashMap<String, Integer> str1Map = new HashMap<>();
-        HashMap<String, Integer> str2Map = new HashMap<>();
+        for (int i = 0; i < results.length; i++){
+            int a = results[i][0];
+            int b = results[i][1];
 
-        makeMap(str1, str1Map);
-        makeMap(str2, str2Map);
+            dp[a][b] = 1;
+            dp[b][a] = -1;
+        }
 
-        float intersection = 0f;
-        float union = 0f;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n; j++) {
+                for (int k = 1; k <= n; k++) {
+                    if (dp[i][k] == 1 && dp[k][j] == 1) { // i -> k -> j 의 경우
+                        dp[i][j] = 1;
+                        dp[j][i] = -1;
+                    }
 
-        // map 은 구성했으니까 이제 교집합과 합집합을 찾아주면 된다.
-        for (String key : str1Map.keySet()) { // 일단 교집합을 우선으로 찾는다.
-            int a = str1Map.get(key); // 일단 개수 얻어 놓는다.
-            int b = 0; // str2
-
-            if (str2Map.containsKey(key)) { // str2 에도 있는 경우, 겹치는 것이다.
-                b = str2Map.get(key);
-                intersection += Math.min(a, b); // 교집합에는 작은 것
-                union += Math.max(a, b); // 합집합에는 큰 것을 더해준다.
-            } else {
-                union += a; // 겹치는 게 없는 경우는 그냥 a 만 더해준다.
+                    if (dp[i][k] == -1 && dp[k][j] == -1) { // i <- k <- j 의 경우
+                        dp[i][j] = -1;
+                        dp[j][i] = 1;
+                    }
+                }
             }
         }
 
-        for (String key : str2Map.keySet()) { // 여기서는 합집합만을 찾아서 더해준다.
-            if (!str1Map.containsKey(key)) { // str1Map 에 없는 것만 union 에다가 더해준다.
-                union += str2Map.get(key);
+        for (int i = 1; i <= n; i++) {
+            int count = 0;
+            for (int j = 1; j <= n; j++) {
+                if (dp[i][j] != 0) {
+                    count++;
+                }
             }
-        }
-
-        if (union == 0 && intersection == 0) {
-            answer = 1 * mul;
-        } else {
-            answer = (int) ((intersection / union) * mul) ;
+            if (count == (n - 1)) {
+                answer++;
+            }
         }
 
         return answer;
