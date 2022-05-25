@@ -16,6 +16,11 @@ class Solution {
     그리고, 각 graph 로 그냥 부모 노드만 알 수 있으면 될 것 같다 나중에 탐색도 필요가 없으니..
     
     그러면 일단 enroll 을 가지고, hashMap 을 통해서 Node 를 선언해보자.
+
+    해맸던 점은
+    Math.floor 를 이용했었어야 함..
+    Math.ceil 이 아니라
+    나머지 로직은 전혀 문제 없었음
     */
     static int MUL;
     static float DIV;
@@ -39,13 +44,11 @@ class Solution {
         int share = 0; // 나눌 돈이 없을 때를 대비해서 미리 0으로 선언
 
         if ((float) money * DIV >= 1.0f) { // 나머지가 있는 경우는
-            share = (int) Math.ceil((float) money * DIV); // 나눠줄 돈 만듦
-            System.out.println(share);
+            share = (int) Math.floor((float) money * DIV); // 나눠줄 돈 만듦
             money -= share;
         } // 나눠주고 Math.ceil 임, 나눴을 때 0 이면 이거 하지 않음
 
         cur.money += money; // 돈 더해줌
-        System.out.println(money);
 
         if (share != 0) { // share 할 돈이 있을 때
             distribute(cur.parent, share);
