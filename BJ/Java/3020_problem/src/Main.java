@@ -60,10 +60,6 @@ public class Main {
 
             return groundPointer; // 현재 groundPointer 가 현재 높이보다 높거나 같은애가 얼마나 있냐임, 그러니까 이게 답이지
         } else { // position is sky
-            if (skyPointer == sky.length) { // 이미 이 높이보다 높은 놈은 없음
-                return 0;
-            }
-
             h = H - h + 1; // 실제 거꾸로 봤을 떄의 높이로 변환해줌
             while (skyPointer < sky.length && h > sky[skyPointer]) { // 범위를 벗어나지 않고, 현재 종유석의 높이가 height 보다 높아지거나 같아질 때까지
                 skyPointer++;

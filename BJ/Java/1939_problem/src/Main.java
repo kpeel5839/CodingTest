@@ -117,6 +117,8 @@ public class Main {
             int a = find(edge.a);
             int b = find(edge.b);
 
+            System.out.println("sum1 : " + edge.a + " sum2 : " + edge.b + " cost : " + edge.cost);
+
             if (a != b) {
                 union(a, b);
             }
