@@ -32,6 +32,35 @@ import java.util.function.Function;
  * 핀의 개수가 무조건 8개 이상을 가지지 않는다는 것과
  * 맵이 항상 5 * 9 라는 것도 있음으로
  * 시간이 그리 오래 걸릴 것 같지 않다
+ *
+ * -- 해맸던 점
+ * 일단, 다 맞았었는데
+ * 처음에는 equals 를 해서 죽은 놈들을 처리하는 형식으로 했었다.
+ * 하지만, 그 방법에서는 point.equals(ny - dy[i], nx - dx[i]) 로 했었어야 했다라는 것을 간과하고 있어서 이 부분을 고치니까 해결이 되었다.
+ * 근데, 뒤지게 stack overflow 가 나오는 것이다.
+ *
+ * 왜 그러지 왜 그러지 하면서
+ * 뭔가 굉장히 비효율적으로, map[y][x] == '.' 이 더라도 실행되는 것들이 있는 것 같아서
+ * if (map[y][x] == '.') 구문을 추가하였더니
+ * 시간도 획기적으로 단축되고 맞았다.
+ *
+ * 근데 너무 이상하다, 이전 방식에서 remove 된 것들은 방문하지 않고,
+ * 그리고, 무엇보다 움직였다가 다 복구 시켜놓고
+ * pin 도 순서대로 다 방문해보는 것인데
+ * 왜 해당 pin 으로 방문했을 때, map[y][x] == '.'
+ * 인 경우가 있었더 것일까?
+ *
+ * 그것도 dfs 인데 ???
+ *
+ * 되게 이상했지만
+ * 그냥 현재로서 제거하는 애들은 .으로 바꿔서 제거해주고
+ * 다시 돌아오면 다음 상황을 전개해야 하니, 다시 'o' 로 바꿔주는 방식을 선택했다
+ * equals 도 쓰지 않았다.
+ *
+ * 그랬더니 코드가 훨씬 가독성도 좋아지고 간결해졌다.
+ *
+ * 근데, 아직도 그 문제점은 잘 모르겠는 찝찝함이 있다.
+ * 왜그랬을까...
  */
 public class Main {
     static int T;
@@ -41,7 +70,6 @@ public class Main {
     static int minMove;
     static int[] dx = {0, 1, 0, -1};
     static int[] dy = {-1, 0, 1, 0};
-    static boolean[] remove;
     static char[][] map;
     static List<Point> pinList;
 
@@ -52,14 +80,6 @@ public class Main {
         Point(int y, int x) {
             this.y = y;
             this.x = x;
-        }
-
-        public boolean equals(int y, int x) {
-            if (y == this.y && x == this.x) { // 같은 경우 true
-                return true;
-            } else { // 같지 않은 경우 false
-                return false;
-            }
         }
     }
 
@@ -87,7 +107,6 @@ public class Main {
         for (int i = 0; i < 4; i++) {
             int ny = y + dy[i];
             int nx = x + dx[i];
-            int dead = -1;
 
             if (outOfRange(ny, nx) || map[ny][nx] == '#') { // 범위를 벗어나는 경우
                 continue;
@@ -102,33 +121,19 @@ public class Main {
                     continue;
                 }
 
-                // 그러면 여기에 현재 pin 을 넘겨야 함
-                for (int j = 0; j < pinList.size(); j++) {
-                    if (j != pin) {
-                        if (pinList.get(j).equals(ny - dy[i], nx - dx[i])) {
-                            dead = j;
-                            remove[dead] = true;
-                            break;
-                        }
-                    }
-                }
-
                 map[y][x] = '.';
                 map[ny][nx] = 'o';
                 map[ny - dy[i]][nx - dx[i]] = '.';
                 pinList.set(pin, new Point(ny, nx));
 
                 for (int j = 0; j < pinList.size(); j++) {
-                    if (!remove[j]) {
-                        dfs(j, cnt + 1, remain - 1);
-                    }
+                    dfs(j, cnt + 1, remain - 1);
                 }
 
                 map[y][x] = 'o';
                 map[ny][nx] = '.';
                 map[ny - dy[i]][nx - dx[i]] = 'o';
                 pinList.set(pin, new Point(y, x));
-                remove[dead] = false; // 복구
             }
         }
 
@@ -169,7 +174,6 @@ public class Main {
 
             minRemain = pinList.size();
             minMove = Integer.MAX_VALUE;
-            remove = new boolean[pinList.size()];
 
             for (int i = 0; i < pinList.size(); i++) {
                 dfs(i,0, pinList.size());
