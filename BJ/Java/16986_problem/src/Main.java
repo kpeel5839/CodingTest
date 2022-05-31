@@ -57,6 +57,27 @@ import java.util.function.Function;
  * 그냥 나머지 2개중 아무거나 내면 된다.
  *
  * 비기는 경우 짜피 뒤에 있는 애가 이기기 때문에 이걸로 고심할 이유는 없음
+ *
+ * -- 해맸던 점
+ * 내가 진짜 이 문제는 대충 읽어서 너무 간과하는 것이 많았음
+ * 첫번째, 무조건 위에서 언급한 것처럼의 순서로 진행되는 것이 아님
+ * 규칙에도 적혀있지만, 이긴사람과 이전에 참가하지 않은 사람이 붙는다고 되어있음
+ * 두번째, 진짜 이건 개 어이없는 실수였는데
+ * 라운드별로 가위바위보가 진행되는 순서가 아니라
+ * 경희와 민호의 주어진 info가
+ * 그것이 아닌, 그냥 쟤내들이 낼 순서였음
+ * 즉, 얘내들은 여기서 반은 거의 안씀
+ *
+ * 아주 잦같은 문제였음
+ * 대충 읽어서 내 생각을 많이 잡아먹었음
+ * 나머지 조건들은 다 뭐 처음부터 괜찮았지만
+ *
+ * 진짜 이상한 것들 때문에 시간을 많이 잡아먹었었음
+ * 또 이외로 round[a]++ 만 해놓는다던가
+ * 그런 사소한 실수들도 많이 했음
+ *
+ * 문제 읽는 거는 너무 귀찮지만
+ * 다시 한번 꼼꼼히 읽어야 한다는 사실을 상기하였음
  */
 public class Main {
     static int N;
@@ -64,17 +85,17 @@ public class Main {
     static int res = 0;
     static int[] win = new int[4]; // 이긴 횟수
     static boolean[] visited; // 해당 손동작을 냈는지
-    static int[][] fight; // 경쟁하는 애들
-    static int[][] info = new int[4][20]; // 손동작, 1 == 경희, 2 == 민호씌
+    static int[][] info = new int[4][20]; // 손동작, 2 == 경희, 3 == 민호씌
     static int[][] syna; // 손동작의 상성, 0 = 진다, 1 = 비긴다, 2 = 이긴다.
+    static int[] round = new int[4]; // 알고보니까 경희, 민호는 라운드별로 저렇게 내는 게 아니였음....
 
-    static void bruteForce(int count) {
+    static void bruteForce(int a, int b) {
         if (res == 1) { // 이거면 아얘 게임 끝난겨
             return;
         }
 
+
         if (check()) { // 누군가가 이긴 경우
-            System.out.println(Arrays.toString(win));
             if (win[1] >= K) { // 하나가 K 이상인게 끝나버린겨, 근데 1 번이 이겼으면 끝나부린 것이제
                 res = 1;
             }
@@ -82,45 +103,72 @@ public class Main {
             return;
         }
 
-        int now = (count % 3) + 1; // 현재 fight 해야 하는 애들
+        if (a == 1 || b == 1) { // 선택해야 하는 경우는 솔직히, now == 1 인 경우 지우 - 경희
 
-        if (now == 1 || now == 3) { // 선택해야 하는 경우는 솔직히, now == 1 인 경우 지우 - 경희
+            if (b == 1) { // a 를 무조건 지우로 만들어준다.
+                int tmp = a;
+                a = b;
+                b = tmp;
+            }
+
             for (int i = 1; i <= N; i++) {
                 if (!visited[i]) { // 아직 안낸 것만 가능
-                    int a = fight[now][0]; // 지우
-                    int b = fight[now][1]; // 상대
-                    int decide = syna[i][info[b][count]]; // 현재 이게 2 면 a 가 이긴 것, 0 이면 진 것, 1이면 비긴 것
+                    int decide = syna[i][info[b][round[b]]]; // 현재 이게 2 면 a 가 이긴 것, 0 이면 진 것, 1이면 비긴 것
                     int winner;
 
                     if (decide == 2) { // a 가 이긴 경우, 즉 지우가 이긴 경우
                         winner = a;
-                    } else { // 나머지는 지우가 진 경우
+                    } else if (decide == 1) {
+                        winner = Math.max(a, b);
+                    } else {
                         winner = b;
                     }
 
                     win[winner]++;
                     visited[i] = true;
-                    bruteForce(count + 1);
+                    round[b]++;
+                    boolean[] player = new boolean[4];
+                    player[a] = true;
+                    player[b] = true;
+
+                    for (int j = 1; j <= 3; j++) {
+                        if (!player[j]) {
+                            bruteForce(winner, j);
+                        }
+                    }
+
+                    round[b]--;
                     win[winner]--;
                     visited[i] = false;
                 }
             }
         } else {
-            int a = fight[now][0];
-            int b = fight[now][1];
-            int decide = syna[info[a][count]][info[b][count]]; // 현재 이게 2 면 a 가 이긴 것, 0 이면 진 것, 1이면 비긴 것
+            int decide = syna[info[a][round[a]]][info[b][round[b]]]; // 현재 이게 2 면 a 가 이긴 것, 0 이면 진 것, 1이면 비긴 것
             int winner;
 
             if (decide == 0) { // b 가 이긴 경우
                 winner = b;
-            } else if (decide == 1) { // a, b 가 비긴 경우
+            } else if (decide == 1) { // a, b 가 비긴 경우, 사실 이것도 큰 숫자를 뒤에다가 두는 식으로 초기화하면 그냥 해결, 근데 고치기 귀찮(배열)
                 winner = Math.max(a, b);
             } else { // a 가 이긴 경우
                 winner = a;
             }
 
             win[winner]++;
-            bruteForce(count + 1);
+            round[a]++;
+            round[b]++;
+            boolean[] player = new boolean[4];
+            player[a] = true;
+            player[b] = true;
+
+            for (int j = 1; j <= 3; j++) {
+                if (!player[j]) {
+                    bruteForce(winner, j);
+                }
+            }
+
+            round[a]--;
+            round[b]--;
             win[winner]--; // 끝내고 돌아온 경우 다시 돌려내줌
         }
     }
@@ -144,7 +192,6 @@ public class Main {
         K = fun.apply(input[1]);
 
         syna = new int[N + 1][N + 1];
-        fight = new int[][] {{0, 0}, {1, 2}, {2, 3}, {1, 3}};
         visited = new boolean[N + 1];
 
         for (int i = 1; i <= N; i++) {
@@ -161,7 +208,7 @@ public class Main {
             }
         }
 
-        bruteForce(0);
+        bruteForce(1, 2);
 
         System.out.println(res);
     }
