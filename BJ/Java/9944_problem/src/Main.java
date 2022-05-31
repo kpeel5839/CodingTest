@@ -25,7 +25,8 @@ import java.util.function.Function;
  *
  * 일단 확실한 것은 method 를 이용해서 본인이 선택한 이동경로로 방문처리를 하면서 진행하는 메소드 하나는 만들어야 할 것 같다.
  *
- *
+ * 그리고 queue 에다가 visited 를 넣으면서
+ * remain 까지 넣어서 한번 최단 경로를 찾아보자.
  * -- 결과
  * 그냥 deep copy 로
  * bfs 에 충실하여 문제를 풀었는데
@@ -44,7 +45,7 @@ import java.util.function.Function;
  * 그냥 처음에 br.readLine() 으로 받은 것이 null 이면 break 아니면, 그냥 parsing 을 진행하는 형식으로 진행했음
  * 그리고 remain 과, res 를 갱신을 안해준 점?
  * 이것도 틀렸었던 이유였음
- * 
+ *
  */
 public class Main {
     static int H;
