@@ -1,6 +1,11 @@
 import java.util.*;
 import java.io.*;
 
+/**
+ * 소수 찾기 알고리즘에서 해맨 점은 i 로 안나눠서 살짝 해맸었고
+ * dfs 로 숫자들 만드는 거는 생각을 꽤 많이 했는데 한번에 성공해서 조금 놀랐음
+ * 그리고 중복된 숫자가 많을 수도 있어서 set 을 사용했음
+ */
 class Solution {
     static int answer;
     static boolean[] visited;
