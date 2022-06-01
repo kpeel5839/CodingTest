@@ -30,7 +30,7 @@ class Solution {
             digit++;
             number -= Math.pow(3, digit);
         }
-        
+
 
         int[] ans = new int[digit];
 
