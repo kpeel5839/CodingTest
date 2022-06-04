@@ -32,6 +32,14 @@ import java.util.function.Function;
  *
  * 일단 꽤 오래 봐버려서 flow 를 그냥 얼떨결에 외워버렸는데
  * 이 문제를 푼 이후에 알고리즘을 notion 에다가 정리하자
+ *
+ * -- 해맸던 점
+ * 애초에 다 맞았었음...
+ * 근데, 어디서 틀렸었냐면
+ * 그냥 ccw 또 계산하는데서 p2.y * p1.x 해야 하는데 또 +로 개지랄 해놨음
+ *
+ * 그래서 틀렸었음...
+ * 진짜 개빡침
  */
 public class Main {
     static List<Point> points = new ArrayList<>();
@@ -93,7 +101,7 @@ public class Main {
 
     static int ccw(Point p1, Point p2, Point p3) {
         long angle = ((p1.x * p2.y) + (p2.x * p3.y) + (p3.x * p1.y))
-                - ((p1.y * p2.x) + (p2.y + p3.x) + (p3.y + p1.x));
+                - ((p1.y * p2.x) + (p2.y * p3.x) + (p3.y * p1.x));
 
         return (angle == 0) ? 0 // 0 이면 평행
                 : (angle > 0) ? 1 : -1; // angle 이 양수이면 반시계, 아니면 시계 방향
@@ -115,7 +123,7 @@ public class Main {
             int a = fun.apply(input[0]);
             int b = fun.apply(input[1]);
 
-            points.add(new Point(b, a)); // a 가 x 값인데, 솔직히 딱히 그것은 중요하지 않다, 어떤 것을 내가 y 값으로 치는지가 중요하다.
+            points.add(new Point(a, b)); // a 가 x 값인데, 솔직히 딱히 그것은 중요하지 않다, 어떤 것을 내가 y 값으로 치는지가 중요하다.
         }
 
         System.out.println(solve());
