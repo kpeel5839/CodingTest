@@ -51,7 +51,6 @@ class Solution {
             }
         }
 
-        // count++;
         int diff = lionScore - appeachScore; // 점수차이
 
         if (diff > 0) { // 라이언이 이긴 경우이다.
@@ -81,10 +80,6 @@ class Solution {
             }
             return;
         }
-
-        // if (count == 3) {
-        //     return;
-        // }
 
         for (int j = 0; j <= remain; j++) { // 현재 depth를 선택할 수도 선택하지 않을 수도 있음
             lion[depth] = j;
