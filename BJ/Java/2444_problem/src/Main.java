@@ -4,36 +4,42 @@ import java.io.*;
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
 
         int N = Integer.parseInt(br.readLine());
         int index = 1;
         boolean crease = true;
 
-        while (true) {
-            for (int i = 0; i < N - index; i++) {
-                System.out.print(" ");
-            }
+        if (N == 1) {
+            sb.append("*");
+        } else {
+            while (true) {
+                for (int i = 0; i < N - index; i++) {
+                    sb.append(" ");
+                }
 
-            for (int i = 0; i < index * 2 - 1; i++) {
-                System.out.print("*");
-            }
+                for (int i = 0; i < index * 2 - 1; i++) {
+                    sb.append("*");
+                }
 
-            if (crease) {
-                index++;
-            } else {
-                index --;
-            }
+                if (crease) {
+                    index++;
+                } else {
+                    index--;
+                }
 
-            if (index == N) {
-                crease = false;
-            }
+                if (index == N) {
+                    crease = false;
+                }
 
-            if (index == 0) {
-                break;
-            }
+                if (index == 0) {
+                    break;
+                }
 
-            System.out.println();
+                sb.append("\n");
+            }
         }
+
+        System.out.println(sb);
     }
 }
-
