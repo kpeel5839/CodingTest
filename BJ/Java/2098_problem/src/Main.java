@@ -54,7 +54,7 @@ dp[vitmask][now] != INF 로 바꾸니 잘 되었음
 public class Main {
     public static int[][] dp , map;
     public static int n;
-    public static final int INF = 100000000; // 또 Inf 값 넣으면 괜히 더했을 때 음수되면서 값 이상해질 수 있으니까
+    public static final int INF = 1000000000; // 또 Inf 값 넣으면 괜히 더했을 때 음수되면서 값 이상해질 수 있으니까
     public static int tsp(int bitmask , int now){
         /*
         처음에는 모든 도시를 다 돌았을 때에 대한 처리를 해주고
@@ -65,7 +65,7 @@ public class Main {
         그 다음에 마지막에 계속해서 , 이전 호출들이 최소값을 구할 수 있도록, dp 값을 반환해준다.
          */
         if(bitmask == (1 << n) - 1){
-            if(map[now][0] == 0) return INF;
+            if(map[now][0] == 0) return INF - 1000; // 이렇게 하지 않으면 실패하는 경우를 기록할 수 없다, 실패하는 경우도 기록하여서, 처리를 하기 위하여, Math min 을 해치지 않고, 즉 어떤 값과 비교하였을 때, 피해가 가지 않도록 수정하였음
             return map[now][0];
         }
 
