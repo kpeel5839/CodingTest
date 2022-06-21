@@ -63,11 +63,48 @@ import java.util.function.Function;
  *
  * 파란색이면 그냥 방향 반대로 돌려서 그 방향에 있는 칸에 맞춰서 진행해준다.
  * 근데 여기서 다시 파란색인 경우 혹은 빈칸인 경우는 예외적으로 처리해주어야 한다.
+ *
+ * -- 결과
+ * 진짜 개 어이없다
+ * 로직 완벽하게 짜놓고서
+ * 도대체 뭐가 틀리지 이러면서 디버깅만 오지게 하면서 버렸음
+ *
+ * 문제는 이거였음
+ * 파란색 타일을 밟는 경우에
+ * 뭐 파란색 타일을 만나서 반대로 가가지고 4개가 되는 경우가 있었다고 가정하면
+ *
+ * 일단, 움직인 다음에 4개가 되었으니까 true 를 반환하긴 할 것이다.
+ *
+ * 하지만 이렇게 바보같이 생각한 것이 문제였다.
+ * 당연한거 였다 해당 함수를 호출한놈은 gameStart 의 for 문 안에서 호출했다.
+ *
+ * 그리고 파란색 타일을 만나서 반대도 파란색이 아니여서 이동한 경우, 즉 체스말이 4개가 모일 수 있는 가능성을 가진 경우에서
+ * 함수를 호출하는 것은?
+ * gameStart 가 아닌 execute 함수이다.
+ *
+ * 즉, 체스말이 4개가 되가지고 true 를 반환한다고 하더라도 반환을 받는 것은 execute 함수이고
+ * 그래서 그 값을 return execute(y, x) 했으면 해결이 되었을 텐데 개 바보같이 거기서 또 아래로 가서 return 했다 내가 도대체 왜 이랬지?
+ * 너무 다른 것에 눈이 멀었었다. 다른 것으로 틀렸을 것이라고 생각했었다.
+ *
+ * 그래서 execute 함수가 true 를 return 받게 되고 이 값으로 아무 것도 처리하지 않으니까 무의미한 true 값이다.
+ * 즉 이전에 문제는 파란색 타일을 만나 reverseDir 해서 반대로 가서 체스말이 4개가 모인다고 하더라도 종료할 수가 없었던 것이다.
+ *
+ * 그거해봤자 짜피 사용하지도 않고 if else 문 빠져나가가지고 당연히 본인 말은 움직이지 않거나 이미 움직여서 clear 되었을 테니까
+ * true 를 반환할 수가 없다 당연히 false 가 되는 것이다.
+ *
+ * 이 경우 boolean gameOver 가 당연하게 true 가 될 수가 없다. 본인이 부른 execute 메소드는 false 를 반환했으니까 지가 안에서 메소드 재귀적으로 호출해서
+ * 값 받은 거 처리도 안하고 그냥 본인한테 false 를 반환한 개 멍청한 메소드였던 것이다.
+ *
+ * 그래서 gameOver를 전역변수로 만들어서 execute 에서 아무것도 반환하지 않게 하던가 혹은
+ * return execute(y, x) 를 하는 방법이 있음..
+ *
+ * 진짜 이것 때문에 1시간 정도 날렸는데 진짜 개멍청하다 재연아..
  */
 
 public class Main {
     static int N;
     static int K;
+//    static boolean gameOver = false;
     static int cnt = 0;
     static Point[] horseList;
     static int[] dx = {0, 1, 0, -1};
@@ -129,6 +166,7 @@ public class Main {
          * chess 를 가지고 1번부터 실행하면 된다.
          * Point 를 순서대로 돌면서 진행하면 된다.
          */
+//        gameOver = false;
         boolean gameOver = false;
 
         for (int i = 0; i < K; i++) { // 4 개가 쌓이는 경우는 게임을 끝내주어야 한다.
@@ -136,8 +174,11 @@ public class Main {
             int x = horseList[i].x;
 
             if (chess.get(y).get(x).get(0).number == i) { // 이 경우에만 진행한다. 가장 아래에 깔려 있는 경우 가장 먼저 추가된 경우
+//                execute(y, x);
                 gameOver = execute(y, x); // 여기를 실행하라고 넘겨준다.
             }
+
+//            print(cnt);
 
             if (gameOver) {
                 break;
@@ -160,9 +201,13 @@ public class Main {
             int nny = y + dy[now.dir];
             int nnx = x + dx[now.dir];
 
+//            if (!(outOfRange(nny, nnx) || map[nny][nnx] == 2)) { // 반대 방향은 파란색이 아닐 때
+//                return execute(y, x); // 다시 현재 방향만 바꾼 상태에서 넘겨준다.
+//            } // 1번째 방법
+
             if (!(outOfRange(nny, nnx) || map[nny][nnx] == 2)) { // 반대 방향은 파란색이 아닐 때
-                execute(y, x); // 다시 현재 방향만 바꾼 상태에서 넘겨준다.
-            }
+                return execute(y, x); // 다시 현재 방향만 바꾼 상태에서 넘겨준다.
+            } // 2번째 방법
         }
         else if (map[ny][nx] == 0) { // 흰색인 경우
             // 흰색인 경우는 그냥 0 번째 순서대로 순서대로 읽어가면서 ny, nx 에다가 집어넣으면 된다.
@@ -184,8 +229,12 @@ public class Main {
             chess.get(y).get(x).clear();
         }
 
-        if (!outOfRange(ny, nx) && chess.get(ny).get(nx).size() >= 4) {
-            return true; // 게임 끝
+//        if (!outOfRange(ny, nx) && chess.get(ny).get(nx).size() >= 4) { // 1번째 방법
+//            gameOver = true; // 한번 이렇게 반환하는 형식이 아닌 gameOver 를 변경하는 형식을 취해보자, 근데 내가봤을 때는 이게 맞음...
+//        }
+
+        if (!outOfRange(ny, nx) && chess.get(ny).get(nx).size() >= 4) { // 2번째 방법
+            return true; // 한번 이렇게 반환하는 형식이 아닌 gameOver 를 변경하는 형식을 취해보자, 근데 내가봤을 때는 이게 맞음...
         } else {
             return false;
         }
@@ -202,12 +251,11 @@ public class Main {
         horseList = new Point[K];
         map = new int[N][N];
 
-
         for (int i = 0; i < N; i++) {
             input = br.readLine().split(" ");
             chess.add(new ArrayList<>());
             for (int j = 0; j < N; j++) { // 입력을 받아주면서, List 를 초기화
-                chess.get(i).add(new ArrayList<Horse>());
+                chess.get(i).add(new ArrayList<>());
                 map[i][j] = fun.apply(input[j]);
             }
         }
@@ -228,19 +276,14 @@ public class Main {
                 break;
             }
 
-            checkClear();
-
-            if (cnt >= 2) {
-                break;
-            }
-
-            if (1000 <= cnt) { // cnt 가 1000보다 큰 경우 (게임이 끝나지 않는 경우)
+            if (1000 < cnt) { // cnt 가 1000보다 큰 경우 (게임이 끝나지 않는 경우)
                 cnt = -1;
                 break;
             }
         }
 
-//        checkClear();
+//        mapPrint();
+//        System.out.println("chess size : (" + chess.size() + ", " + chess.get(0).size() + ")");
         System.out.println(cnt);
     }
 
@@ -254,6 +297,17 @@ public class Main {
                     break;
                 }
             }
+        }
+    }
+
+    static void mapPrint() {
+        System.out.println("mapPrint");
+
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                System.out.print(map[i][j] + " ");
+            }
+            System.out.println();
         }
     }
 
