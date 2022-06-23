@@ -69,7 +69,7 @@ class Solution {
         }
     }
 
-    static void bfs(int depth, int end) {
+    static void dfs(int depth, int end) {
         if (depth == end) {
             if (check()) { // check 하고 나가리
                 ans++;
@@ -85,7 +85,7 @@ class Solution {
             if (!inVisited[index]) { // 아직 고르지 않은 이름이면
                 inVisited[index] = true; // 방문 처리
                 list.add(name); // 이름 추가
-                bfs(depth + 1, end);
+                dfs(depth + 1, end);
                 inVisited[index] = false; // 방문 삭제
                 remove(name); // 이름 삭제
             }
@@ -144,7 +144,7 @@ class Solution {
             checkList(i, user_id, banned_id[i]);
         }
 
-        bfs(0, banned_id.length);
+        dfs(0, banned_id.length);
 
         return ans;
     }

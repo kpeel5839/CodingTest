@@ -32,6 +32,22 @@ class Solution2 {
     진짜 개 바보같이 map put 을 user length 만큼해서 user 다 넣어야 하는데
     진짜 개 미친놈 같이 banned_id.length 에다가 해놓고 왜 자꾸 null pointer 뜨지 미치겠네 이러고 있었네
     진짜 개멍청이인가...
+
+    진짜 저거 하고도 엄청 해맸었음
+    그냥 그래서 이전에 visited 로서 관리했던 것을 아얘 Set 으로 책임 전가를 했다
+    그래서 Solution1 을 보게 되면 훨씬 코드가 길다.
+    당연히 저거는 생고생으로 구현한 것이긴 하다
+    그래도 나름 좋은 아이디어였던 것 같은데, 내가 구현에서 실수했는지 절대로 정답처리를 받지 못했음
+
+    그래서 결과적으로 HashSet<HashSet<String>> setList = new HashSet 과
+    HashSet<String> set = new HashSet 으로 변경하면서 정답처리를 받았다.
+    되게 신기하다 HashSet 은 HashSet 도 판별을 하는구나 싶었다.
+    어떻게 판별하는 거지 심지어 엄청 빠르게
+
+    분명히 내부의 요소들을 검사해야 하는 부분인데 어떻게 이렇게 빨리 검사할 수 있는지 궁금하긴 하다.
+    쨋든 앞의 아이디어는 꽤나 괜찮았다고 생각이 들었지만 결론적으로 정답은 HashSet 을 써서 맞았다.
+
+    HashSet 은 진짜 좋은 라이브러리 인 것 같다라는 생각이 든다. (Set 에다가 담아놨던 정보를 잃지 않기 위해서, clone 을 진행해서 HashSetList 안에 있는 요소들이 dfs 를 진행하면서 변경되지 않도록 신경썼음)
     */
     static int ans = 0;
     static HashSet<HashSet<String>> setList = new HashSet<>();
@@ -39,7 +55,6 @@ class Solution2 {
     static List<ArrayList<String>> banList = new ArrayList<>(); // banned list 이다.
     static HashMap<String, Integer> map = new HashMap<>(); // 유저아이디를 저장할 map
     static boolean[] inVisited; // bfs 를 진행할 때, 쓸데 없는 반복을 줄이기 위해서
-//    static boolean[][] visited; // 해당 단어가 해당 위치에 들어간적이 있나 체크하는 배열
 
     static void checkList(int now, String[] user_id, String banName) {
         // i 번째 banned 와 일치하는 것들을 List.get(now).add 해준다.
@@ -70,7 +85,7 @@ class Solution2 {
         }
     }
 
-    static void bfs(int depth, int end) {
+    static void dfs(int depth, int end) {
         if (depth == end) {
             if (check()) { // check 하고 나가리
                 ans++;
@@ -86,45 +101,15 @@ class Solution2 {
             if (!inVisited[index]) { // 아직 고르지 않은 이름이면
                 inVisited[index] = true; // 방문 처리
                 list.add(name); // 이름 추가
-                bfs(depth + 1, end);
+                dfs(depth + 1, end);
                 inVisited[index] = false; // 방문 삭제
                 list.remove(name); // 이름 삭제
             }
         }
     }
 
-//    static void remove(String name) {
-//        for (int i = 0; i < list.size(); i++) {
-//            if (list.get(i).equals(name)) {
-//                list.remove(i);
-//                break;
-//            }
-//        }
-//    }
-
     static boolean check() {
-        // 현재 list 를 가지고 정렬한 뒤에 이게 이전거랑 완전히 같은지 한번 확인해본다.
-//        Collections.sort(list); // String 이니까 알아서 오름차순 정렬
         boolean equal = true; // 일치하지 않는 것이 하나라도 있으면 다른 것으로 취급 바로 false 로 변경한다.
-
-//        for (int i = 0; i < list.size(); i++) {
-//            String name = list.get(i);
-//            int nameIndex = map.get(name); // 이름의 index 를 얻어낸다.
-//
-//            if (!visited[nameIndex][i]) { // 방문하지 않았던 것이 있으면
-//                equal = false;
-//                break;
-//            }
-//        }
-//
-//        if (!equal) { // 일치하지 않았던, 즉 처음나온 배열이라면 지금 나온대로 방문처리를 진행해준다.
-//            for (int i = 0; i < list.size(); i++) {
-//                String name = list.get(i);
-//                int nameIndex = map.get(name);
-//
-//                visited[nameIndex][i] = true;
-//            }
-//        }
 
         if (!setList.contains(list)) {
             setList.add(list);
@@ -137,7 +122,6 @@ class Solution2 {
 
     public static int solution(String[] user_id, String[] banned_id) {
         inVisited = new boolean[user_id.length];
-//        visited = new boolean[user_id.length][banned_id.length]; // 해당 이름이 해당 위치에 들어간적이 있냐
 
         for (int i = 0; i < banned_id.length; i++) {
             banList.add(new ArrayList<>());
@@ -151,7 +135,7 @@ class Solution2 {
             checkList(i, user_id, banned_id[i]);
         }
 
-        bfs(0, banned_id.length);
+        dfs(0, banned_id.length);
 
         return ans;
     }
