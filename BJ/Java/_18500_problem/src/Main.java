@@ -46,6 +46,12 @@ import java.util.function.Function;
  * 가장 작은 값을 취해 해당 클러스터를 그 정도만 내려주면 된다.
  *
  * 그러면 끝이다.
+ *
+ * -- 해맸던 점
+ * 처음에 땅에 있던 놈들도 clusterNumber = 1 로 해주어야 하는데
+ * queue 에다가 넣으면서 안해가지고 클러스터가 분리되도 낙하가 안되는 문제가 있었음
+ *
+ * 그래서 그것을 추가해주자 말자 맞았음
  */
 
 public class Main {
