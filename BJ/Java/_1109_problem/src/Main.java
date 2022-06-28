@@ -71,7 +71,17 @@ import java.util.function.Function;
  * 3. parent 를 가지고 재귀적으로 부모를 타고 올라가면서 섬의 번호를 갱신
  * 4. 섬의 높이가 가장 높은 섬을 (height 배열) M 으로 지정후 배열을 만들어 (cnt 배열) 각 M 까지 세줌
  * 5. 그리고 순서대로 cnt 배열을 출력
- */
+ *
+ * -- 해매고 있는 점
+ * 이 문제에서 내가 해매는 점은 분명하게 parent 배열에서 재귀적으로 꼬임이 일어나고 있음
+ * 이게 진짜 이상함
+ * 어떻게 해서 어떤식으로 섬이 이루어져 있길래 재귀적으로 꼬이게 될 수 있는 것이지?
+ * 그런 경우가 가능한건가?
+ *
+ * 애초에 그런 경우가 있나?
+ * 확실한 것은 그런 경우에 집중해서 이 문제를 해결해야함
+ * 절대로 지금 현재 내 풀이방식이 틀렸다는 생각은 안함
+함*/
 public class Main {
     static int H;
     static int W;
@@ -137,7 +147,7 @@ public class Main {
                         continue;
                     }
 
-                    if (map[ny][nx] == 'x' && sum[ny][nx] != sum[y][x]) {
+                    if (map[ny][nx] == 'x') {
                         meetCount[sum[ny][nx]]++; // 증가시켜주고
                         continue;
                     }
@@ -150,17 +160,19 @@ public class Main {
 
         if (!init) {
             int max = 0;
+            int maxIndex = 0;
 
             for (int i = 1; i <= sumNumber; i++) {
                 if (i != sum[y][x]) { // 현재 섬 넘버가 아닌 것들에서 가장 높은 것을 뽑을 것임
-                    if (meetCount[i] > meetCount[max]) {
-                        max = i;
+                    if (max < meetCount[i]) {
+                        max = meetCount[i];
+                        maxIndex = i;
                     }
                 }
             }
 
             set.add(sum[y][x]);
-            parent[sum[y][x]] = max; // sum[y][x] 의 parent 는 max 로 정함 (즉 가장 많이 만난놈)
+            parent[sum[y][x]] = maxIndex; // sum[y][x] 의 parent 는 max 로 정함 (즉 가장 많이 만난놈)
         }
     }
 
@@ -175,15 +187,15 @@ public class Main {
     }
 
     static void find(int a, int value) {
-        if (a != parent[a]) {
+        if (a != parent[a] && a != 0) { // 방문한적이 없어야함
             height[parent[a]] = Math.max(height[parent[a]], value + 1); // 본인이 가진 value + 1 이나 혹은 이미 정해져 있던 높이
             find(parent[a], height[parent[a]]); // 그 중 높은 것으로 올려보낸다.
         }
     }
 
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("./_1109_problem/src/sample_input.txt")));
-//        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("./_1109_problem/src/sample_input.txt")));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
         Function<String, Integer> fun = Integer::parseInt;
 
@@ -225,7 +237,6 @@ public class Main {
             parent[i] = i; // 본인의 부모는 본인으로 초기화
         }
 
-
         for (int i = 0; i < H; i++) {
             for (int j = 0; j < W; j++) {
                 if (map[i][j] == 'x' && !set.contains(sum[i][j])) { // x 여야 하고 set 에 섬 넘버가 들어가서는 안됨
@@ -237,11 +248,7 @@ public class Main {
 
         for (int i = 1; i <= sumNumber; i++) {
             find(i, height[i]); // i 와 현재 i 가 가지고 있는 높이를 보내서 섬의 높이들을 갱신시킴
-//            System.out.println(i + " 실행 " + Arrays.toString(height));
         }
-
-//        System.out.println(Arrays.toString(parent));
-//        System.out.println(Arrays.toString(height));
 
         int M = 0;
         for (int i = 1; i <= sumNumber; i++) {
