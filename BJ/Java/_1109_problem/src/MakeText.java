@@ -73,10 +73,6 @@ public class MakeText {
             size += 4;
             y -= 2;
             x -= 2;
-
-//            if (size == 16) {
-//                break;
-//            }
         }
 
         for (int i = 0; i < N; i++) {
@@ -112,14 +108,14 @@ public class MakeText {
         FileOutputStream fio = new FileOutputStream("./_1109_problem/src/sample_input.txt");
         text = new StringBuilder();
 
-        N = 50;
-        M = 50;
+        N = 51;
+        M = 51;
         text.append(N + " ").append(M + "\n");
 
         map = new char[N][M];
 //        randomMake();
-//        noRandom();
-        maxX();
+        noRandom();
+//        maxX();
 
         byte[] bytes = text.toString().getBytes();
 

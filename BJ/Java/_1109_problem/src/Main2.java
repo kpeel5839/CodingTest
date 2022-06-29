@@ -81,20 +81,30 @@ import java.util.function.Function;
  * 애초에 그런 경우가 있나?
  * 확실한 것은 그런 경우에 집중해서 이 문제를 해결해야함
  * 절대로 지금 현재 내 풀이방식이 틀렸다는 생각은 안함
-함*/
-public class Main {
+ *
+ * 그러면 그냥 바다를 넓혀서
+ * 바다를 탐색해보자.
+ * 그리고서 나가버리면? 그냥 처리안하고
+ * 안나가면 만나는 거 set 에다가 저장했다가.
+ * meetCount 도
+ *
+ * 그러고서 그냥 가장 많이 만난거를 다 부모로 해버리자.
+ */
+public class Main2 {
     static int H;
     static int W;
     static int sumNumber = 0; // 섬의 번호를 붙힐 것임, 이게 섬의 개수를 의미하기도 한다.
+    static int depth = -1;
     static int[] dx = {0, 1, 1, 1, 0, -1, -1, -1};
     static int[] dy = {-1, -1, 0, 1, 1, 1, 0, -1}; // 8 방향
     static int[] parent;
     static int[] height;
     static int[] cnt;
+    static int[][] sea;
     static boolean[][] visited;
     static char[][] map;
     static int[][] sum;
-    static HashSet<Integer> set = new HashSet<>();
+//    static HashSet<Integer> set = new HashSet<>();
 
     static boolean outOfRange(int y, int x) {
         if (y < 0 || y >= H || x < 0 || x >= W) {
@@ -109,70 +119,65 @@ public class Main {
         queue.add(new Point(y, x));
         visited[y][x] = true; // 방문처리
 
-        int[] meetCount = null;
-
         if (init) { // 섬번호를 지정하는 것이면
             sum[y][x] = sumNumber;
+        }
+
+        if (init) {
+            while (!queue.isEmpty()) { // queue 가 빌때까지
+                Point point = queue.poll();
+
+                if (init) { // 조사면 8 방향
+                    for (int i = 0; i < 8; i++) {
+                        int ny = point.y + dy[i];
+                        int nx = point.x + dx[i];
+
+                        if (outOfRange(ny, nx) || visited[ny][nx] || map[ny][nx] == '.') { // . 이거나 이미 방문하거나 범위를 벗어나면 continue
+                            continue;
+                        }
+
+                        sum[ny][nx] = sumNumber; // 섬번호 붙혀줌
+                        queue.add(new Point(ny, nx)); // queue 에 넣어줘서 계속 이어갈 수 있도록
+                        visited[ny][nx] = true;
+                    }
+                }
+            }
         } else {
-            meetCount = new int[sumNumber + 1];
-        }
+            // 이제 새로운 아이디어, 만나면서 섬을 저장하고, depth 도 저장하는 것임
+            // 새로 만나는 섬은 next 에다가 담고 진행, 끝나면 copy 해서 다시 진행
+            while (!queue.isEmpty()) {
+                depth++;
+                Queue<Point> next = new LinkedList<>();
 
-        while (!queue.isEmpty()) { // queue 가 빌때까지
-            Point point = queue.poll();
+                while (!queue.isEmpty()) {
+                    Point point = queue.poll();
 
-            if (init) { // 조사면 8 방향
-                for (int i = 0; i < 8; i++) {
-                    int ny = point.y + dy[i];
-                    int nx = point.x + dx[i];
+                    for (int i = 0; i < 8; i += 2) {
+                        int ny = point.y + dy[i];
+                        int nx = point.x + dx[i];
 
-                    if (outOfRange(ny, nx) || visited[ny][nx] || map[ny][nx] == '.') { // . 이거나 이미 방문하거나 범위를 벗어나면 continue
-                        continue;
+                        if (outOfRange(ny, nx) || visited[ny][nx]) {
+                            continue;
+                        }
+
+                        if (map[ny][nx] == 'x') {
+                            next.add(new Point(ny, nx)); // 다음에 방문할 것으로 넣어놓고 다음으로
+                            visited[ny][nx] = true;
+                            continue;
+                        }
+
+                        sea[ny][nx] = depth;
+                        visited[ny][nx] = true;
+                        queue.add(new Point(ny, nx));
                     }
-
-                    sum[ny][nx] = sumNumber; // 섬번호 붙혀줌
-                    queue.add(new Point(ny, nx)); // queue 에 넣어줘서 계속 이어갈 수 있도록
-                    visited[ny][nx] = true;
                 }
-            } else { // 조사가 아니면 4 방향
-                for (int i = 0; i < 8; i += 2) {
-                    int ny = point.y + dy[i];
-                    int nx = point.x + dx[i];
 
-                    if (outOfRange(ny, nx)) { // 이거면 아얘 parent 로 아무것도 안들어감 그니까 그냥 바로 빠져나감
-                        set.add(sum[y][x]); // 현재 섬 넘버는 이제 볼 필요가 없음 짜피 포함되지 않으니까
-                        continue;
-                    }
-
-                    if (visited[ny][nx]) {
-                        continue;
-                    }
-
-                    if (map[ny][nx] == 'x' && sum[ny][nx] != sum[y][x]) {
-                        meetCount[sum[ny][nx]]++; // 증가시켜주고
-                        continue;
-                    }
-
-                    queue.add(new Point(ny, nx));
-                    visited[ny][nx] = true;
+                while (!next.isEmpty()) {
+                    Point point = next.poll();
+                    sea[point.y][point.x] = depth - 1;
+                    queue.add(point);
                 }
             }
-        }
-
-        if (!init && !set.contains(sum[y][x])) {
-            int max = 0;
-            int maxIndex = 0;
-
-            for (int i = 1; i <= sumNumber; i++) {
-                if (i != sum[y][x]) { // 현재 섬 넘버가 아닌 것들에서 가장 높은 것을 뽑을 것임
-                    if (max < meetCount[i]) {
-                        max = meetCount[i];
-                        maxIndex = i;
-                    }
-                }
-            }
-
-            set.add(sum[y][x]);
-            parent[sum[y][x]] = maxIndex; // sum[y][x] 의 parent 는 max 로 정함 (즉 가장 많이 만난놈)
         }
     }
 
@@ -200,19 +205,26 @@ public class Main {
         Function<String, Integer> fun = Integer::parseInt;
 
         String[] input = br.readLine().split(" ");
-        H = fun.apply(input[0]);
-        W = fun.apply(input[1]);
+        H = fun.apply(input[0]) + 2;
+        W = fun.apply(input[1]) + 2;
 
         map = new char[H][W];
         sum = new int[H][W];
+        sea = new int[H][W];
 
         for (int i = 0; i < H; i++) {
-            String string = br.readLine();
             for (int j = 0; j < W; j++) {
-                sum[i][j] = -1;
-                map[i][j] = string.charAt(j);
+                map[i][j] = '.';
             }
         }
+
+        for (int i = 1; i < H - 1; i++) {
+            String string = br.readLine();
+            for (int j = 1; j < W - 1; j++) {
+                map[i][j] = string.charAt(j - 1);
+            }
+        }
+
 
         visited = new boolean[H][W];
         for (int i = 0; i < H; i++) {
@@ -229,39 +241,74 @@ public class Main {
 
         for (int i = 1; i <= sumNumber; i++) {
             parent[i] = i; // 본인의 부모는 본인으로 초기화
+            height[i] = Integer.MAX_VALUE;
         }
 
+        visited = new boolean[H][W];
+        bfs(0, 0, false);
+        seaPrint();
+        sumPrint();
+
+        int M = 0;
         for (int i = 0; i < H; i++) {
             for (int j = 0; j < W; j++) {
-                if (map[i][j] == 'x' && !set.contains(sum[i][j])) { // x 여야 하고 set 에 섬 넘버가 들어가서는 안됨
-                    visited = new boolean[H][W];
-                    bfs(i, j, false); // parent 를 정하는 bfs
+                if (map[i][j] == 'x') {
+                    int min = height[sum[i][j]];
+
+                    for (int k = 0; k < 4; k++) {
+                        int ny = i + dy[k];
+                        int nx = j + dx[k];
+
+                        if (outOfRange(ny, nx) || map[ny][nx] == 'x') {
+                            continue;
+                        }
+
+                        min = Math.min(min, sea[ny][nx]);
+                    }
+
+                    height[sum[i][j]] = min;
+                    M = Math.max(M, height[sum[i][j]]);
                 }
             }
         }
 
-        for (int i = 1; i <= sumNumber; i++) {
-            find(i, height[i]);
-        }
-
-//        System.out.println(Arrays.toString(height));
-//        System.out.println(Arrays.toString(parent));
-
-        int M = 0;
-        for (int i = 1; i <= sumNumber; i++) {
-            M = Math.max(M, height[i]);
-        }
-
+        System.out.println(Arrays.toString(height));
         cnt = new int[M + 1];
 
         for (int i = 1; i <= sumNumber; i++) {
             cnt[height[i]]++;
         }
 
-        for (int i = 0; i <= M; i++) {
+        for (int i = M; i != -1; i--) {
             sb.append(cnt[i] + " ");
         }
 
         System.out.println(sumNumber == 0 ? -1 : sb); // sumNumber 가 없다면 이럼
+    }
+
+    static void seaPrint() {
+        System.out.println("sea!");
+
+        for (int i = 0; i < H; i++) {
+            for (int j = 0; j < W; j++) {
+                if (map[i][j] == 'x') {
+                    System.out.print("x");
+                } else {
+                    System.out.print(sea[i][j]);
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    static void sumPrint() {
+        System.out.println("sum!");
+
+        for (int i = 0; i < H; i++) {
+            for (int j = 0; j < W; j++) {
+                System.out.print(sum[i][j]);
+            }
+            System.out.println();
+        }
     }
 }
