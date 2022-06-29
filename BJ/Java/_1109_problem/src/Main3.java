@@ -120,6 +120,15 @@ import java.util.function.Function;
  * 왜냐? 이미 다른 섬이 방문처리해버렸으니까, 그래서 아얘 이거를 안하는 방법이 있는데, 이러면 해결이 되지만 시간 측면으로 좋지 않은 선택이다.
  *
  * 그렇기 때문에 이건 굉장히 잘 짠 코드라는 생각이 든다.
+ *
+ * 그래서 다시 최종적으로 정리를 이어가자면
+ * 1. 주변에 바다를 하나 더 두른다. (탈옥 문제와 굉장히 흡사한 방법)
+ * 2. 섬번호를 매긴다 (이것까지는 똑같음)
+ * 3. 0, 0 에서 시작해서 만나는 섬들을 HashMap<Integer, List<Point>> 로 잇는다. (재귀적으로, 더 깊게 들어간다)
+ * 4. 3번 과정에서 모든 섬들이 본인 내부에 있는 섬과와만 연결이 될 수 있도록, 섬의 바깥 부분은 다 visited 처리가 될 수 있도록 다른 섬이면 방문처리 해주지 않고, 그렇지 않으면 다 방문 처리한다.
+ * 5. getHeight 함수로 해당 섬과 연결된 섬 모두를 (0번은 섬이 아니라 바다이다. 그러니 가장 외곽에 있는 섬들이 이때 호출된다 (node 0 에)) 재귀적으로 가장 깊은 섬까지 들어가서 ret + 1 을 순차적으로 반환하고 ret = Math.max(ret, dfs(next)) 를 해준다.
+ * 6. 최종적으로 결정된 height 들 즉, ret 들을 가지고 height[ret]++ 를 해준다. (그러면서 ret 중 max 를 찾아냄)
+ * 7. for (int i = 0; i <= max; i++) sb.append(height[ret] + " "); 를 통해서 결과를 출력해준다. (만일 섬이 하나도 없는 경우, islands.size() == 0 인 경우는 -1을 출력해준다.)
  */
 public class Main3 {
     static int H;
@@ -269,13 +278,6 @@ public class Main3 {
                     setIsland(p, ++islandNo);
                 }
             } // island 번호 다 매김
-
-//            for (int i = 0; i < H; i++) {
-//                for (int j = 0; j < W; j++) {
-//                    System.out.print(map[i][j]);
-//                }
-//                System.out.println();
-//            }
 
             for (int i = 0; i <= islandNo; i++) { // island
                 nodes.put(i, new ArrayList<>());
