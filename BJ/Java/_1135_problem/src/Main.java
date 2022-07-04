@@ -74,11 +74,9 @@ public class Main {
         }
 
         Collections.sort(list, (o1, o2) -> o2 - o1);
-//        System.out.println(list);
+        
         for (Integer value : list) {
-//            System.out.println(index);
             res = Math.max(res, value + index++);
-//            System.out.println(res);
         }
 
         return res + 1;
