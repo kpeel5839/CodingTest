@@ -36,13 +36,17 @@ import java.util.function.Function;
  * 일단 가만히 있는 방향이 있는 것이 살짝 까다로울 것 같다.
  * 5 번이 가만히 있는 경우이다.
  *
- * 아두이노는 무조건 상대방이 있는 경우로 움직이게 되니, 8개의 방향을 이용해서 계산을 하면 된다.
- * 
+ * 아두이노는 무조건 상대방이 있는 경우로 움직이게 되니, 8개의 방향을 이용해서 계산을 하면 된다. (convertDir 메소드를 통해서 받은 dir 을 내 dir 식으로 변환시켜준다.)
+ *
+ * 종수가 먼저 움직여주고
+ * 미친 아두이노가 움직이는 형식으로 진행해주고
+ *
+ * 하나라도 죽었다고 true 를 반환하면 바로 sb.append("kraj " + X) 형식으로 진행해주고
+ * 만일 sb.length() == 0 이라는 것은 위와 같은 연산이 실행되지 않은 것이기에 map 을 출력해준다.
  */
 public class Main {
     static int H;
     static int W;
-    static int live = 0;
     static Point soo; // 종수의 위치
     static int[] instruct;
     static int[] dx = {0, 1, 1, 1, 0, -1, -1, -1, 0};
