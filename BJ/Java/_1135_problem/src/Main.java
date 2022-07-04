@@ -74,7 +74,7 @@ public class Main {
         }
 
         Collections.sort(list, (o1, o2) -> o2 - o1);
-        
+
         for (Integer value : list) {
             res = Math.max(res, value + index++);
         }
