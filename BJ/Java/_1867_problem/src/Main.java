@@ -46,7 +46,7 @@ import java.util.function.Function;
  * 쾨니그의 정리를 이해해야 함
  *
  * https://www.notion.so/1867-fe1a8b27c70e41ec9fcc1b10508853df
- * 이해한 내용을 토대로 작성했다.ㅊ
+ * 이해한 내용을 토대로 작성했다.
  */
 public class Main {
     static int N;
