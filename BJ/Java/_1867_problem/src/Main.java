@@ -47,6 +47,10 @@ import java.util.function.Function;
  *
  * https://www.notion.so/1867-fe1a8b27c70e41ec9fcc1b10508853df
  * 이해한 내용을 토대로 작성했다.
+ *
+ * 한 줄 요약하면 행 -> 열을 통해서 돌의 위치를 간선으로 표현하였고,
+ * 그 점을 이용해 모든 간선을 최소 정점으로 포함하기 위해 (Minimum Vertex Cover)
+ * 최대 유량 알고리즘을 통해서 Maximum Matching 개수를 구해준 것임
  */
 public class Main {
     static int N;
