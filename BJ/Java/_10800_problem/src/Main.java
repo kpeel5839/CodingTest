@@ -93,12 +93,12 @@ public class Main {
 
             res[ball[index].index] = sum - diff[ball[index].color];
             sum = innerSum + ball[index].size;
+            diff[ball[index].color] += ball[index].size;
 
             for (Integer number : map.keySet()) {
                 diff[number] += map.get(number);
             }
 
-            diff[ball[index].color] += ball[index].size;
             index++;
         }
 
