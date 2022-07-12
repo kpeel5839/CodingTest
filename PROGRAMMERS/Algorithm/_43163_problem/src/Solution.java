@@ -1,6 +1,10 @@
 import java.util.*;
 import java.io.*;
 
+/**
+ * 아이디어만 떠올린다면 정말 쉬운 문제이다.
+ * 그냥 bfs 문제랑 다를 바가 없는 문제
+ */
 class Solution {
     static int S = 0;
     static int D = 0;
