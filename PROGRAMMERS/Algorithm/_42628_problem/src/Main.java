@@ -34,7 +34,11 @@ class Solution {
     int[] 를 넣어서 [0] 번쨰 내용으로 정렬을 진행하는 것이 중요하다.
     
     그래서 이런식으로 진행하면 최종적으로 연산을 다 진행한다음, min 과 max 에서 하나씩 빼면 정답을 맞출 수 있을 것 같다.
+
+    -- 결과
+    설계대로 잘 되었음
     */
+
     public int[] solution(String[] operations) {
         PriorityQueue<int[]> min = new PriorityQueue<>((o1, o2) -> o1[0] - o2[0]);
         PriorityQueue<int[]> max = new PriorityQueue<>((o1, o2) -> o2[0] - o1[0]);
