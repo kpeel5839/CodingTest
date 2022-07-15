@@ -6,9 +6,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        LocalDate now = LocalDate.now();
-
-        System.out.println(now);
-        System.out.println(now.getDayOfMonth());
+        String string = "야!";
+        System.out.println(string.toLowerCase());
     }
 }
