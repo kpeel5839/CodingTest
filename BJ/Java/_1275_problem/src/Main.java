@@ -19,6 +19,11 @@ import static java.lang.Math.log;
  *
  * -- 틀 설계
  * 그냥 세그먼트 트리 문제이다.
+ *
+ * -- 해맸던 점
+ * 너무 익숙해져서 실수하는 것 같다.
+ * init 에서 i * 2 + 1 을 안해줘서 해맸었고
+ * 그리고, update 에서도 (left + right) / 2 + 1 이여야 하는데 (left + right) / 2 로 해서 틀렸었음
  */
 public class Main {
     static int N;
