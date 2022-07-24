@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 import java.util.function.Function;
 
-// 2568 : 전깃줄-2
+// 2316 : 도시 왕복하기 2
 
 /**
  * -- 전제 조건
@@ -11,7 +11,7 @@ import java.util.function.Function;
  */
 public class Main {
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("/Users/jaeyeonkim/Desktop/CodingTest/CodingTest/BJ/Java/_2568_problem/src/input.txt"));
+        System.setIn(new FileInputStream("/Users/jaeyeonkim/Desktop/CodingTest/CodingTest/BJ/Java/_2316_problem/src/input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         Function<String, Integer> fun = Integer::parseInt;
     }
