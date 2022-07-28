@@ -22,44 +22,29 @@ import java.util.function.Function;
  * 이렇게 구하면 어느정도 될 것 같긴한데 안될 확률이 너무 높다.
  * 왜냐하면 시간 복잡도상은 괜찮지만 예외 경우를 도저히 처리할 수가 없다.
  */
-public class Main {
+public class Main2 {
     static int N;
-    static int[] visited;
-
-    static int dfs(int depth, int remain) {
-//        System.out.println(depth);
-
-        if (visited[depth] == 6) {
-            return 0;
-        }
-
-        if (remain == 6) {
-            if (visited[depth] < 5) {
-                return 2;
+    static boolean[] visited = new boolean[1000];
+    static int[] move = {23, 1, 1, -23, -1, -1};
+    static int dfs(int cnt, int cur, int dir) {
+        if (cnt == 0) {
+            if (visited[cur]) {
+                return 1;
             } else {
                 return 0;
             }
         }
 
-        int res = 0;
-
-        // 다음 depth 로 가는 경우
-        visited[depth]++;
-        res += dfs(depth + 1, remain - 1);
-        visited[depth]--;
-
-        // 현재 depth 를 유지하는 경우
-        if (visited[depth] < 5) {
-            visited[depth + 1]++;
-            res += dfs(depth + 1, remain - 1);
-            visited[depth + 1]--;
-        } else {
-            // 현재 depth 가 5까지 차서 현재로 갈 수 없는 경우, 이전 경우로 가준다.
-            visited[depth - 1]++;
-            res += dfs(depth - 1, remain - 1);
-            visited[depth - 1]--;
-
+        if (visited[cur]) {
+            return 0;
         }
+
+        visited[cur] = true;
+
+        int res = dfs(cnt - 1, cur + move[(dir + 1) % 6], (dir + 1) % 6)
+                + dfs(cnt - 1, cur + move[(dir + 5) % 6], (dir + 5) % 6);
+
+        visited[cur] = false; // 이거는 갔다가 끝나는 dfs 가 아니기 때문에 체크아웃도 해주어야함
 
         return res;
     }
@@ -69,13 +54,8 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         N = Integer.parseInt(br.readLine());
-        visited = new int[N + 1];
 
-        if (N == 5) {
-            System.out.print(2);
-        } else {
-            visited[0]++;
-            System.out.println(dfs(0, N));
-        }
+        visited[500] = true;
+        System.out.println(dfs(N, 500 + move[0], 0));
     }
 }
