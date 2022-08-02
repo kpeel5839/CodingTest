@@ -16,124 +16,41 @@ import java.io.*;
 public class Main {
     static int N;
     static int kCnt = 0;
-    static boolean end;
     static int[] dx = {0, 1, 1, 1, 0, -1, -1, -1};
     static int[] dy = {-1, -1, 0, 1, 1, 1, 0, -1};
     static int[] start;
     static char[][] map;
     static int[][] height;
     static boolean[][] visited;
+    static Set<Integer> list = new HashSet<>();
 
-//    static class Point {
-//        int y;
-//        int x;
-//        int max;
-//        int min;
-//        int cnt; // K 개를 몇개 도달했는지 표시
-//
-//        Point(int y, int x, int max, int min, int cnt) {
-//            this.y = y;
-//            this.x = x;
-//            this.max = max;
-//            this.min = min;
-//            this.cnt = cnt;
-//        }
-//
-//        public boolean cal(int value, int mid) {
-//            // value 가 들어오면 min 과 max 중 하나로 대체하고, 고도의 차이를 보고, 현재 mid 이상이라면 false 를 반환하여서 가지 못하도록 한다.
-//            // 만일 가게 되면 초기화 가능하도록 한다.
-//            if (min <= value && value <= max) {
-//                return true;
-//            } else if (value < min) {
-//                if ((max - value) <= mid) { // min 이 value 로 대체되어도 고도차이가 mid 이하인 경우
-//                    return true;
-//                }
-//            } else {
-//                if (value - min <= mid) { // max 가 value 로 교체되어도, 고도차이가 mid 이하인 경우
-//                    return true;
-//                }
-//            }
-//
-//            return false;
-//        }
-//
-//        public int[] getMaxAndMin(int value) {
-//            return new int[] {Math.max(max, value), Math.min(min, value)};
-//        }
-//    }
-//    static boolean bfs(int mid) {
-//        // Point 로 지점을 넣어놓는다.
-//        Queue<Point> queue = new LinkedList<>();
-//        queue.add(new Point(start[0], start[1], height[start[0]][start[1]], height[start[0]][start[1]], 0));
-//
-//        while (!queue.isEmpty()) {
-//            Point point = queue.poll();
-//
-//            if (point.cnt == kCnt) { // 성공한 경우
-//                return true;
-//            }
-//
-//            for (int i = 0; i < 8; i++) {
-//                int ny = point.y + dy[i];
-//                int nx = point.x + dx[i];
-//
-//                if (outOfRange(ny, nx)) {
-//                    continue;
-//                }
-//
-//                int nextHeight = height[ny][nx];
-//
-//                if (point.cal(nextHeight, mid)) { // 가는게 가능한 경우
-//                    int[] maxAndMin = point.getMaxAndMin(nextHeight);
-//
-//                    if (map[ny][nx] == 'K') {
-//                        queue.add(new Point(ny, nx, maxAndMin[0], maxAndMin[1], point.cnt + 1));
-//                    } else {
-//                        queue.add(new Point(ny, nx, maxAndMin[0], maxAndMin[1], point.cnt));
-//                    }
-//                }
-//            }
-//        }
-//
-//        return false;
-//    }
+    static boolean bfs(int max, int min) {
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[] {start[0], start[1]});
+        visited[start[0]][start[1]] = true;
+        int cnt = 0;
 
-    static void dfs(int y, int x, int mid, int cnt, int max, int min) {
-        if (end) {
-            return;
-        }
+        while (!queue.isEmpty()) {
+            int[] point = queue.poll();
 
-        if (cnt == kCnt) {
-            end = true;
-            return;
-        }
-
-        visited[y][x] = true;
-
-        for (int i = 0; i < 8; i++) {
-            int ny = y + dy[i];
-            int nx = x + dx[i];
-
-            if (outOfRange(ny, nx) || visited[ny][nx]) {
-                continue;
+            if (map[point[0]][point[1]] == 'K') {
+                cnt++;
             }
 
-            int value = height[ny][nx];
-            int nMax = Math.max(max, value);
-            int nMin = Math.min(min, value);
+            for (int i = 0; i < 8; i++) {
+                int ny = point[0] + dy[i];
+                int nx = point[1] + dx[i];
 
-            if (nMax - nMin <= mid) {
-                int nCnt = cnt;
-
-                if (map[ny][nx] == 'K') {
-                    nCnt++;
+                if (outOfRange(ny, nx) || visited[ny][nx] || !(min <= height[ny][nx] && height[ny][nx] <= max)) {
+                    continue;
                 }
 
-                dfs(ny, nx, mid, nCnt, nMax, nMin);
+                visited[ny][nx] = true;
+                queue.add(new int[] {ny, nx});
             }
         }
 
-        visited[y][x] = false;
+        return cnt == kCnt;
     }
 
     static boolean outOfRange(int y, int x) {
@@ -152,9 +69,7 @@ public class Main {
         N = Integer.parseInt(br.readLine());
         height = new int[N][N];
         map = new char[N][N];
-        int min = Integer.MAX_VALUE;
-        int max = 0;
-        int ans = 0;
+        int ans = Integer.MAX_VALUE;
 
         for (int i = 0; i < N; i++) {
             String string = br.readLine();
@@ -175,26 +90,28 @@ public class Main {
 
             for (int j = 0; j < N; j++) {
                 height[i][j] = Integer.parseInt(st.nextToken());
-                min = Math.min(min, height[i][j]);
-                max = Math.max(max, height[i][j]);
+                list.add(height[i][j]);
             }
         }
 
-        int left = 0;
-        int right = max - min;
+        Integer[] h = list.toArray(Integer[]::new);
+        Arrays.sort(h);
 
-        while (left <= right) {
-            int mid = (left + right) / 2;
+        int lp = 0;
+        int rp = 0; // 하나의 고도로만 있는 맵을 고려하지 않았었다.
+
+        while (lp <= rp) {
+            int min = h[lp];
+            int max = h[rp];
             visited = new boolean[N][N];
-            end = false;
-            dfs(start[0], start[1], mid, 0, height[start[0]][start[1]], height[start[0]][start[1]]);
 
-            if (end) { // 성공한 경우 right = mid - 1 (고도 허용 범위를 낮춰봐야함)
-                System.out.println(mid);
-                ans = mid;
-                right = mid - 1;
-            } else { // 실패한 경우 left = mid + 1 (고도 허용 범위를 높여야함)
-                left = mid + 1;
+            if ((min <= height[start[0]][start[1]] && height[start[0]][start[1]] <= max) && bfs(max, min)) { // 성공한 경우 (min, max 의 범위를 시작 위치에는 적용하지 않았었음)
+                ans = Math.min(ans, max - min);
+                lp++;
+            } else if (rp != (h.length - 1)) {
+                rp++;
+            } else {
+                break;
             }
         }
 
