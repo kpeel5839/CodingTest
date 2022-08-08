@@ -6,7 +6,8 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        String string = "야!";
-        System.out.println(string.toLowerCase());
+        int[][][][] board = new int[1][4][][];
+
+        board[0][0] = new int[4][4];
     }
 }
