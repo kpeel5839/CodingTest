@@ -1,7 +1,6 @@
 import java.util.*;
-import java.io.*;
 
-class Solution {
+class DpVersion {
     static List<ArrayList<Edge>> graph = new ArrayList<>();
     static HashSet<Integer> gate = new HashSet<>();
     static HashSet<Integer> summit = new HashSet<>();
@@ -31,7 +30,8 @@ class Solution {
 
         for (Edge edge : graph.get(c)) {
             if (!gate.contains(edge.a)) {
-                int[] res = dfs(edge.a);
+                int[] tmp = dfs(edge.a);
+                int[] res = new int[] {tmp[0], tmp[1]};
                 res[1] = Math.max(res[1], edge.cost);
 
                 if (dp[c][1] >= res[1]) {
