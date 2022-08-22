@@ -1,5 +1,3 @@
-import jdk.jfr.Enabled;
-
 import java.util.*;
 import java.io.*;
 
@@ -10,13 +8,13 @@ import java.io.*;
  * 3
  * 12 10 4
  */
-public class Main {
+public class Main2 {
     static int N;
     static int cnt = 0;
     static int INF = 10000;
     static boolean[] visited = new boolean[10];
     static int[][] attack;
-    static HashMap<Equal, Integer> dp = new HashMap<>();
+    static HashMap<HashSet<Integer>, Integer> dp = new HashMap<>();
     static HashMap<HashSet<Integer>, HashSet<Integer>> tracking = new HashMap<>();
 
     static class Equal {
@@ -78,7 +76,6 @@ public class Main {
     static int dfs(int[] hp) {
         boolean end = true;
         HashSet<Integer> set = new HashSet<>();
-        System.out.println(Arrays.toString(hp));
 
         for (int i = 0; i < N; i++) {
             if (hp[i] != 0) {
@@ -88,20 +85,17 @@ public class Main {
             set.add(hp[i]);
         }
 
-        Equal equal = new Equal(hp);
-
         if (end) {
             return 0;
         }
 
-        if (dp.containsKey(equal)) {
-            return dp.get(equal);
+        if (dp.containsKey(set)) {
+            return dp.get(set);
         }
 
         int res = INF;
-        dp.put(equal, res);
+        dp.put(set, res);
 
-//        Loop:
         for (int i = 0; i < attack.length; i++) {
             int[] nHp = hp.clone();
 
@@ -110,21 +104,10 @@ public class Main {
             }
 
             res = Math.min(res, 1 + dfs(nHp));
-//            int res2 = 1 + dfs(nHp);
-
-//            HashSet<Integer> trackingSet = new HashSet<>();
-//            if (res > res2) {
-//                for (int j = 0; j < nHp.length; j++) {
-//                    trackingSet.add(nHp[j]);
-//                }
-//
-//                res = res2;
-//                tracking.put(set, trackingSet);
-//            }
         }
 
-        dp.put(equal, res);
-        return dp.get(equal);
+        dp.put(set, res);
+        return dp.get(set);
     }
 
     static void track(int[] hp) {
@@ -177,6 +160,6 @@ public class Main {
 
         comb(0, new ArrayList<>());
         System.out.println(dfs(hp.clone()));
-//        track(hp.clone());
+        track(hp.clone());
     }
 }
