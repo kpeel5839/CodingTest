@@ -28,76 +28,70 @@ import java.io.*;
  * .x...x....
  */
 public class Main {
+    static int N;
     static int H;
     static int W;
-    static int[] dx = {-1, -1, 1};
-    static int[] dy = {0, -1, -1};
-    static int[][][][] dp;
+    static int[] bitCnt;
     static char[][] map;
-    static boolean[][] visited;
-    static StringBuilder sb = new StringBuilder();
+    static int[][] dp;
+    static List<Integer> bitSet = new ArrayList<>();
 
-    static boolean outOfRange(int y, int x) {
-        if (y < 0 || y >= H || x < 0 || x >= W) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    static boolean check(int y, int x) {
-        if (outOfRange(y, x)) { // 여기에 있다면 true, 아니라면 false 를 반환하도록 하자.
-            return false;
-        }
-
-        return visited[y][x];
-    }
-
-    static int[] increase(int y, int x) {
-        if (x == W - 1) {
-            return new int[] {y + 1, 0};
-        } else {
-            return new int[] {y, x + 1};
-        }
-    }
-
-    static int dfs(int y, int x, int up, int bit) {
-        if (y == H) {
-            return 0;
-        }
-
-        boolean possible = true;
-
-        if (dp[up][bit][y][x] != -1) {
-            return dp[up][bit][y][x];
-        }
-
-        for (int i = 0; i < 3; i++) {
-            int ny = y + dy[i];
-            int nx = x + dx[i];
-
-            if (check(ny, nx)) { // 주변에 이미 차있으면
-                possible = false;
-                break;
+    static boolean checkX(int row, int bit) {
+        for (int i = 0; i < W; i++) {
+            if ((bit & (1 << i)) != 0 && map[row][i] == 'x') {
+                return false;
             }
         }
 
-        if (map[y][x] == 'x') { // map 이 x 여도 possible false 임
-            possible = false;
+        return true;
+    }
+
+    static boolean checkAdj(int bit) {
+        for (int i = 0; i < W - 1; i++) {
+            if ((bit & (1 << i)) != 0 && (bit & (1 << (i + 1))) != 0) {
+                return false;
+            }
         }
 
-        int[] nP = increase(y, x);
+        return true;
+    }
 
-        if (possible) {
-            visited[y][x] = true;
-            dp[up][bit][y][x] = Math.max(dp[up][bit][y][x], 1 + dfs(nP[0], nP[1], y != nP[0] ? bit | 1 << x : up,bit | 1 << x));
-            visited[y][x] = false;
-            dp[up][bit][y][x] = Math.max(dp[up][bit][y][x], dfs(nP[0], nP[1], y != nP[0] ? bit : up, bit));
-        } else {
-            dp[up][bit][y][x] = Math.max(dp[up][bit][y][x], dfs(nP[0], nP[1], y != nP[0] ? bit : up, bit));
+    static void countBit(int bit) { // 여기서 bitCnt 값도 채워줄 것임
+        int cnt = 0;
+
+        for (int i = 0; i < W; i++) {
+            if ((bit & (1 << i)) != 0) {
+                cnt++;
+            }
         }
 
-        return dp[up][bit][y][x];
+        bitCnt[bit] = cnt;
+    }
+
+    static boolean possible(int frontBit, int bit) {
+        for (int i = 0; i < W; i++) {
+            if ((frontBit & (1 << i)) != 0) {
+                if (i == 0) {
+                    if ((bit & (1 << (i + 1))) != 0) {
+                        return false;
+                    }
+                } else if (i == W - 1){
+                    if ((bit & (1 << (i - 1))) != 0) {
+                        return false;
+                    }
+                } else {
+                    if ((bit & (1 << (i + 1))) != 0) {
+                        return false;
+                    }
+
+                    if ((bit & (1 << (i - 1))) != 0) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 
     public static void main(String[] args) throws IOException {
@@ -113,17 +107,13 @@ public class Main {
 
             H = Integer.parseInt(st.nextToken());
             W = Integer.parseInt(st.nextToken());
-            dp = new int[1 << W][1 << W][H][W];
-            visited = new boolean[H][W];
-            map = new char[H][W];
 
-            for (int i = 0; i < dp.length; i++) {
-                for (int j = 0; j < dp[i].length; j++) {
-                    for (int c = 0; c < H; c++) {
-                        Arrays.fill(dp[i][j][c], -1);
-                    }
-                }
-            }
+            dp = new int[1 << W][H];
+            map = new char[H][W];
+            bitCnt = new int[1 << W];
+            bitSet = new ArrayList<>();
+
+            int ans = 0;
 
             for (int i = 0; i < H; i++) {
                 String string = br.readLine();
@@ -132,7 +122,34 @@ public class Main {
                 }
             }
 
-            bw.write(dfs(0, 0, 0, 0) + "\n");
+            for (int i = 0; i < 1 << W; i++) {
+                if (checkAdj(i)) { // 올바른 bit 인지
+                    countBit(i);
+                    bitSet.add(i);
+
+                    if (checkX(0, i)) {
+                        dp[i][0] = bitCnt[i]; // 초기화
+                        ans = Math.max(ans, dp[i][0]);
+                    }
+                }
+            }
+
+//            System.out.println(T + " H : " + H + " W : " + W);
+            for (int i = 1; i < H; i++) {
+                for (int bit : bitSet) {
+                    if (checkX(i, bit)) {
+                        for (int frontBit : bitSet) {
+                            if (possible(frontBit, bit)) { // 앞에 front 배치는 이러하고, 현재 bit 는 이러할 때 가능한지
+                                // 가능하다면, 최대값으로 갱신하기 위해서 연산을 진행해준다.
+                                dp[bit][i] = Math.max(dp[bit][i], dp[frontBit][i - 1] + bitCnt[bit]);
+                                ans = Math.max(ans, dp[bit][i]);
+                            }
+                        }
+                    }
+                }
+            }
+
+            bw.write(ans + "\n");
         }
 
         bw.flush();
