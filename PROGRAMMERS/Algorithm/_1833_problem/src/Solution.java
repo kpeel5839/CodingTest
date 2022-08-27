@@ -14,18 +14,11 @@ class Solution {
         int minX = xMap.get(Math.min(p1[0], p2[0]));
         int minY = yMap.get(Math.min(p1[1], p2[1])); // 바로 배열의 인덱스 값으로 변환
 
-        // System.out.println(Arrays.toString(p1));
-        // System.out.println(Arrays.toString(p2));
-        // System.out.println("minX, minY : " + minX + " " + minY);
-        // System.out.println("maxX, maxY : " + maxX + " " + maxY);
-
         if (maxX == minX || minY == maxY) { // 겹치는 좌표가 있기 때문에 직사각형의 넓이가 0이라 안됨
-            // System.out.println("넓이 0 !");
             return false;
         }
 
         int res = dp[maxY - 1][maxX - 1] - dp[minY][maxX - 1] - dp[maxY - 1][minX] + dp[minY][minX];
-        // System.out.println("이 두개 사이에 쐐기의 개수 : " + res);
 
         return res == 0; // res == 0 이면 가능한 것이니 true, 아니면 false
     }
@@ -43,9 +36,7 @@ class Solution {
             xSet.add(data[i][0]);
             ySet.add(data[i][1]);
         }
-
-        List<Integer> yList = new ArrayList<>();
-        List<Integer> xList = new ArrayList<>();
+        
         int[] xArr = new int[xSet.size()];
         int[] yArr = new int[ySet.size()];
 
@@ -83,13 +74,6 @@ class Solution {
                 dp[i][j] += (dp[i - 1][j] + dp[i][j - 1] - dp[i - 1][j - 1]);
             }
         } // dp 값까지 준비 완료
-
-        // for (int i = 0; i < dp.length; i++) {
-        //     for (int j = 0; j < dp[i].length; j++) {
-        //         System.out.print(dp[i][j] + " ");
-        //     }
-        //     System.out.println();
-        // }
 
         for (int i = 0; i < data.length; i++) {
             for (int j = i + 1; j < data.length; j++) {
