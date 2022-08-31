@@ -68,14 +68,6 @@ public class Dynamic {
             graph.get(b).add(new int[] {a, cost});
         }
 
-//        System.out.println(INF);
         System.out.println(dfs(1, 0));
-
-//        for (int i = 0; i <= K; i++) {
-//            for (int j = 1; j <= V; j++) {
-//                System.out.print(dp[j][i] + " ");
-//            }
-//            System.out.println();
-//        }
     }
 }
