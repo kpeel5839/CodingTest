@@ -15,7 +15,8 @@ public class Main {
         StringTokenizer st;
 
         int N = Integer.parseInt(br.readLine());
-        int[][] dp = new int[N + 1][250000 + 1];
+        int MX = 500000;
+        int[][] dp = new int[N + 1][MX + 1];
         int[] h = new int[N + 1];
 
         st = new StringTokenizer(br.readLine());
@@ -24,40 +25,31 @@ public class Main {
         }
 
         for (int i = 0; i <= N; i++) {
-            Arrays.fill(dp[i], Integer.MIN_VALUE);
+            Arrays.fill(dp[i], -1);
         }
 
         dp[0][0] = 0;
 
         for (int i = 1; i <= N; i++) {
-            for (int j = 0; j <= 21; j++) {
+            for (int j = 0; j <= MX; j++) {
                 // 본인을 추가하지 않는 경우
-                dp[i][j] = Math.max(dp[i][j], dp[i - 1][j]);
+                dp[i][j] = dp[i - 1][j];
 
                 // 본인을 추가하는 경우 (h2에)
-                if (j + h[i] <= 250000) {
+                if (j + h[i] <= MX && dp[i - 1][j + h[i]] != -1) { // 해당 dp[i][j] 가 존재를 해야지 가져올 수 있는 것
                     dp[i][j] = Math.max(dp[i][j], dp[i - 1][j + h[i]]);
                 }
 
                 // 본인을 추가하는 경우 (h1에)
-                if (h[i] <= j) {
+                if (j - h[i] >= 0 && dp[i - 1][j - h[i]] != -1) {
                     dp[i][j] = Math.max(dp[i][j], dp[i - 1][j - h[i]] + h[i]);
-                } else {
-                    dp[i][j] = Math.max(dp[i][j], dp[i - 1][h[i] - j] + j);
                 }
 
-//                if (j == 0) {
-//                    System.out.println("h[i] : " + h[i] + " dp[" + i + "][0] : " + dp[i][j]);
-//                }
+                if (h[i] - j >= 0 && dp[i - 1][h[i] - j] != -1) {
+                    dp[i][j] = Math.max(dp[i][j], dp[i - 1][h[i] - j] + j);
+                }
             }
         }
-
-//        for (int i = 0; i <= 21; i++) {
-//            for (int j = 1; j <= 3; j++) {
-//                System.out.print(dp[j][i] + " ");
-//            }
-//            System.out.println();
-//        }
 
         System.out.print(dp[N][0] == 0 ? -1 : dp[N][0]);
     }
