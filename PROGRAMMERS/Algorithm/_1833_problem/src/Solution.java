@@ -36,7 +36,7 @@ class Solution {
             xSet.add(data[i][0]);
             ySet.add(data[i][1]);
         }
-        
+
         int[] xArr = new int[xSet.size()];
         int[] yArr = new int[ySet.size()];
 
