@@ -23,7 +23,7 @@ public class Main {
         int S = Integer.parseInt(st.nextToken());
         int[] dp = new int[N + 1]; // 여기에는 해당 picture[i] 까지 고려했을 때, 최대 가격을 저장
         int[][] picture = new int[N + 1][2];
-        picture[0][0] = -1_000_000_000;
+        picture[0][0] = -1_000_000_000; // Integer.MIN_VALUE 로 하니까 정렬이 제대로 안됐음, 그 이유는 아마 o1[0] - o2[0] 에서 value 가 overflow 가 되어서 잘 정렬이 되지 않은 것으로 보임
         picture[0][1] = 0;
 
         for (int i = 1; i <= N; i++) {
