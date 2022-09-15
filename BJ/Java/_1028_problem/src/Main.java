@@ -74,9 +74,12 @@ public class Main {
 //            }
 //        }
 
+//        int timeComplex = 0;
+
         for (int i = 0; i < R; i++) {
             for (int j = 0; j < C; j++) {
                 if (map[i][j] == 1) {
+//                    timeComplex += Math.min(left[i][j], right[i][j]) + 1;
                     for (int k = 0; k <= Math.min(left[i][j], right[i][j]); k++) {
                         boolean diamond = false; // 다이아몬드가 맞으면 true 로 남아있음
 
@@ -96,6 +99,7 @@ public class Main {
             }
         }
 
+//        System.out.println(timeComplex);
         System.out.println(ans);
     }
 }
