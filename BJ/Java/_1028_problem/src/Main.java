@@ -77,23 +77,20 @@ public class Main {
         for (int i = 0; i < R; i++) {
             for (int j = 0; j < C; j++) {
                 if (map[i][j] == 1) {
-                    int min = Math.min(left[i][j], right[i][j]); // 최대 이 사이즈임
-                    boolean diamond = false; // 다이아몬드가 맞으면 true 로 남아있음
+                    for (int k = 0; k <= Math.min(left[i][j], right[i][j]); k++) {
+                        boolean diamond = false; // 다이아몬드가 맞으면 true 로 남아있음
 
-                    if (min * 2 > i) {
-                        min = i / 2;
-                    }
+                        int y = i - k;
+                        int xLeft = j - k;
+                        int xRight = j + k;
 
-                    int y = i - min;
-                    int xLeft = j - min;
-                    int xRight = j + min;
+                        if (k <= right[y][xLeft] && k <= left[y][xRight]) {
+                            diamond = true;
+                        }
 
-                    if (min <= right[y][xLeft] && min <= left[y][xRight]) {
-                        diamond = true;
-                    }
-
-                    if (diamond) {
-                        ans = Math.max(ans, min + 1);
+                        if (diamond) {
+                            ans = Math.max(ans, k + 1);
+                        }
                     }
                 }
             }
