@@ -55,7 +55,7 @@ public class Main {
             return "";
         }
 
-        if (remain < 0) {
+        if (remain < 0) { // null 로 처리하면서 조금 더 간단하게 문제를 변화시켰음
             return null;
         }
 
@@ -75,7 +75,7 @@ public class Main {
             }
         }
 
-        if (minDp[remain].length() == 0) {
+        if (minDp[remain].length() == 0) { // 아직 공백이면, 이 경우 remain == 0 에 도달하는 방법이 없었던 것으로 판단, 다시는 쓰지 못하게 null 로 변경한다.
             minDp[remain] = null;
         }
 
@@ -108,7 +108,7 @@ public class Main {
     }
 
     static String min(String s1, String s2) {
-        if (s1.length() == 0) {
+        if (s1.length() == 0) { // min 같은 경우는 더 작은 것을 가져가기 때문에 공백과, 작은 숫자가 붙게 되더라도 공백이 이긴다, 그래서 max 와 달리 예외처리를 해줌
             return s2;
         }
 
