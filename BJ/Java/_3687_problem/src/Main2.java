@@ -124,6 +124,12 @@ public class Main2 {
     }
 
     public static void main(String[] args) throws IOException {
+        /**
+         * 이 소스코드가 틀린 이유는 아마 BigInteger 를 사용하게 되면서, (08, 9) 이런 것과 같은
+         * 실제로 정수로 변환하면 전자가 더 작지만, 자릿수가 더 많아 실제로는 더 큰 경우를 이상하게 걸러내서 틀렸던 것 같다.
+         *
+         * 그래서, Main 에서는 이 부분을 String 하나하나 처리해주고, 또한 Y, N 을 붙이던 것을 더 간편하게 null 로 변환하여 처리했음
+         */
         System.setIn(new FileInputStream("/Users/jaeyeonkim/Desktop/CodingTest/CodingTest/BJ/Java/_3687_problem/src/input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
