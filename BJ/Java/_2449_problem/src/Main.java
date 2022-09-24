@@ -48,6 +48,6 @@ public class Main {
             arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        System.out.println(dfs(0, N - 1));
+        System.out.println();
     }
 }
