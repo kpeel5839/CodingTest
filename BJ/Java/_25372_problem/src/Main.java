@@ -13,7 +13,7 @@ public class Main {
             if (6 <= s.length() && s.length() <= 9) {
                 System.out.println("yes");
             } else {
-                System.out.println("no"
+                System.out.println("no");
             }
         }
     }
