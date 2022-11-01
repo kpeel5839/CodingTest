@@ -5,9 +5,10 @@ import java.util.function.Function;
 // 10836 : 여왕벌
 
 /**
- * -- 전제조건
- *
- * -- 틀 설계
+ * 예제
+ * 4 2
+ * 2 3 2
+ * 0 6 1
  */
 public class Main {
     public static void main(String[] args) throws IOException {
