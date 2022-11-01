@@ -5,9 +5,22 @@ import java.util.function.Function;
 // 3025 : 돌 던지기
 
 /**
- * -- 전제 조건
- *
- * -- 틀 설계
+ * 예제
+ * 7 6
+ * ......
+ * ......
+ * ...XX.
+ * ......
+ * ......
+ * .XX...
+ * ......
+ * 6
+ * 1
+ * 4
+ * 4
+ * 6
+ * 4
+ * 4
  */
 public class Main {
     public static void main(String[] args) throws IOException {
