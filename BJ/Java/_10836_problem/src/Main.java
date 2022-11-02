@@ -12,7 +12,9 @@ import java.util.function.Function;
  */
 public class Main {
     public static void main(String[] args) throws IOException {
+        System.setIn(new FileInputStream("/Users/jaeyeonkim/Desktop/CodingTest/CodingTest/BJ/Java/_10836_problem/src/input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        Function<String, Integer> fun = Integer::parseInt;
+        StringTokenizer st;
+
     }
 }
