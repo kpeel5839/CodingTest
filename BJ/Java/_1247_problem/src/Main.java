@@ -1,3 +1,4 @@
+import java.math.BigInteger;
 import java.util.*;
 import java.io.*;
 
@@ -35,15 +36,17 @@ public class Main {
 
         for (int t = 0; t < 3; t++) {
             int N = Integer.parseInt(br.readLine());
-            long sum = 0;
+            BigInteger sum = new BigInteger("0");
 
             for (int i = 0; i < N; i++) {
-                sum += Long.parseLong(br.readLine());
+                sum = sum.add(new BigInteger(br.readLine()));
             }
 
-            if (sum < 0) {
+            BigInteger compare = new BigInteger("0");
+
+            if (sum.compareTo(compare) < 0) {
                 System.out.println("-");
-            } else if (sum == 0) {
+            } else if (sum.compareTo(compare) == 0) {
                 System.out.println("0");
             } else {
                 System.out.println("+");
