@@ -11,8 +11,6 @@ public class Main {
         set.add(2);
         Random random = new Random();
         System.out.println(random.nextInt(2));
-
         System.out.println(set.iterator().next());
-
     }
 }
