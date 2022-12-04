@@ -6,11 +6,15 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
 
-        Set<Integer> set = new HashSet<>();
-        set.add(1);
-        set.add(2);
-        Random random = new Random();
-        System.out.println(random.nextInt(2));
-        System.out.println(set.iterator().next());
+        Map<Character, Integer> map = new HashMap<>();
+        List<int[]> list = new LinkedList<>();
+        map.put('c', 3);
+        map.put('r', 4);
+
+        list.add(new int[] {(int) 'c', map.get('c')});
+        list.add(new int[] {(int) 'r', map.get('r')});
+
+        System.out.println(Arrays.toString(list.get(0)));
+        System.out.println((char) list.get(0)[0]);
     }
 }
