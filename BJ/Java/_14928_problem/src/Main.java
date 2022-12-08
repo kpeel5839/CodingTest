@@ -13,9 +13,14 @@ public class Main {
         System.setIn(new FileInputStream("/Users/jaeyeonkim/Desktop/CodingTest/CodingTest/BJ/Java/_14928_problem/src/input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        BigInteger a = new BigInteger(br.readLine());
-        BigInteger b = new BigInteger("20000303");
+        String soBigFuckingNumber = br.readLine();
+        final int MOD = 20000303;
+        long temp = 0;
 
-        System.out.println(a.mod(b));
+        for (int i = 0; i < soBigFuckingNumber.length(); i++) {
+            temp = ((temp * 10) + (soBigFuckingNumber.charAt(i) - '0')) % MOD;
+        }
+
+        System.out.println(temp);
     }
 }
