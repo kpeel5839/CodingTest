@@ -37,7 +37,7 @@ public class Main {
                 numberOfBranch = numberOfBranch * splitFactor - cutBranch;
             }
 
-            bw.write(numberOfBranch);
+            bw.write(numberOfBranch + "\n");
         }
 
         bw.flush();
