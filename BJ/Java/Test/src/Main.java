@@ -6,7 +6,9 @@ public class Main {
 
 
     public static void main(String[] args) throws Exception {
-        Test test = new Test();
-        test.repeat(test::input);
+        System.out.println(new Test.Builder()
+                .a(1)
+                .b(2)
+                .build());
     }
 }

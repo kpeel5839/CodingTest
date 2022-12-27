@@ -1,30 +1,41 @@
-import java.io.IOException;
 import java.util.Scanner;
 import java.util.function.Supplier;
 
 public class Test {
 
-    public <T> T repeat(Supplier<T> reader) {
-        try {
-            return reader.get();
-        } catch(Exception exception) {
-            System.out.println(exception.getMessage());
-            return repeat(reader);
-        }
+    private int a;
+    private int b;
+
+    public Test(Builder builder) {
+        this.a = builder.a;
+        this.b = builder.b;
     }
 
-    public int input() {
-        Scanner scanner = new Scanner(System.in);
-        int n = scanner.nextInt();
+    public static class Builder {
+        private int a;
+        private int b;
 
-        return validate(n);
-    }
-
-    public int validate(int n) {
-        if (n == 1) {
-            throw new IllegalArgumentException("fuck 2");
+        public Builder() {
         }
 
-        return n;
+        public Builder a(int a) {
+            this.a = a;
+            return this;
+        }
+
+        public Builder b(int b) {
+            this.b = b;
+            return this;
+        }
+
+        public Test build() {
+            return new Test(this);
+        }
+
+    }
+
+    @Override
+    public String toString() {
+        return a + " " + b;
     }
 }
