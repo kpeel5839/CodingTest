@@ -1,5 +1,6 @@
 import java.util.*;
 import java.io.*;
+import java.util.stream.Collectors;
 
 // 2455 : 지능형 기차
 
@@ -15,6 +16,12 @@ public class Main {
         System.setIn(new FileInputStream("/Users/jaeyeonkim/Desktop/CodingTest/CodingTest/BJ/Java/_2455_problem/src/input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
+
+        List<Integer> visit1 = new ArrayList<>();
+        List<Integer> visit2= new ArrayList<>(visit1);
+        visit2.add(1);
+        System.out.println(visit1);
+        System.out.println(visit2);
 
         int maxPassenger = 0;
         int nowPassenger = 0;
