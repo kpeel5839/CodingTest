@@ -9,7 +9,6 @@ import java.io.*;
  * 3 2 1
  */
 public class Main {
-    static int N;
     static int numberOfLeafNode;
     static int[] tree;
     static PriorityQueue<int[]> max = new PriorityQueue<>((o1, o2) -> { // {index, value}

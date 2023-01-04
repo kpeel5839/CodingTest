@@ -17,19 +17,24 @@ public class Main {
 
         int size = Integer.parseInt(st.nextToken());
         int length = Integer.parseInt(st.nextToken());
-
-        PriorityQueue<int[]> queue = new PriorityQueue<>((o1, o2) -> o1[1] - o2[1]); // {index, value}
+        Deque<int[]> deque = new ArrayDeque<>();
 
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < size; i++) {
-            queue.add(new int[] {i, Integer.parseInt(st.nextToken())});
-
-            while (queue.peek()[0] < (i - length + 1)) {
-                queue.poll();
+            int number = Integer.parseInt(st.nextToken());
+            while (!deque.isEmpty() && number < deque.peekLast()[1]) {
+                deque.pollLast();
             }
 
-            bw.write(queue.peek()[1] + " ");
+            deque.addLast(new int[] {i, number});
+
+            if (deque.peekFirst()[0] + length == i) {
+                deque.pollFirst();
+            }
+
+            bw.write(deque.peekFirst()[1] + " ");
         }
+
 
         bw.flush();
         bw.close();
