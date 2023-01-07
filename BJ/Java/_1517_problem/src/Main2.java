@@ -30,12 +30,14 @@ public class Main2 {
         int[] tempNumber = new int[right - left + 1];
         int tempIndex = 0;
         long count = 0;
+        int leftCount = mid - left + 1;
 
         while (leftIndex <= mid && rightIndex <= right) {
             if (number[leftIndex] > number[rightIndex]) {
-                count += (rightIndex - tempIndex);
+                count += leftCount;
                 tempNumber[tempIndex++] = number[rightIndex++];
             } else {
+                leftCount--;
                 tempNumber[tempIndex++] = number[leftIndex++];
             }
         }
