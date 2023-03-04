@@ -1,10 +1,18 @@
-import java.util.*;
-import java.io.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+// 11462 : The Owl and the Fox
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        String url = "http://localhost:8088/user/point/basket/confirm";
-        System.out.println(url.lastIndexOf("/"));
-        System.out.println(url.substring(0, url.lastIndexOf("/")));
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
     }
 }
+
