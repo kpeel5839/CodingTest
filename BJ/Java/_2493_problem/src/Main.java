@@ -23,7 +23,7 @@ public class Main {
         for (int i = 0; i < N; i++) {
             a[i] = Integer.parseInt(st.nextToken());
         }
-
+        
         for (int i = 0; i < N; i++) {
             int nn = a[i];
 
